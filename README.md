@@ -37,7 +37,8 @@ docker run --name marmot-mysql \
 - start marmot-web
 
 ```bash
-$ docker run --name marmot-web \
+docker run --name marmot-web \
+  -e MARMOT_HOST:{your.host.com} \
   -p 9900:9900 \
   --link marmot-mysql:mysql-host \
   -d marmotjs/marmot-web
@@ -46,7 +47,7 @@ $ docker run --name marmot-web \
 - start marmot-nginx
 
 ```bash
-$ docker run --name marmot-nginx \
+docker run --name marmot-nginx \
   -p 9920:80 \
   -v $HOME/marmot_home/static:/usr/share/nginx/html:ro \
   -d marmotjs/marmot-nginx
@@ -56,8 +57,9 @@ $ docker run --name marmot-nginx \
 
 - start marmot-mysql
 
-```
-$ docker run --name marmot-mysql \
+```bash
+docker run --name marmot-mysql \
+  -p 3306:3306 \
   -d marmotjs/marmot-mysql
 ```
 

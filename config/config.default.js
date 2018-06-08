@@ -22,12 +22,14 @@ module.exports = appInfo => {
     ],
   };
 
+  const marmotHost = process.env.MARMOT_HOST || '127.0.0.1';
+
   config.marmotView = {
-    serverUrl: '//127.0.0.1:9900',
+    serverUrl: `//${marmotHost}:9900`,
     assetsUrl: '//npmcdn.com/marmot-view@latest',
-    jenkinsUrl: '//127.0.0.1:9910',
-    staticUrl: '//127.0.0.1:9920',
-    datahubUrl: '//127.0.0.1:9930',
+    jenkinsUrl: `//${marmotHost}:9910`,
+    staticUrl: `//${marmotHost}:9920`,
+    datahubUrl: `//${marmotHost}:9930`,
   };
 
   config.security = {
