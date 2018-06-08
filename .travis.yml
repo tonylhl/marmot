@@ -1,10 +1,23 @@
 sudo: false
+
 language: node_js
+
+services:
+  - docker
+
 node_js:
   - '8'
+
+before_install:
+  - docker pull marmotjs/marmot-mysql
+  - docker run --rm --name marmot-mysql -p 13306:3306 -d marmotjs/marmot-mysql
+  - docker ps -a
+
 install:
   - npm i npminstall && npminstall
+
 script:
-  - npm run ci
+  - MYSQL_PORT=13306 npm run ci
+
 after_script:
   - npminstall codecov && codecov
