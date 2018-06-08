@@ -19,8 +19,8 @@
 [node-url]: http://nodejs.org/download/
 [download-image]: https://img.shields.io/npm/dm/marmot-web.svg?style=flat-square
 [download-url]: https://npmjs.org/package/marmot-web
-[docker-image]: https://img.shields.io/docker/pulls/macacajs/marmot-web.svg?style=flat-square
-[docker-url]: https://hub.docker.com/r/macacajs/marmot-web/
+[docker-image]: https://img.shields.io/docker/pulls/marmotjs/marmot-web.svg?style=flat-square
+[docker-url]: https://hub.docker.com/r/marmotjs/marmot-web/
 
 > Marmot Server Side
 
