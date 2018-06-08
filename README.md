@@ -38,7 +38,7 @@ docker run --name marmot-mysql \
 
 ```bash
 docker run --name marmot-web \
-  -e MARMOT_HOST:{your.host.com} \
+  -e MARMOT_HOST='{your.host.com}' \
   -p 9900:9900 \
   --link marmot-mysql:mysql-host \
   -d marmotjs/marmot-web
