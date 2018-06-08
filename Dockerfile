@@ -10,7 +10,7 @@ ENV MYSQL_HOST=mysql-host \
     EGG_WORKERS=1
 
 RUN npm config set unsafe-perm=true \
-  && npm i --registry=https://registry.npm.taobao.org \
+  && npm i \
   && ln -s /root/logs .
 
 HEALTHCHECK --interval=10s --retries=6 \
