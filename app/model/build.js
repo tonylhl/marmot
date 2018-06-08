@@ -7,7 +7,6 @@ module.exports = app => {
     UUIDV4,
     JSON,
     INTEGER,
-    DATE,
   } = app.Sequelize;
 
   const Build = app.model.define('build', {
