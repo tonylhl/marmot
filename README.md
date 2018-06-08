@@ -11,10 +11,10 @@
 
 [npm-image]: https://img.shields.io/npm/v/marmot-web.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/marmot-web
-[travis-image]: https://img.shields.io/travis/macacajs/marmot-web.svg?style=flat-square
-[travis-url]: https://travis-ci.org/macacajs/marmot-web
-[coveralls-image]: https://img.shields.io/codecov/c/github/macacajs/marmot-web.svg?style=flat-square
-[coveralls-url]: https://codecov.io/gh/macacajs/marmot-web
+[travis-image]: https://img.shields.io/travis/macacajs/marmot.svg?style=flat-square
+[travis-url]: https://travis-ci.org/macacajs/marmot
+[coveralls-image]: https://img.shields.io/codecov/c/github/macacajs/marmot.svg?style=flat-square
+[coveralls-url]: https://codecov.io/gh/macacajs/marmot
 [node-image]: https://img.shields.io/badge/node.js-%3E=_8-green.svg?style=flat-square
 [node-url]: http://nodejs.org/download/
 [download-image]: https://img.shields.io/npm/dm/marmot-web.svg?style=flat-square
@@ -37,7 +37,8 @@ docker run --name marmot-mysql \
 - start marmot-web
 
 ```bash
-$ docker run --name marmot-web \
+docker run --name marmot-web \
+  -e MARMOT_HOST='{your.host.com}' \
   -p 9900:9900 \
   --link marmot-mysql:mysql-host \
   -d marmotjs/marmot-web
@@ -46,7 +47,7 @@ $ docker run --name marmot-web \
 - start marmot-nginx
 
 ```bash
-$ docker run --name marmot-nginx \
+docker run --name marmot-nginx \
   -p 9920:80 \
   -v $HOME/marmot_home/static:/usr/share/nginx/html:ro \
   -d marmotjs/marmot-nginx
@@ -56,8 +57,9 @@ $ docker run --name marmot-nginx \
 
 - start marmot-mysql
 
-```
-$ docker run --name marmot-mysql \
+```bash
+docker run --name marmot-mysql \
+  -p 3306:3306 \
   -d marmotjs/marmot-mysql
 ```
 
