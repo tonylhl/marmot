@@ -18,6 +18,8 @@ docker run --name marmot-web \
   -d marmotjs/marmot-web
 ```
 
+- `open http://YOUR_HOSTNAME.com:9900`
+
 ### development
 
 ```bash
