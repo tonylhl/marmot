@@ -24,51 +24,19 @@
 
 > Marmot Server Side
 
-# Prod
+## production
 
-- start marmot-mysql
+### marmot-web
 
-```
-docker run --name marmot-mysql \
-  -v $HOME/marmot_home/mysql_data:/var/lib/mysql \
-  -d marmotjs/marmot-mysql
-```
+- [deploy doc](./docker/marmot-web/README.md)
 
-- start marmot-web
+### marmot-mysql
 
-```bash
-docker run --name marmot-web \
-  -e MARMOT_HOST='{your.host.com}' \
-  -p 9900:9900 \
-  --link marmot-mysql:mysql-host \
-  -d marmotjs/marmot-web
-```
+- [deploy doc](./docker/marmot-mysql/README.md)
 
-- start marmot-nginx
+### marmot-nginx
 
-```bash
-docker run --name marmot-nginx \
-  -p 9920:80 \
-  -v $HOME/marmot_home/static:/usr/share/nginx/html:ro \
-  -d marmotjs/marmot-nginx
-```
-
-# Dev
-
-- start marmot-mysql
-
-```bash
-docker run --name marmot-mysql \
-  -p 3306:3306 \
-  -d marmotjs/marmot-mysql
-```
-
-- start marmot-web
-
-```bash
-npm run dev
-npm test
-```
+- [deploy doc](./docker/marmot-nginx/README.md)
 
 ## License
 

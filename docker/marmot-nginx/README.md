@@ -1,6 +1,6 @@
-# marmot-nginx
+## marmot-nginx
 
-- build image
+### build image
 
 ```bash
 cd docker/marmot-nginx
@@ -8,7 +8,7 @@ docker build -t marmotjs/marmot-nginx .
 docker push marmotjs/marmot-nginx
 ```
 
-- run nginx server
+### production
 
 ```bash
 docker run --name marmot-nginx \
