@@ -11,10 +11,10 @@
 
 [npm-image]: https://img.shields.io/npm/v/marmot-web.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/marmot-web
-[travis-image]: https://img.shields.io/travis/macacajs/marmot-web.svg?style=flat-square
-[travis-url]: https://travis-ci.org/macacajs/marmot-web
-[coveralls-image]: https://img.shields.io/codecov/c/github/macacajs/marmot-web.svg?style=flat-square
-[coveralls-url]: https://codecov.io/gh/macacajs/marmot-web
+[travis-image]: https://img.shields.io/travis/macacajs/marmot.svg?style=flat-square
+[travis-url]: https://travis-ci.org/macacajs/marmot
+[coveralls-image]: https://img.shields.io/codecov/c/github/macacajs/marmot.svg?style=flat-square
+[coveralls-url]: https://codecov.io/gh/macacajs/marmot
 [node-image]: https://img.shields.io/badge/node.js-%3E=_8-green.svg?style=flat-square
 [node-url]: http://nodejs.org/download/
 [download-image]: https://img.shields.io/npm/dm/marmot-web.svg?style=flat-square
