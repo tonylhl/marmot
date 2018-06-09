@@ -17,7 +17,7 @@ $ docker run --name marmot-mysql \
 
 ---
 
-For developer
+Just for developer
 
 ## build image
 
