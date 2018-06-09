@@ -18,19 +18,23 @@
 
 > Marmot Server Side
 
-## How To Deploy
+## Deploy
 
-### marmot-web
+- [marmot-web](./docker/marmot-web/README.md)
+- [marmot-mysql](./docker/marmot-mysql/README.md)
+- [marmot-nginx](./docker/marmot-nginx/README.md)
 
-- [deploy doc](./docker/marmot-web/README.md)
+<!-- GITCONTRIBUTOR_START -->
 
-### marmot-mysql
+## Contributors
 
-- [deploy doc](./docker/marmot-mysql/README.md)
+|[<img src="https://avatars1.githubusercontent.com/u/1011681?v=4" width="100px;"/><br/><sub><b>xudafeng</b></sub>](https://github.com/xudafeng)<br/>|[<img src="https://avatars1.githubusercontent.com/u/2139038?v=4" width="100px;"/><br/><sub><b>zhangyuheng</b></sub>](https://github.com/zhangyuheng)<br/>
+| :---: | :---: |
 
-### marmot-nginx
 
-- [deploy doc](./docker/marmot-nginx/README.md)
+This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto upated at `Sat Jun 09 2018 10:30:17 GMT+0800`.
+
+<!-- GITCONTRIBUTOR_END -->
 
 ## License
 
