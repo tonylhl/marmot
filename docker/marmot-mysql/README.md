@@ -29,5 +29,5 @@ $ docker run --name marmot-mysql \
 $ docker run --name marmot-mysql \
   -p 3306:3306 \
   -v $HOME/marmot_home/mysql_data:/var/lib/mysql \
-  -d marmotjs/marmot-mysql
+  marmotjs/marmot-mysql
 ```
