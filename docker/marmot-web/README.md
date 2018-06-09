@@ -1,17 +1,23 @@
 ## marmot-web
 
-### build image
+---
+
+[![docker pull][docker-image]][docker-url]
+[docker-image]: https://img.shields.io/docker/pulls/marmotjs/marmot-web.svg?style=flat-square
+[docker-url]: https://hub.docker.com/r/marmotjs/marmot-web/
+
+## build image
 
 ```bash
-cd ${PROJECT_ROOT_PATH}
-docker build -t marmotjs/marmot-web .
-docker push marmotjs/marmot-web
+$ cd ${PROJECT_ROOT_PATH}
+$ docker build -t marmotjs/marmot-web .
+$ docker push marmotjs/marmot-web
 ```
 
-### production
+## production
 
 ```bash
-docker run --name marmot-web \
+$ docker run --name marmot-web \
   -p 9900:9900 \
   -e MARMOT_HOST='your.hostname.com' \
   --link marmot-mysql:mysql-host \
@@ -20,7 +26,7 @@ docker run --name marmot-web \
 
 - `open http://your.hostname.com:9900`
 
-### development
+## development
 
 ```bash
 npm run dev
