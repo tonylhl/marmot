@@ -48,6 +48,7 @@ module.exports = appInfo => {
     port: '3306',
     username: 'root',
     password: 'marmot',
+    operatorsAliases: false,
   };
 
   return config;
