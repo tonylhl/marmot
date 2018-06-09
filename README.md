@@ -18,7 +18,7 @@
 
 > Marmot Server Side
 
-## How TO Deploy
+## How To Deploy
 
 ### marmot-web
 
