@@ -16,7 +16,7 @@
 [docker-image]: https://img.shields.io/docker/pulls/marmotjs/marmot-web.svg?style=flat-square
 [docker-url]: https://hub.docker.com/r/marmotjs/marmot-web/
 
-> Marmot Server Side
+> Release management suite with continuous delivery support for deployments
 
 ## Deploy
 
