@@ -17,6 +17,18 @@ $ docker push marmotjs/marmot-web
 
 ## production
 
+should launch `marmot-myslq` service first.
+
+```bash
+$ docker run --name marmot-web \
+  -p 9900:9900 \
+  -e MARMOT_HOST='your.hostname.com' \
+  --link marmot-mysql:mysql-host \
+  marmotjs/marmot-web
+```
+
+run as a service
+
 ```bash
 $ docker run --name marmot-web \
   -p 9900:9900 \
