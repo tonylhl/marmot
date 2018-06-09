@@ -7,20 +7,24 @@
 [docker-image]: https://img.shields.io/docker/pulls/marmotjs/marmot-mysql.svg?style=flat-square
 [docker-url]: https://hub.docker.com/r/marmotjs/marmot-mysql/
 
-## build image
-
-```bash
-$ cd docker/marmot-mysql
-$ docker build -t marmotjs/marmot-mysql .
-$ docker push marmotjs/marmot-mysql
-```
-
 ## production
 
 ```bash
 $ docker run --name marmot-mysql \
   -v $HOME/marmot_home/mysql_data:/var/lib/mysql \
   -d marmotjs/marmot-mysql
+```
+
+---
+
+For developer
+
+## build image
+
+```bash
+$ cd docker/marmot-mysql
+$ docker build -t marmotjs/marmot-mysql .
+$ docker push marmotjs/marmot-mysql
 ```
 
 ## development
