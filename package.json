@@ -1,7 +1,7 @@
 {
   "name": "marmot-web",
   "version": "1.0.0",
-  "description": "Marmot Server Side",
+  "description": "Release management suite with continuous delivery support for deployments",
   "private": true,
   "dependencies": {
     "dingtalk-robot-sender": "^1.1.1",
