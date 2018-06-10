@@ -53,7 +53,7 @@ module.exports = class DingtalkService extends Service {
       text.push('> none');
     }
 
-    jenkins.BUILD_NUMBER && text.push(`[> See details on marmot-web](http:${this.config.marmotView.serverUrl}/onebuild?jobName=${jenkins.JOB_NAME}&buildNumber=${jenkins.BUILD_NUMBER})`);
+    jenkins.BUILD_NUMBER && text.push(`[> See details on marmot-web](http:${this.config.marmotView.serverUrl}/buildinfo?jobName=${jenkins.JOB_NAME}&buildNumber=${jenkins.BUILD_NUMBER})`);
 
     // trigger webhooks
     try {
