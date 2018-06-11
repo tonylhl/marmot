@@ -15,7 +15,7 @@ describe('test/app/controller/home.test.js', () => {
   it('should GET /', () => {
     return app.httpRequest()
       .get('/')
-      .expect(/Marmot Build PlatForm/)
+      .expect(/Marmot PlatForm/)
       .expect(200);
   });
 });
