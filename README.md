@@ -18,11 +18,9 @@
 
 > Release management suite with continuous delivery support for deployments
 
-## Deploy
+## Docs
 
-- [marmot-web](./docker/marmot-web/README.md)
-- [marmot-mysql](./docker/marmot-mysql/README.md)
-- [marmot-nginx](./docker/marmot-nginx/README.md)
+[docs](./docs)
 
 <!-- GITCONTRIBUTOR_START -->
 
