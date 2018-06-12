@@ -45,7 +45,7 @@ module.exports = appInfo => {
     dialect: 'mysql',
     database: 'marmot_development',
     host: process.env.MYSQL_HOST || '127.0.0.1',
-    port: '3306',
+    port: process.env.MYSQL_PORT || '3306',
     username: 'root',
     password: 'marmot',
     operatorsAliases: false,

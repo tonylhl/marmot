@@ -9,9 +9,7 @@ describe('test/app/controller/config.test.js', () => {
 
   beforeEach(function* () {
     app.mockService('dingtalk', 'push', {});
-    yield app.model.Config.destroy({
-      where: {},
-    });
+    yield app.model.sync({ force: true });
   });
 
   function* assertConfig(app, data) {

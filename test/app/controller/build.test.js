@@ -5,8 +5,6 @@ const {
   assert,
 } = require('egg-mock/bootstrap');
 
-const { sleep } = require('../../util');
-
 const postData = require('../../fixtures/post-gw.json');
 
 function* insertData(customData = {}) {
@@ -19,12 +17,7 @@ describe('test/app/controller/build.test.js', function() {
 
   beforeEach(function* () {
     app.mockService('dingtalk', 'push', {});
-    yield app.model.Build.destroy({
-      where: {},
-    });
-    yield app.model.JobName.destroy({
-      where: {},
-    });
+    yield app.model.sync({ force: true });
   });
 
   it('GET /api/build query all builds', function* () {
@@ -41,8 +34,6 @@ describe('test/app/controller/build.test.js', function() {
         },
       },
     });
-
-    yield sleep(500);
 
     yield insertData({
       enviroment: {

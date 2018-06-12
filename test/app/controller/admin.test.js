@@ -16,13 +16,7 @@ function* insertData(customData = {}) {
 describe('test/app/controller/admin.test.js', function() {
 
   beforeEach(function* () {
-    app.mockService('dingtalk', 'push', {});
-    yield app.model.Build.destroy({
-      where: {},
-    });
-    yield app.model.JobName.destroy({
-      where: {},
-    });
+    yield app.model.sync({ force: true });
   });
 
   it('GET /api/admin/status return system info', function* () {
