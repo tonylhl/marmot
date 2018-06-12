@@ -15,16 +15,10 @@ class GwController extends Controller {
         jobName,
       },
     });
-    const createResult = await this.ctx.model.Build.findOrCreate({
-      where: {
-        buildNumber,
-        jobName,
-      },
-      defaults: {
-        buildNumber,
-        jobName,
-        data,
-      },
+    const createResult = await this.ctx.model.Build.create({
+      buildNumber,
+      jobName,
+      data,
     });
     await this.ctx.service.dingtalk.push(data);
     this.ctx.body = {
