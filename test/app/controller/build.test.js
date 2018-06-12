@@ -5,6 +5,8 @@ const {
   assert,
 } = require('egg-mock/bootstrap');
 
+const { sleep } = require('../../util');
+
 const postData = require('../../fixtures/post-gw.json');
 
 function* insertData(customData = {}) {
@@ -39,6 +41,8 @@ describe('test/app/controller/build.test.js', function() {
         },
       },
     });
+
+    yield sleep(500);
 
     yield insertData({
       enviroment: {
