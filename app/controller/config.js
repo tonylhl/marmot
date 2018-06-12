@@ -6,7 +6,7 @@ class ConfigController extends Controller {
   async show() {
     const result = await this.ctx.model.Config.findOne();
     this.ctx.body = {
-      success: !!result,
+      success: true,
       data: result ? result.data : {},
     };
   }

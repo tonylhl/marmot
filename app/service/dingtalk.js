@@ -5,6 +5,7 @@ const ChatBot = require('dingtalk-robot-sender');
 const url = require('url');
 
 module.exports = class DingtalkService extends Service {
+  /* istanbul ignore next */
   async push(data = {}) {
     // get all webhooks
     const globalConfig = await this.ctx.model.Config.findOne();

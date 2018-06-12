@@ -1,0 +1,60 @@
+{
+  "enviroment": {
+    "jenkins": {
+      "JOB_NAME": "web",
+      "BUILD_NUMBER": "40"
+    },
+    "platform": "web",
+    "os": {
+      "nodeVersion": "v1.1.2",
+      "platform": "linux"
+    }
+  },
+  "gitCommitInfo": {
+    "shortHash": "dsfsf",
+    "hash": "fsdfsdfsdfjskdfhjskhfjksdffsfsf",
+    "subject": "update",
+    "sanitizedSubject": "update",
+    "body": "",
+    "committer": {
+      "date": "1528384357",
+      "relativeDate": "33 minutes ago",
+      "name": "test",
+      "email": "test@gmail.com"
+    },
+    "author": {
+      "date": "1528384657",
+      "relativeDate": "33 minutes ago",
+      "name": "test",
+      "email": "test@gmail.com"
+    },
+    "gitUrl": "http://github.com/macacajs/marmot",
+    "gitBranch": "origin/master"
+  },
+  "files": [
+    "coverage/base.css",
+    "coverage/coverage-final.json",
+    "coverage/index.html"
+  ],
+  "packages": [
+    {
+      "version": "0.0.1",
+      "type": "release",
+      "path": "***/.zip"
+    }
+  ],
+  "testInfo": {
+    "tests": 2,
+    "passes": 1,
+    "passPercent": 50,
+    "linePercent": 57.14,
+    "testHtmlReporterPath": "reports/index.html",
+    "coverageHtmlReporterPath": "coverage/index.html"
+  },
+  "extraInfo": {
+    "macaca-wd": "4.1.4",
+    "macaca-datahub": "1.2.0",
+    "macaca-reporter": "1.3.0",
+    "config": "**************************************\n*******************************\n******"
+  }
+}
