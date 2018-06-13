@@ -27,9 +27,9 @@ $ docker-compose up
 $ docker-compose down
 ```
 
-marmot server is running on [http://127.0.0.1](http://127.0.0.1) by default.
+marmot server is running on [http://127.0.0.1:9900](http://127.0.0.1:9900) by default.
 
-should edit [docker-compose.yml](docker-compose.yml) on demand.
+should edit [docker-compose.yml](../docker-compose.yml) on demand.
 
 ### Using [docker](https://docs.docker.com/)
 

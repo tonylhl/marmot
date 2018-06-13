@@ -6,3 +6,4 @@ database
 logs
 .*
 *.md
+*.yml
