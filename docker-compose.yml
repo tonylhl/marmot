@@ -15,7 +15,7 @@ services:
     environment:
       - MYSQL_HOST=mysql
       - MARMOT_HOST=127.0.0.1 # replace it with your hostname: MARMOT_HOST=example.com
-      - MARMOT_PORT=9900        # keep the same as ports' left number
+      - MARMOT_PORT=9900      # keep the same as ports' left number
   nginx:
     image: marmotjs/marmot-nginx
     restart: always
