@@ -41,9 +41,3 @@ $ java -Dfile.encoding=UTF-8 \
 ```
 
 Change `$HOME/marmot_home/jenkins_home/config.xml` useSecurity to false, and restart the Jenkins.
-
-## Marmot Platform Deployment
-
-create the `docker-compose.yml`, and compose up all.
-
-[docker-deploy](../docs#docker-deploy)
