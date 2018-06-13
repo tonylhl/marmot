@@ -23,9 +23,10 @@ module.exports = appInfo => {
   };
 
   const marmotHost = process.env.MARMOT_HOST || '127.0.0.1';
+  const marmotPort = process.env.MARMOT_PORT || '9900';
 
   config.marmotView = {
-    serverUrl: `//${marmotHost}:9900`,
+    serverUrl: `//${marmotHost}:${marmotPort}`,
     assetsUrl: '//npmcdn.com/marmot-view@latest',
     jenkinsUrl: `//${marmotHost}:9910`,
     staticUrl: `//${marmotHost}:9920`,
