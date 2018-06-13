@@ -41,3 +41,54 @@ $ java -Dfile.encoding=UTF-8 \
 ```
 
 Change `$HOME/marmot_home/jenkins_home/config.xml` useSecurity to false, and restart the Jenkins.
+
+---
+
+## Build Scripts
+
+### For Android
+
+We provide the Android build docker like `macacajs/macaca-android-build-docker`, so you can set the feild content like this:
+
+```bash
+docker stop $JOB_NAME || true && docker rm $JOB_NAME || true
+
+docker run --rm \
+  --name $JOB_NAME \
+  -e JOB_NAME \
+  -e BUILD_NUMBER \
+  -e GIT_BRANCH \
+  -e GIT_URL \
+  -v $HOME/marmot_home/static:/static \
+  -v $HOME/marmot_home/gradle_cache:/root/.gradle \
+  -d macacajs/macaca-android-build-docker
+```
+
+[Android Sample](//github.com/app-bootstrap/android-app-bootstrap)
+
+### For Front End
+
+We provide the webpack build docker like `macacajs/macaca-electron-docker`, so you can set the feild content like this:
+
+```
+docker stop $JOB_NAME || true && docker rm $JOB_NAME || true
+
+docker run --rm \
+  --name $JOB_NAME \
+  -e JOB_NAME \
+  -e BUILD_NUMBER \
+  -e GIT_BRANCH \
+  -e GIT_URL \
+  -v $HOME/marmot_home/static:/static \
+  -v $WORKSPACE:/root/src macacajs/macaca-electron-docker
+```
+
+[H5 Sample](//github.com/app-bootstrap/awesome-practice-projects)
+
+### For iOS
+
+```
+./ci.sh
+```
+
+[iOS Sample](//github.com/app-bootstrap/ios-app-bootstrap)
