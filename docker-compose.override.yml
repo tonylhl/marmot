@@ -3,6 +3,8 @@ services:
   mysql:
     build: ./docker/marmot-mysql
     restart: always
+    ports:
+      - "3306:3306"
     volumes:
       - $HOME/marmot_home/mysql_data:/var/lib/mysql
   web:
