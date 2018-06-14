@@ -1,5 +1,7 @@
 # Marmot
 
+[中文版](README.zh.md)
+
 ---
 
 [![build status][travis-image]][travis-url]
