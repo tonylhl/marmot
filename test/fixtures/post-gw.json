@@ -1,5 +1,5 @@
 {
-  "environment": {
+  "enviroment": {
     "jenkins": {
       "JOB_NAME": "web",
       "BUILD_NUMBER": "40"

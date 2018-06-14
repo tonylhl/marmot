@@ -22,7 +22,7 @@ describe('test/app/controller/build.test.js', function() {
 
   it('GET /api/build query all builds', function* () {
     yield insertData({
-      environment: {
+      enviroment: {
         jenkins: {
           JOB_NAME: 'android',
           BUILD_NUMBER: '10',
@@ -36,7 +36,7 @@ describe('test/app/controller/build.test.js', function() {
     });
 
     yield insertData({
-      environment: {
+      enviroment: {
         jenkins: {
           JOB_NAME: 'ios',
           BUILD_NUMBER: '20',
@@ -70,7 +70,7 @@ describe('test/app/controller/build.test.js', function() {
 
   it('GET /api/build/:jobName query by jobName', function* () {
     yield insertData({
-      environment: {
+      enviroment: {
         jenkins: {
           JOB_NAME: 'android_app',
           BUILD_NUMBER: '1',
@@ -84,7 +84,7 @@ describe('test/app/controller/build.test.js', function() {
     });
 
     yield insertData({
-      environment: {
+      enviroment: {
         jenkins: {
           JOB_NAME: 'ios_app',
           BUILD_NUMBER: '1',
@@ -113,7 +113,7 @@ describe('test/app/controller/build.test.js', function() {
 
   it('GET /api/build/:jobName/:buildNumber query by jobName and buildNumber', function* () {
     yield insertData({
-      environment: {
+      enviroment: {
         jenkins: {
           JOB_NAME: 'android_app',
           BUILD_NUMBER: '1',
@@ -127,7 +127,7 @@ describe('test/app/controller/build.test.js', function() {
     });
 
     yield insertData({
-      environment: {
+      enviroment: {
         jenkins: {
           JOB_NAME: 'ios_app',
           BUILD_NUMBER: '1',
