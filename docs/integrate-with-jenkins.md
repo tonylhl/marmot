@@ -87,8 +87,8 @@ docker run --rm \
 
 ### For iOS
 
-```
-./ci.sh
+```bash
+MARMOT_SERVER_URL=http://{MARMOT_HOST}:9900 ./ci.sh
 ```
 
 [iOS Sample](//github.com/app-bootstrap/ios-app-bootstrap)
