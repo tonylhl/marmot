@@ -2,7 +2,6 @@
 
 const Service = require('egg').Service;
 const ChatBot = require('dingtalk-robot-sender');
-const url = require('url');
 
 module.exports = class DingtalkService extends Service {
   /* istanbul ignore next */
@@ -26,15 +25,12 @@ module.exports = class DingtalkService extends Service {
     // message body
     let text = [];
     const gitUrl = `${gitCommitInfo.gitUrl}`;
-    const gitUrlInfo = url.parse(gitUrl);
-    const gitBaseUtl = `${gitUrlInfo.protocol}//${gitUrlInfo.host}`;
     text.push(`### Repository ${jenkins.JOB_NAME} build passed`);
     text.push('');
     text.push(`#### Platform: ${enviroment.platform}`);
     text.push('#### Commit');
     text.push(`[${gitCommitInfo.shortHash}](${gitUrl}/commit/${gitCommitInfo.hash}): ${gitCommitInfo.subject}`);
-    text.push(`> committer:[@${gitCommitInfo.committer.name}](${gitBaseUtl}/u/${gitCommitInfo.committer.email.split('@')[0]})
-    author:[@${gitCommitInfo.author.name}](${gitBaseUtl}/u/${gitCommitInfo.author.email.split('@')[0]})`);
+    text.push(`> committer:[@${gitCommitInfo.committer.name}]() author:[@${gitCommitInfo.author.name}]()`);
 
     // test report info
     text.push('#### Test report');
