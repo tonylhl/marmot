@@ -57,8 +57,6 @@ docker run --rm \
   --name $JOB_NAME \
   -e JOB_NAME \
   -e BUILD_NUMBER \
-  -e GIT_BRANCH \
-  -e GIT_URL \
   -v $HOME/marmot_home/static:/static \
   -v $HOME/marmot_home/gradle_cache:/root/.gradle \
   -d macacajs/macaca-android-build-docker
@@ -77,8 +75,6 @@ docker run --rm \
   --name $JOB_NAME \
   -e JOB_NAME \
   -e BUILD_NUMBER \
-  -e GIT_BRANCH \
-  -e GIT_URL \
   -v $HOME/marmot_home/static:/static \
   -v $WORKSPACE:/root/src macacajs/macaca-electron-docker
 ```
