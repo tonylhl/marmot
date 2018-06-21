@@ -8,7 +8,7 @@ const {
 describe('test/app/controller/config.test.js', () => {
 
   beforeEach(function* () {
-    app.mockService('dingtalk', 'push', {});
+    app.mockService('webhook', 'push', {});
     yield app.model.sync({ force: true });
   });
 

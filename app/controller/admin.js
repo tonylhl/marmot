@@ -1,6 +1,8 @@
 'use strict';
 
-const Controller = require('egg').Controller;
+const {
+  Controller,
+} = require('egg');
 
 class AdminController extends Controller {
   async status() {

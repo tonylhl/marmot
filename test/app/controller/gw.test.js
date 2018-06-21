@@ -10,7 +10,7 @@ const postData = require('../../fixtures/post-gw.json');
 describe('test/app/controller/gw.test.js', () => {
 
   beforeEach(function* () {
-    app.mockService('dingtalk', 'push', {});
+    app.mockService('webhook', 'push', {});
     yield app.model.Build.destroy({
       where: {},
     });

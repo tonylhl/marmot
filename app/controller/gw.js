@@ -1,6 +1,8 @@
 'use strict';
 
-const Controller = require('egg').Controller;
+const {
+  Controller,
+} = require('egg');
 
 class GwController extends Controller {
   async index() {
@@ -20,7 +22,7 @@ class GwController extends Controller {
       jobName,
       data,
     });
-    await this.ctx.service.dingtalk.push(data);
+    await this.ctx.service.webhook.push(data);
     this.ctx.body = {
       success: true,
       message: '',

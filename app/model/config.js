@@ -1,7 +1,12 @@
 'use strict';
 
 module.exports = app => {
-  const { UUID, UUIDV4, JSON, INTEGER } = app.Sequelize;
+  const {
+    UUID,
+    UUIDV4,
+    JSON,
+    INTEGER,
+  } = app.Sequelize;
 
   const Config = app.model.define('config', {
     id: {

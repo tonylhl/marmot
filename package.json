@@ -4,10 +4,10 @@
   "description": "Release management suite with continuous delivery support for deployments",
   "private": true,
   "dependencies": {
-    "dingtalk-robot-sender": "^1.1.1",
     "egg": "^2.2.1",
     "egg-scripts": "^2.5.0",
     "egg-sequelize": "^3.1.4",
+    "marmot-dingtalk": "^1.0.0",
     "marmot-view": "^1.0.0",
     "mysql2": "^1.5.3"
   },
@@ -42,8 +42,7 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/macacajs/marmot.git"
   },
-  "author": "",
   "license": "MIT"
 }

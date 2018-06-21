@@ -30,10 +30,15 @@ module.exports = app => {
   }, {
     indexes: [
       {
-        fields: [ 'jobName' ],
+        fields: [
+          'jobName',
+        ],
       },
       {
-        fields: [ 'jobName', 'buildNumber' ],
+        fields: [
+          'jobName',
+          'buildNumber',
+        ],
       },
     ],
   });

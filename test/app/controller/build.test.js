@@ -16,7 +16,7 @@ function* insertData(customData = {}) {
 describe('test/app/controller/build.test.js', function() {
 
   beforeEach(function* () {
-    app.mockService('dingtalk', 'push', {});
+    app.mockService('webhook', 'push', {});
     yield app.model.sync({ force: true });
   });
 
