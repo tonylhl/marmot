@@ -18,7 +18,7 @@ module.exports = class WebHookService extends Service {
     // trigger webhooks
     // TODO add type to the webhook
     try {
-      return await Promise.all(webhooks.map(webhook => DingTalk(webhook, data)));
+      return await Promise.all(webhooks.map(webhook => DingTalk.call(this, webhook, data)));
     } catch (e) {
       console.error(e);
     }
