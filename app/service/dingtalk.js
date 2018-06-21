@@ -14,11 +14,11 @@ module.exports = class DingtalkService extends Service {
     const webhooks = globalConfig.data.webhooks;
     const {
       gitCommitInfo,
-      enviroment = {},
+      environment = {},
       testInfo,
       packages,
     } = data;
-    const { jenkins } = enviroment;
+    const { jenkins } = environment;
 
     const title = `[Marmot] **${jenkins.JOB_NAME}** build passed.`;
 
@@ -27,7 +27,7 @@ module.exports = class DingtalkService extends Service {
     const gitUrl = `${gitCommitInfo.gitUrl}`;
     text.push(`### Repository ${jenkins.JOB_NAME} build passed`);
     text.push('');
-    text.push(`#### Platform: ${enviroment.platform}`);
+    text.push(`#### Platform: ${environment.platform}`);
     text.push('#### Commit');
     text.push(`[${gitCommitInfo.shortHash}](${gitUrl}/commit/${gitCommitInfo.hash}): ${gitCommitInfo.subject}`);
     text.push(`> committer:[@${gitCommitInfo.committer.name}]() author:[@${gitCommitInfo.author.name}]()`);

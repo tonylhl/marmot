@@ -5,8 +5,8 @@ const Controller = require('egg').Controller;
 class GwController extends Controller {
   async index() {
     const data = this.ctx.request.body;
-    const jobName = data.enviroment.jenkins.JOB_NAME;
-    const buildNumber = data.enviroment.jenkins.BUILD_NUMBER;
+    const jobName = data.environment.jenkins.JOB_NAME;
+    const buildNumber = data.environment.jenkins.BUILD_NUMBER;
     await this.ctx.model.JobName.findOrCreate({
       where: {
         jobName,
