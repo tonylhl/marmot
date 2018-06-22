@@ -15,7 +15,7 @@ module.exports = app => {
   router.get('/api/build/:jobName', controller.build.queryByJobName);
   router.get('/api/build/:jobName/:buildNumber', controller.build.queryByJobNameAndBuildNumber);
   router.get('/api/latestBuild', controller.build.queryAllLatest);
-  router.get('/api/latestBuild/:jobName/:gitBranch', controller.build.queryLatestByJobNameAndGitBranch);
+  router.get('/api/latestBuild/:jobName/:gitBranch+', controller.build.queryLatestByJobNameAndGitBranch);
 
   router.get('/api/config', controller.config.show);
   router.post('/api/config', controller.config.update);
