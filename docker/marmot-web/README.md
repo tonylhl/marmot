@@ -9,7 +9,7 @@
 
 ## production
 
-should launch `marmot-myslq` service first.
+should launch `marmot-mysql` service first.
 
 ```bash
 $ docker run --name marmot-web \
