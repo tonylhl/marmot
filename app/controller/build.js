@@ -97,6 +97,41 @@ class BuildController extends Controller {
       },
     };
   }
+
+  async queryAllLatest() {
+    const allJobName = await this.ctx.model.JobName.findAll({
+      attributes: [
+        'jobName',
+      ],
+    }).map(i => i.jobName);
+    const result = [];
+
+    for (let i = 0; i < allJobName.length; i++) {
+      const jobName = allJobName[i];
+      const res = await this.ctx.model.Build.findOne({
+        where: {
+          jobName,
+        },
+        order: [
+          [
+            'created_at',
+            'DESC',
+          ],
+        ],
+        attributes: {
+          exclude: this.ctx.app.config.modelQueryConfig.excludedAttributes,
+        },
+      });
+      result.push(res);
+    }
+    this.ctx.body = {
+      success: true,
+      allJobName,
+      data: {
+        result,
+      },
+    };
+  }
 }
 
 module.exports = BuildController;

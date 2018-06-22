@@ -12,6 +12,7 @@ module.exports = app => {
   router.post('/api/gw', controller.gw.index);
 
   router.get('/api/build', controller.build.queryAll);
+  router.get('/api/build/all/latest', controller.build.queryAllLatest);
   router.get('/api/build/:jobName', controller.build.queryByJobName);
   router.get('/api/build/:jobName/:buildNumber', controller.build.queryByJobNameAndBuildNumber);
 
