@@ -21,6 +21,9 @@ module.exports = app => {
     buildNumber: {
       type: STRING,
     },
+    gitBranch: {
+      type: STRING,
+    },
     data: JSON,
     uniqId: {
       type: UUID,

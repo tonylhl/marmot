@@ -17,9 +17,11 @@ class GwController extends Controller {
         jobName,
       },
     });
+    const gitBranch = data.gitCommitInfo.gitBranch;
     const createResult = await this.ctx.model.Build.create({
       buildNumber,
       jobName,
+      gitBranch,
       data,
     });
     await this.ctx.service.webhook.push(data);

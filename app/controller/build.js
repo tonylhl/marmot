@@ -104,6 +104,7 @@ class BuildController extends Controller {
         'jobName',
       ],
     }).map(i => i.jobName);
+
     const result = [];
 
     for (let i = 0; i < allJobName.length; i++) {
@@ -127,6 +128,34 @@ class BuildController extends Controller {
     this.ctx.body = {
       success: true,
       allJobName,
+      data: {
+        result,
+      },
+    };
+  }
+
+  async queryLatestByJobNameAndGitBranch() {
+    const jobName = this.ctx.params.jobName;
+    const gitBranch = this.ctx.params.gitBranch;
+    const result = await this.ctx.model.Build.findAll({
+      limit: 5,
+      where: {
+        jobName,
+        gitBranch,
+      },
+      order: [
+        [
+          'created_at',
+          'DESC'
+        ]
+      ],
+      attributes: {
+        exclude: this.ctx.app.config.modelQueryConfig.excludedAttributes,
+      },
+    });
+    this.ctx.body = {
+      success: !!result,
+      message: '',
       data: {
         result,
       },
