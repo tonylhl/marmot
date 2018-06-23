@@ -22,7 +22,9 @@
 
 ## Docs
 
-[docs](./docs)
+- [Deploy](./docs)
+- [CLI Usagee](//github.com/macacajs/marmot-cli)
+- [View Layer](//github.com/macacajs/marmot-view)
 
 <!-- GITCONTRIBUTOR_START -->
 
