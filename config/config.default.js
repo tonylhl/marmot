@@ -24,11 +24,11 @@ module.exports = appInfo => {
 
   const marmotHost = process.env.MARMOT_HOST || '127.0.0.1';
   const marmotPort = process.env.MARMOT_PORT || '9900';
-  const marmotViewUrl = process.env.MARMOT_VIEW_ASSETS_URL || 'npmcdn.com/marmot-view@1';
+  const marmotViewHost = process.env.MARMOT_VIEW_HOST || 'npmcdn.com';
 
   config.marmotView = {
     serverUrl: `//${marmotHost}:${marmotPort}`,
-    assetsUrl: `//${marmotViewUrl}`,
+    assetsUrl: `//${marmotViewHost}/marmot-view@1`,
     jenkinsUrl: `//${marmotHost}:9910`,
     staticUrl: `//${marmotHost}:9920`,
     datahubUrl: `//${marmotHost}:9930`,
