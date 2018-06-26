@@ -41,7 +41,7 @@ Just for developer
 
 ```bash
 $ cd ${PROJECT_ROOT_PATH}
-$ docker build -t marmotjs/marmot-web .
+$ docker build --pull -t marmotjs/marmot-web .
 $ docker push marmotjs/marmot-web
 ```
 

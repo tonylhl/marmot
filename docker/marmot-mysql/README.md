@@ -23,7 +23,7 @@ Just for developer
 
 ```bash
 $ cd docker/marmot-mysql
-$ docker build -t marmotjs/marmot-mysql .
+$ docker build --pull -t marmotjs/marmot-mysql .
 $ docker push marmotjs/marmot-mysql
 ```
 

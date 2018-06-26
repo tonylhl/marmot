@@ -24,6 +24,6 @@ Just for deveoper
 
 ```bash
 $ cd docker/marmot-nginx
-$ docker build -t marmotjs/marmot-nginx .
+$ docker build --pull -t marmotjs/marmot-nginx .
 $ docker push marmotjs/marmot-nginx
 ```
