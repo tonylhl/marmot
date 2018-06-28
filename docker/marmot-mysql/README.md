@@ -2,9 +2,13 @@
 
 ---
 
-[![docker pull][docker-image]][docker-url]
+[![docker pull][docker-pull-image]][docker-url]
+[![docker pull][docker-size-image]][docker-url]
+[![docker pull][docker-layers-image]][docker-url]
 
-[docker-image]: https://img.shields.io/docker/pulls/marmotjs/marmot-mysql.svg?style=flat-square
+[docker-pull-image]: https://img.shields.io/docker/pulls/marmotjs/marmot-mysql.svg?style=flat-square&logo=dockbit
+[docker-size-image]: https://img.shields.io/microbadger/image-size/marmotjs/marmot-mysql.svg?style=flat-square&logo=dockbit
+[docker-layers-image]: https://img.shields.io/microbadger/layers/marmotjs/marmot-mysql.svg?style=flat-square&logo=dockbit
 [docker-url]: https://hub.docker.com/r/marmotjs/marmot-mysql/
 
 ## production
