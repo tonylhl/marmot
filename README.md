@@ -8,17 +8,15 @@
 [![Test coverage][coveralls-image]][coveralls-url]
 [![node version][node-image]][node-url]
 [![docker pull][docker-pull-image]][docker-url]
-[![docker pull][docker-size-image]][docker-url]
-[![docker pull][docker-layers-image]][docker-url]
+[![docker layers][docker-layers-image]][docker-url]
 
-[travis-image]: https://img.shields.io/travis/macacajs/marmot.svg?style=flat-square
+[travis-image]: https://img.shields.io/travis/macacajs/marmot.svg?style=flat-square&logo=travis
 [travis-url]: https://travis-ci.org/macacajs/marmot
 [coveralls-image]: https://img.shields.io/codecov/c/github/macacajs/marmot.svg?style=flat-square
 [coveralls-url]: https://codecov.io/gh/macacajs/marmot
 [node-image]: https://img.shields.io/badge/node.js-%3E=_8-green.svg?style=flat-square
 [node-url]: http://nodejs.org/download/
 [docker-pull-image]: https://img.shields.io/docker/pulls/marmotjs/marmot-web.svg?style=flat-square&logo=dockbit
-[docker-size-image]: https://img.shields.io/microbadger/image-size/marmotjs/marmot-web.svg?style=flat-square&logo=dockbit
 [docker-layers-image]: https://img.shields.io/microbadger/layers/marmotjs/marmot-web.svg?style=flat-square&logo=dockbit
 [docker-url]: https://hub.docker.com/r/marmotjs/marmot-web/
 
