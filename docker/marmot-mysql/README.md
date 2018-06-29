@@ -34,8 +34,12 @@ $ docker push marmotjs/marmot-mysql
 ## development
 
 ```bash
-$ docker run --name marmot-mysql \
+# start
+$ docker run --rm --name marmot-mysql \
   -p 3306:3306 \
   -v $HOME/marmot_home/mysql_data:/var/lib/mysql \
   marmotjs/marmot-mysql
+
+# stop
+$ docker stop marmot-mysql
 ```

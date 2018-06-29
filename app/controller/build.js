@@ -123,7 +123,7 @@ class BuildController extends Controller {
           exclude: this.ctx.app.config.modelQueryConfig.excludedAttributes,
         },
       });
-      result.push(res);
+      res && result.push(res);
     }
     this.ctx.body = {
       success: true,
@@ -146,8 +146,8 @@ class BuildController extends Controller {
       order: [
         [
           'created_at',
-          'DESC'
-        ]
+          'DESC',
+        ],
       ],
       attributes: {
         exclude: this.ctx.app.config.modelQueryConfig.excludedAttributes,

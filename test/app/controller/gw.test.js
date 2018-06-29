@@ -33,4 +33,13 @@ describe('test/app/controller/gw.test.js', () => {
     assert(data.buildNumber === '40');
     assert(data.jobName === 'web');
   });
+
+  it('POST /api/gw error', function* () {
+    const { header, body } = yield app.httpRequest()
+      .post('/api/gw')
+      .send(Object.assign({}, postData, { environment: {} }));
+    assert(header['content-type'] === 'application/json; charset=utf-8');
+    assert(body.success === false);
+    assert(body.message === 'environment.jenkins.JOB_NAME and environment.jenkins.BUILD_NUMBER are required');
+  });
 });

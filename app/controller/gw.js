@@ -7,8 +7,18 @@ const {
 class GwController extends Controller {
   async index() {
     const data = this.ctx.request.body;
-    const jobName = data.environment.jenkins.JOB_NAME;
-    const buildNumber = data.environment.jenkins.BUILD_NUMBER;
+    let jobName;
+    let buildNumber;
+    try {
+      jobName = data.environment && data.environment.jenkins.JOB_NAME;
+      buildNumber = data.environment && data.environment.jenkins.BUILD_NUMBER;
+    } catch (_) {
+      this.ctx.body = {
+        success: false,
+        message: 'environment.jenkins.JOB_NAME and environment.jenkins.BUILD_NUMBER are required',
+      };
+      return;
+    }
     await this.ctx.model.JobName.findOrCreate({
       where: {
         jobName,

@@ -5,6 +5,7 @@ const {
 } = require('egg');
 const DingTalk = require('marmot-dingtalk');
 
+/* istanbul ignore next */
 module.exports = class WebHookService extends Service {
   async push(data = {}) {
     // get all webhooks

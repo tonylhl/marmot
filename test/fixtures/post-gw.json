@@ -29,7 +29,7 @@
       "email": "test@gmail.com"
     },
     "gitUrl": "http://github.com/macacajs/marmot",
-    "gitBranch": "origin/master"
+    "gitBranch": "master"
   },
   "files": [
     "coverage/base.css",

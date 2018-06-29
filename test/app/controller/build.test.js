@@ -150,4 +150,81 @@ describe('test/app/controller/build.test.js', function() {
     assert(body.data.result.uniqId);
     assert(body.data.result.created_at);
   });
+
+  it('GET /api/latestBuild/ query all latest build', function* () {
+    yield insertData({
+      environment: {
+        jenkins: {
+          JOB_NAME: 'android_app',
+          BUILD_NUMBER: '1',
+        },
+        platform: 'android',
+        os: {
+          nodeVersion: 'v1.1.2',
+          platform: 'linux',
+        },
+      },
+    });
+
+    yield insertData({
+      environment: {
+        jenkins: {
+          JOB_NAME: 'ios_app',
+          BUILD_NUMBER: '1',
+        },
+        platform: 'ios',
+        os: {
+          nodeVersion: 'v1.1.2',
+          platform: 'linux',
+        },
+      },
+    });
+
+    const { body } = yield app.httpRequest()
+      .get('/api/latestBuild');
+    assert(body.success === true);
+    assert(body.allJobName[0] === 'android_app');
+    assert(body.allJobName[1] === 'ios_app');
+    assert(body.data.result[0].jobName === 'android_app');
+    assert(body.data.result[0].buildNumber === '1');
+    assert(body.data.result[1].jobName === 'ios_app');
+    assert(body.data.result[1].buildNumber === '1');
+  });
+
+  it('GET /api/latestBuild/:jobName/:gitBranch+ query latest build', function* () {
+    yield insertData({
+      environment: {
+        jenkins: {
+          JOB_NAME: 'android_app',
+          BUILD_NUMBER: '1',
+        },
+        platform: 'android',
+        os: {
+          nodeVersion: 'v1.1.2',
+          platform: 'linux',
+        },
+      },
+    });
+
+    yield insertData({
+      environment: {
+        jenkins: {
+          JOB_NAME: 'ios_app',
+          BUILD_NUMBER: '1',
+        },
+        platform: 'ios',
+        os: {
+          nodeVersion: 'v1.1.2',
+          platform: 'linux',
+        },
+      },
+    });
+
+    const { body } = yield app.httpRequest()
+      .get('/api/latestBuild/android_app/master');
+    assert(body.success === true);
+    assert(body.message === '');
+    assert(body.data.result[0].jobName === 'android_app');
+    assert(body.data.result[0].buildNumber === '1');
+  });
 });
