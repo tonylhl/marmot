@@ -2,6 +2,16 @@
 
 [中文版](README.zh-CN.md)
 
+<p align="center">
+  <a href="//macacajs.github.io">
+    <img
+      alt="Macaca"
+      src="https://macacajs.github.io/marmot-logo/svg/marmot.svg"
+      width="200"
+    />
+  </a>
+</p>
+
 ---
 
 [![build status][travis-image]][travis-url]
