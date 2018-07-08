@@ -23,3 +23,11 @@ services:
       - $HOME/marmot_home/static:/usr/share/nginx/html:ro
     ports:
       - "9920:80"
+  datahub:
+    image: macacajs/macaca-datahub
+    restart: always
+    volumes:
+      - $HOME/marmot_home/macaca-datahub/macaca-datahub.data:/root/.macaca-datahub/macaca-datahub.data
+    ports:
+      - "9930:9200"
+      - "9300:9300"
