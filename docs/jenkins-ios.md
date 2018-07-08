@@ -4,7 +4,9 @@
 
 ## Plugin Dependency
 
-
+```bash
+MARMOT_SERVER_URL=http://{MARMOT_HOST}:9900 ./ci.sh
+```
 
 ## Sample
 

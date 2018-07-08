@@ -42,49 +42,17 @@ $ java -Dfile.encoding=UTF-8 \
 
 Change `$HOME/marmot_home/jenkins_home/config.xml` useSecurity to false, and restart the Jenkins.
 
+```xml
+<useSecurity>false</useSecurity>
+```
+
+0. input the `initialAdminPassword` and next.
+0. select `Install suggested plugins` and wait for Jenkins plugins installation ready.
+
 ---
 
-## Build Scripts
+## Build Tasks Sample
 
-### For Android
-
-We provide the Android build docker like `macacajs/macaca-android-build-docker`, so you can set the feild content like this:
-
-```bash
-docker stop $JOB_NAME || true && docker rm $JOB_NAME || true
-
-docker run --rm \
-  --name $JOB_NAME \
-  -e JOB_NAME \
-  -e BUILD_NUMBER \
-  -v $HOME/marmot_home/static:/static \
-  -v $HOME/marmot_home/gradle_cache:/root/.gradle \
-  -d macacajs/macaca-android-build-docker
-```
-
-[Android Sample](//github.com/app-bootstrap/android-app-bootstrap)
-
-### For Front End
-
-We provide the webpack build docker like `macacajs/macaca-electron-docker`, so you can set the feild content like this:
-
-```
-docker stop $JOB_NAME || true && docker rm $JOB_NAME || true
-
-docker run --rm \
-  --name $JOB_NAME \
-  -e JOB_NAME \
-  -e BUILD_NUMBER \
-  -v $HOME/marmot_home/static:/static \
-  -v $WORKSPACE:/root/src macacajs/macaca-electron-docker
-```
-
-[H5 Sample](//github.com/app-bootstrap/awesome-practice-projects)
-
-### For iOS
-
-```bash
-MARMOT_SERVER_URL=http://{MARMOT_HOST}:9900 ./ci.sh
-```
-
-[iOS Sample](//github.com/app-bootstrap/ios-app-bootstrap)
+- [jenkins-android.md](./jenkins-android.md)
+- [jenkins-ios.md](./jenkins-ios.md)
+- [jenkins-web.md](./jenkins-web.md)
