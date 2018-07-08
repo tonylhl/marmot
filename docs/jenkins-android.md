@@ -115,3 +115,9 @@ Scan the QRCode, you can download and install it with your device.
 </div>
 
 You can also get other extra build infomation. If you want more, please tweak the [marmot-cli#configuration](https://github.com/macacajs/marmot-cli#configuration) file.
+
+### Step5 - Test Reporter
+
+Marmot support the Unit and E2E test reporter, coverage based on Macaca is supported.
+
+coming soon
