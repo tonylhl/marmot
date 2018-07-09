@@ -2,7 +2,47 @@
 
 ---
 
-## Build With Docker
+## Dependencies
+
+### Docker
+
+Just like marmot-web, we recommend to build web with Docker.
+
+## Sample Project
+
+- [awesome-practice-projects](//github.com/app-bootstrap/awesome-practice-projects)
+
+## Quick Start
+
+### Step1 - Create New
+
+Create a new item named `awesome-practice-projects`, and select the `Freestyle project` mode.
+
+<div align="center">
+  <img src="https://wx2.sinaimg.cn/large/6d308bd9gy1ft3nhmqj12j21kw11twpx.jpg" width="75%" />
+</div>
+
+### Step2 - SCM Config
+
+<div align="center">
+  <img src="https://wx4.sinaimg.cn/large/6d308bd9gy1ft3nhmd8rzj21kw11tthu.jpg" width="75%" />
+</div>
+
+Please input the `awesome-practice-projects` git url, and set the clone depth to `1`, branch to `master` is ok.
+
+```
+https://github.com/app-bootstrap/awesome-practice-projects.git
+```
+
+### Step3 - Build Scripts Config
+
+**Noted**
+
+- please confirm jenkins delete the workspace before build to avoid the old middle-file problem.
+
+<div align="center">
+  <img src="https://wx2.sinaimg.cn/large/6d308bd9gy1ft3nhmidb7j21kw10vtie.jpg" width="75%" />
+</div>
 
 We provide the webpack build docker like `macacajs/macaca-electron-docker`, so you can set the feild content like this:
 
@@ -13,11 +53,66 @@ docker run --rm \
   --name $JOB_NAME \
   -e JOB_NAME \
   -e BUILD_NUMBER \
+  -e MARMOT_SERVER_URL=http://129.168.1.102:9900 \
   -v $HOME/marmot_home/static:/static \
-  -v $WORKSPACE:/root/src macacajs/macaca-electron-docker
+  -v $WORKSPACE:/root/src \
+  macacajs/macaca-electron-docker \
+  bash -c "cd /root/src && npm run ci"
 ```
 
-## Sample
+**Noted**
 
-- [web-app-bootstrap](//github.com/app-bootstrap/web-app-bootstrap)
-- [H5 Sample](//github.com/app-bootstrap/awesome-practice-projects)
+- please confirm the `MARMOT_SERVER_URL` has the correct address just like the IPV4 or some domain name which can be visited from the docker container, otherwise you will meet the problem below.
+
+```
+error: TypeError: Cannot read property 'server' of undefined
+    at _.postToGW (/root/src/node_modules/marmot-cli/lib/helper.js:31:66)
+    at ReportCommand.pushToWebhook (/root/src/node_modules/marmot-cli/lib/report-command.js:130:18)
+    at ReportCommand._run (/root/src/node_modules/marmot-cli/lib/report-command.js:70:35)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+npm ERR! code ELIFECYCLE
+npm ERR! errno 1
+npm ERR! awesome-practice-projects@1.0.8 marmot: `marmot report -c ./marmot.config.js`
+npm ERR! Exit status 1
+```
+
+### Step4 - Build Now
+
+After the building ready, you can get the final result from marmot-web.
+
+<div align="center">
+  <img src="https://wx4.sinaimg.cn/large/6d308bd9gy1ft3nqcab4vj21kw0xxwn0.jpg" width="75%" />
+</div>
+
+We cat get the build results of the `awesome-practice-projects`.
+
+<div align="center">
+  <img src="https://wx3.sinaimg.cn/large/6d308bd9gy1ft3nqcmte5j21kw0xxdm6.jpg" width="75%" />
+</div>
+
+You can also get other extra build infomation. If you want more, please tweak the [marmot-cli#configuration](//github.com/macacajs/marmot-cli#configuration) file.
+
+### Step5 - Test Reporter
+
+Marmot support the Unit and E2E test reporter, coverage based on Macaca is supported.
+
+<div align="center">
+  <img src="https://wx4.sinaimg.cn/large/6d308bd9gy1ft3nqbd9e3j21kw0xx45p.jpg" width="75%" />
+</div>
+
+<div align="center">
+  <img src="https://wx3.sinaimg.cn/large/6d308bd9gy1ft3nqbgjesj21kw0xx7ee.jpg" width="75%" />
+</div>
+
+<div align="center">
+  <img src="https://wx2.sinaimg.cn/large/6d308bd9gy1ft3nqbnft5j21kw0xxaq1.jpg" width="75%" />
+</div>
+
+<div align="center">
+  <img src="https://wx1.sinaimg.cn/large/6d308bd9gy1ft3nqd3c7fj21kw0xxqcj.jpg" width="75%" />
+</div>
+
+<div align="center">
+  <img src="https://wx2.sinaimg.cn/large/6d308bd9gy1ft3nqcraoij21kw0xxjyt.jpg" width="75%" />
+</div>
