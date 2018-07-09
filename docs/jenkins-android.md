@@ -114,7 +114,7 @@ Scan the QRCode, you can download and install it with your device.
   <img src="https://wx3.sinaimg.cn/large/6d308bd9ly1ft2pvmlz1hj21kw148tl3.jpg" width="75%" />
 </div>
 
-You can also get other extra build infomation. If you want more, please tweak the [marmot-cli#configuration](https://github.com/macacajs/marmot-cli#configuration) file.
+You can also get other extra build infomation. If you want more, please tweak the [marmot-cli#configuration](//github.com/macacajs/marmot-cli#configuration) file.
 
 ### Step5 - Test Reporter
 
