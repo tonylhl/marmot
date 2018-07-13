@@ -2,8 +2,6 @@
 
 ---
 
-> Deployment and Installation
-
 ## Marmot home path
 
 ```bash

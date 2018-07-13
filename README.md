@@ -41,7 +41,7 @@
 <!-- GITCONTRIBUTOR_START -->
 
 ## About the name
- 
+
 Marmot [ˈmɑ:rmət] is friend of Macaca.
 
 ## Contributors
