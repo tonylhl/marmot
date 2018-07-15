@@ -10,13 +10,13 @@
 
 ## 示例工程
 
-- [awesome-practice-projects](//github.com/app-bootstrap/awesome-practice-projects)
+- [web-app-bootstrap](//github.com/app-bootstrap/web-app-bootstrap)
 
 ## 快速上手
 
 ### 第1步 - 创建任务
 
-Create a new item named `awesome-practice-projects`, and select the `Freestyle project` mode.
+Create a new item named `web-app-bootstrap`, and select the `Freestyle project` mode.
 
 <div align="center">
   <img src="https://wx2.sinaimg.cn/large/6d308bd9gy1ft3nhmqj12j21kw11twpx.jpg" width="75%" />
@@ -28,10 +28,10 @@ Create a new item named `awesome-practice-projects`, and select the `Freestyle p
   <img src="https://wx4.sinaimg.cn/large/6d308bd9gy1ft3nhmd8rzj21kw11tthu.jpg" width="75%" />
 </div>
 
-Please input the `awesome-practice-projects` git url, and set the clone depth to `1`, branch to `master` is ok.
+Please input the `web-app-bootstrap` git url, and set the clone depth to `1`, branch to `master` is ok.
 
 ```
-https://github.com/app-bootstrap/awesome-practice-projects.git
+https://github.com/app-bootstrap/web-app-bootstrap.git
 ```
 
 ### 第3步 - 构建脚本配置
@@ -73,7 +73,7 @@ error: TypeError: Cannot read property 'server' of undefined
     at process._tickCallback (internal/process/next_tick.js:188:7)
 npm ERR! code ELIFECYCLE
 npm ERR! errno 1
-npm ERR! awesome-practice-projects@1.0.8 marmot: `marmot report -c ./marmot.config.js`
+npm ERR! web-app-bootstrap@1.0.8 marmot: `marmot report -c ./marmot.config.js`
 npm ERR! Exit status 1
 ```
 
@@ -85,7 +85,7 @@ npm ERR! Exit status 1
   <img src="https://wx4.sinaimg.cn/large/6d308bd9gy1ft3nqcab4vj21kw0xxwn0.jpg" width="75%" />
 </div>
 
-We cat get the build results of the `awesome-practice-projects`.
+We cat get the build results of the `web-app-bootstrap`.
 
 <div align="center">
   <img src="https://wx3.sinaimg.cn/large/6d308bd9gy1ft3nqcmte5j21kw0xxdm6.jpg" width="75%" />
