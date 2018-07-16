@@ -99,4 +99,10 @@ Marmot 平台也支持扫码下载安装等实用功能。
 
 Marmot 无缝集成 Macaca 自动化测试工具，支持通过率报告，端到端链路刻画，覆盖率等质量覆盖方案。
 
-配置敬请期待！
+<div align="center">
+  <img src="https://wx2.sinaimg.cn/large/6d308bd9gy1ftc4y26xzaj21kw10g12f.jpg" width="75%" />
+</div>
+
+<div align="center">
+  <img src="https://wx2.sinaimg.cn/large/6d308bd9gy1ftc4y31cf5j21kw10g7kz.jpg" width="75%" />
+</div>

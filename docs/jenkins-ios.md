@@ -99,4 +99,10 @@ You can also get other extra build infomation. If you want more, please tweak th
 
 Marmot support the Unit and E2E test reporter, coverage based on Macaca is supported.
 
-coming soon
+<div align="center">
+  <img src="https://wx2.sinaimg.cn/large/6d308bd9gy1ftc4y26xzaj21kw10g12f.jpg" width="75%" />
+</div>
+
+<div align="center">
+  <img src="https://wx2.sinaimg.cn/large/6d308bd9gy1ftc4y31cf5j21kw10g7kz.jpg" width="75%" />
+</div>
