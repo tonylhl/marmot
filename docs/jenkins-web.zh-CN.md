@@ -19,13 +19,13 @@
 Create a new item named `web-app-bootstrap`, and select the `Freestyle project` mode.
 
 <div align="center">
-  <img src="https://wx2.sinaimg.cn/large/6d308bd9gy1ft3nhmqj12j21kw11twpx.jpg" width="75%" />
+  <img src="https://wx2.sinaimg.cn/large/6d308bd9gy1ftc27q3vd3j21kw128tpk.jpg" width="75%" />
 </div>
 
 ### 第2步 - SCM 配置
 
 <div align="center">
-  <img src="https://wx4.sinaimg.cn/large/6d308bd9gy1ft3nhmd8rzj21kw11tthu.jpg" width="75%" />
+  <img src="https://wx1.sinaimg.cn/large/6d308bd9gy1ftc27pr7xuj21kw128gzp.jpg" width="75%" />
 </div>
 
 Please input the `web-app-bootstrap` git url, and set the clone depth to `1`, branch to `master` is ok.
@@ -41,7 +41,7 @@ https://github.com/app-bootstrap/web-app-bootstrap.git
 - 请确保勾选构建前删除运行空间，以排除老的中间文件造成的问题。
 
 <div align="center">
-  <img src="https://wx2.sinaimg.cn/large/6d308bd9gy1ft3nhmidb7j21kw10vtie.jpg" width="75%" />
+  <img src="https://wx4.sinaimg.cn/large/6d308bd9gy1ftc27nq3rsj21kw12j7if.jpg" width="75%" />
 </div>
 
 我们提供 Web 构建 Docker 镜像 `macacajs/macaca-electron-docker`，你可以设置如下：
