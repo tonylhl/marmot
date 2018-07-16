@@ -20,6 +20,9 @@ module.exports = app => {
   router.get('/api/config', controller.config.show);
   router.post('/api/config', controller.config.update);
 
+  // deploy
+  router.post('/api/deploy/release', controller.deploy.release);
+
   // auth middleware
   router.get('/api/admin/status', controller.admin.status);
   router.get('/api/admin/build/delete/:uniqId', controller.admin.buildDelete);

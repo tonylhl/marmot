@@ -7,6 +7,7 @@ yarn.lock
 coverage/
 .idea/
 .vscode/
+test/fixtures/download-deploy-source/marmot-build/deploy-sample
 run/
 .DS_Store
 *.sw*

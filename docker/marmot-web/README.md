@@ -54,3 +54,9 @@ $ docker push marmotjs/marmot-web
 ```bash
 npm run dev
 ```
+
+## test
+
+```bash
+env 'CI_ACCESSKEYID=[key]' 'CI_ACCESSKEYSECRET=[key]' npm run test-local
+```
