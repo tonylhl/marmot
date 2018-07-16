@@ -52,8 +52,7 @@ describe('test/app/controller/deploy.test.js', () => {
       });
     assert(header['content-type'] === 'application/json; charset=utf-8');
     assert(!body.succcess);
-    assert(body.message[0].field === 'bucket');
-    assert(body.message[0].message === 'should not be empty');
+    assert(body.message === 'Validation Failed');
   });
 
 });
