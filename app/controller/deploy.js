@@ -8,23 +8,15 @@ class DeployController extends Controller {
   async release() {
     const ctx = this.ctx;
 
-    try {
-      ctx.validate({
-        acl: { type: 'string', required: true },
-        prefix: { type: 'string', allowEmpty: true },
-        source: { type: 'string', requeied: true, format: /\.(tgz)$/ },
-        region: { type: 'string', required: true },
-        accessKeyId: { type: 'string', required: true },
-        accessKeySecret: { type: 'string', required: true },
-        bucket: { type: 'string', required: true },
-      });
-    } catch (e) {
-      ctx.body = {
-        success: false,
-        message: e.errors,
-      };
-      return;
-    }
+    ctx.validate({
+      acl: { type: 'string', required: true },
+      prefix: { type: 'string', allowEmpty: true },
+      source: { type: 'string', requeied: true, format: /\.(tgz)$/ },
+      region: { type: 'string', required: true },
+      accessKeyId: { type: 'string', required: true },
+      accessKeySecret: { type: 'string', required: true },
+      bucket: { type: 'string', required: true },
+    });
 
     const data = ctx.request.body;
     const acl = data.acl || 'default';

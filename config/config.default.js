@@ -8,7 +8,7 @@ module.exports = appInfo => {
 
   // add your config here
   config.middleware = [
-    'cors',
+    'cors', 'errorHandler',
   ];
 
   config.modelQueryConfig = {
@@ -20,6 +20,10 @@ module.exports = appInfo => {
       'id',
       'updated_at',
     ],
+  };
+
+  config.errorHandler = {
+    match: '/api',
   };
 
   const marmotHost = process.env.MARMOT_HOST || '127.0.0.1';
