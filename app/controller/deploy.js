@@ -16,11 +16,11 @@ class DeployController extends Controller {
       accessKeyId: { type: 'string' },
       accessKeySecret: { type: 'string' },
       bucket: { type: 'string' },
-      timeout: { type: 'number', required: false },
+      timeout: { type: 'number', required: false, allowEmpty: true },
       acl: { type: 'string' },
       prefix: { type: 'string', allowEmpty: true },
-      source: { type: 'string', required: false, format: /\.(tgz)$/ },
-      sourceUrl: { type: 'string', required: false },
+      source: { type: 'string', required: false, allowEmpty: true, format: /\.(tgz)$/ },
+      sourceUrl: { type: 'string', required: false, allowEmpty: true },
     });
 
     const data = ctx.request.body;
