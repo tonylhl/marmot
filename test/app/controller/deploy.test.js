@@ -4,31 +4,28 @@ const {
   app,
   assert,
 } = require('egg-mock/bootstrap');
-const path = require('path');
 const util = require('util');
 const process = require('process');
+const path = require('path');
 
 const accessKeyId = process.env.CI_ACCESSKEYID;
 const accessKeySecret = process.env.CI_ACCESSKEYSECRET;
 
 describe('test/app/controller/deploy.test.js', () => {
+  const source = path.join(__dirname, '..', '..', 'fixtures', 'download-deploy-source', 'deploy-sample.tgz');
 
   it('POST /api/deploy/release success', function* () {
-    const downloadDir = path.join(__dirname, '..', '..', 'fixtures', 'download-deploy-source');
-    app.mockService('deploy', 'fetchSource', {
-      downloadDir,
-      downloadFile: path.join(downloadDir, 'deploy-sample.tgz'),
-    });
     const { header, body } = yield app.httpRequest()
       .post('/api/deploy/release')
       .send({
-        acl: 'public-read',
+        source,
         prefix: 'promition',
-        source: 'http://localhost/source.tgz',
         region: 'oss-cn-hangzhou',
         accessKeyId,
         accessKeySecret,
         bucket: 'test-upload-hangzhou',
+        acl: 'public-read',
+        timeout: 120000,
       });
     assert(header['content-type'] === 'application/json; charset=utf-8');
     assert(body.success);
@@ -42,13 +39,14 @@ describe('test/app/controller/deploy.test.js', () => {
     const { header, body } = yield app.httpRequest()
       .post('/api/deploy/release')
       .send({
-        acl: 'public-read',
+        source,
         prefix: 'promition',
-        source: 'http://localhost/source.tgz',
         region: 'oss-cn-hangzhou',
         accessKeyId,
         accessKeySecret,
-        bucket: '',
+        acl: 'public-read',
+        bucket: 'test-upload-hangzhou',
+        timeout: 'marmot',
       });
     assert(header['content-type'] === 'application/json; charset=utf-8');
     assert(!body.succcess);
