@@ -4,7 +4,6 @@ const {
   Controller,
 } = require('egg');
 const marmotRelease = require('marmot-release');
-const AgentKeepalive = require('agentkeepalive');
 const OSS = require('ali-oss');
 
 class DeployController extends Controller {
@@ -36,14 +35,13 @@ class DeployController extends Controller {
 
     ctx.logger.info('deploy start');
 
-    const urllib = require('urllib').create({
-      agent: new AgentKeepalive({
-        maxSockets: 100,
-        maxFreeSockets: 10,
-        timeout: 30000,
-        freeSocketKeepAliveTimeout: 15000, // free socket keepalive for 30 seconds
-      }),
-    });
+    this.app.config.httpclient.agent = {
+      keepAlive: true,
+      freeSocketKeepAliveTimeout: 4000,
+      timeout: 30000,
+      maxSockets: 5,
+      maxFreeSockets: 256,
+    };
 
     const ossClient = new OSS({
       region,
@@ -51,7 +49,7 @@ class DeployController extends Controller {
       accessKeySecret,
       bucket,
       timeout,
-      urllib,
+      urllib: this.app.httpclient,
     });
 
     const [ html, other ] = await marmotRelease.uploadPackage({
