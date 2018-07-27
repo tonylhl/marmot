@@ -25,7 +25,7 @@ describe('test/app/controller/deploy.test.js', () => {
         accessKeySecret,
         bucket: 'test-upload-hangzhou',
         acl: 'public-read',
-        timeout: 120000,
+        timeout: '120000',
       });
     assert(header['content-type'] === 'application/json; charset=utf-8');
     assert(body.success);
