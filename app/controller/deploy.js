@@ -15,7 +15,7 @@ class DeployController extends Controller {
       accessKeyId: { type: 'string' },
       accessKeySecret: { type: 'string' },
       bucket: { type: 'string' },
-      timeout: { type: 'number', required: false, allowEmpty: true },
+      timeout: { type: 'string', required: false, allowEmpty: true },
       acl: { type: 'string' },
       prefix: { type: 'string', allowEmpty: true },
       source: { type: 'string', required: false, allowEmpty: true, format: /\.(tgz)$/ },
@@ -31,7 +31,7 @@ class DeployController extends Controller {
     const accessKeyId = data.accessKeyId;
     const accessKeySecret = data.accessKeySecret;
     const bucket = data.bucket || '';
-    const timeout = data.timeout || 120 * 1000;
+    const timeout = Number(data.timeout) || 120 * 1000;
 
     ctx.logger.info('deploy start');
 
