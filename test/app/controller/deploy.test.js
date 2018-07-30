@@ -4,35 +4,35 @@ const {
   app,
   assert,
 } = require('egg-mock/bootstrap');
-const util = require('util');
-const process = require('process');
 const path = require('path');
-
-const accessKeyId = process.env.CI_ACCESSKEYID;
-const accessKeySecret = process.env.CI_ACCESSKEYSECRET;
+const sinon = require('sinon');
+const marmotRelease = require('marmot-release');
 
 describe('test/app/controller/deploy.test.js', () => {
   const source = path.join(__dirname, '..', '..', 'fixtures', 'download-deploy-source', 'deploy-sample.tgz');
 
   it('POST /api/deploy/release success', function* () {
+    const stub = sinon.stub(marmotRelease, 'uploadPackage').callsFake(function() {
+      stub.restore();
+      return Promise.resolve([[], []]);
+    });
     const { header, body } = yield app.httpRequest()
       .post('/api/deploy/release')
       .send({
         source,
-        prefix: 'promition',
-        region: 'oss-cn-hangzhou',
-        accessKeyId,
-        accessKeySecret,
-        bucket: 'test-upload-hangzhou',
-        acl: 'public-read',
+        prefix: 'prefix',
+        region: 'region',
+        accessKeyId: 'accessKeyId',
+        accessKeySecret: 'accessKeySecret',
+        bucket: 'bucket',
+        acl: 'default',
         timeout: 120000,
       });
     assert(header['content-type'] === 'application/json; charset=utf-8');
     assert(body.success);
     assert(body.message === '');
-    assert(util.isArray(body.data.html) === true);
-    assert(util.isArray(body.data.other) === true);
-    assert(body.data.html[0].success === true);
+    assert.deepStrictEqual(body.data.html, []);
+    assert.deepStrictEqual(body.data.other, []);
   });
 
   it('POST /api/deploy/release validate error', function* () {
@@ -42,8 +42,8 @@ describe('test/app/controller/deploy.test.js', () => {
         source,
         prefix: 'promition',
         region: 'oss-cn-hangzhou',
-        accessKeyId,
-        accessKeySecret,
+        accessKeyId: 'accessKeyId',
+        accessKeySecret: 'accessKeySecret',
         acl: 'public-read',
         bucket: 'test-upload-hangzhou',
         timeout: 'marmot',
