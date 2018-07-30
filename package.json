@@ -4,9 +4,7 @@
   "description": "Release management suite with continuous delivery support for deployments",
   "private": true,
   "dependencies": {
-    "agentkeepalive": "^3.4.1",
     "ali-oss": "^6.0.0",
-    "compressing": "^1.2.4",
     "egg": "^2.2.1",
     "egg-scripts": "^2.5.0",
     "egg-sequelize": "^3.1.4",
@@ -15,8 +13,7 @@
     "marmot-release": "^1.1.0",
     "marmot-view": "^1.0.0",
     "mysql2": "^1.5.3",
-    "p-map": "^1.2.0",
-    "urllib": "^2.29.0"
+    "p-map": "^1.2.0"
   },
   "devDependencies": {
     "autod": "^3.0.1",

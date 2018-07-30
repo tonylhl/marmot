@@ -26,7 +26,7 @@ describe('test/app/controller/deploy.test.js', () => {
         accessKeySecret: 'accessKeySecret',
         bucket: 'bucket',
         acl: 'default',
-        timeout: 120000,
+        timeout: '30000',
       });
     assert(header['content-type'] === 'application/json; charset=utf-8');
     assert(body.success);
@@ -40,13 +40,13 @@ describe('test/app/controller/deploy.test.js', () => {
       .post('/api/deploy/release')
       .send({
         source,
-        prefix: 'promition',
-        region: 'oss-cn-hangzhou',
-        accessKeyId: 'accessKeyId',
-        accessKeySecret: 'accessKeySecret',
-        acl: 'public-read',
-        bucket: 'test-upload-hangzhou',
-        timeout: 'marmot',
+        prefix: 'prefix',
+        region: 'region',
+        accessKeyId: null,
+        accessKeySecret: null,
+        bucket: 'bucket',
+        acl: 'default',
+        timeout: '30000',
       });
     assert(header['content-type'] === 'application/json; charset=utf-8');
     assert(!body.succcess);
