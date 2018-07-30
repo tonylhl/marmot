@@ -35,14 +35,6 @@ class DeployController extends Controller {
 
     ctx.logger.info('deploy start');
 
-    this.app.config.httpclient.agent = {
-      keepAlive: true,
-      freeSocketKeepAliveTimeout: 4000,
-      timeout: 30000,
-      maxSockets: 5,
-      maxFreeSockets: 256,
-    };
-
     const ossClient = new OSS({
       region,
       accessKeyId,
