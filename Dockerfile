@@ -10,8 +10,7 @@ WORKDIR /root/marmot-web
 
 ENV MYSQL_HOST=mysql-host
 
-RUN npm install --production --verbose --registry=https://registry.npm.taobao.org \
-  && ln -s /root/logs .
+RUN npm install --production --verbose && ln -s /root/logs .
 
 HEALTHCHECK --interval=10s --retries=6 \
   CMD wget -O /dev/null localhost:9900 || echo 1
