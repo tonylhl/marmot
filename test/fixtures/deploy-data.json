@@ -1,0 +1,35 @@
+{
+  "success": true,
+  "message": "",
+  "data": {
+    "html": [
+      {
+        "success": true,
+        "ossPath": "/test/tahm/index.html",
+        "url": "https://test-upload-tahm.oss-cn-beijing.aliyuncs.com/test/tahm/index.html"
+      }
+    ],
+    "other": [
+      {
+        "success": true,
+        "ossPath": "/test/tahm/index.js",
+        "url": "https://test-upload-tahm.oss-cn-beijing.aliyuncs.com/test/tahm/index.js"
+      },
+      {
+        "success": true,
+        "ossPath": "/test/tahm/index.js",
+        "url": "https://test-upload-tahm.oss-cn-beijing.aliyuncs.com/test/tahm/index.js"
+      },
+      {
+        "success": true,
+        "ossPath": "/test/tahm/index.js",
+        "url": "https://test-upload-tahm.oss-cn-beijing.aliyuncs.com/test/tahm/index.js"
+      },
+      {
+        "success": true,
+        "ossPath": "/test/tahm/index.js",
+        "url": "https://test-upload-tahm.oss-cn-beijing.aliyuncs.com/test/tahm/index.js"
+      }
+    ]
+  }
+}

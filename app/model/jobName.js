@@ -25,5 +25,9 @@ module.exports = app => {
     },
   });
 
+  JobName.associate = () => {
+    app.model.JobName.hasMany(app.model.Build, { foreignKey: 'jobName', sourceKey: 'jobName' });
+  };
+
   return JobName;
 };

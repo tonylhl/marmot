@@ -1,0 +1,64 @@
+{
+  "files": [
+    "https://gaius-favico.oss-cn-beijing.aliyuncs.com/dist.tgz"
+  ],
+  "packages": [
+    {
+      "path": "https://gaius-favico.oss-cn-beijing.aliyuncs.com/dist.tgz",
+      "type": "dist.tgz",
+      "version": "1.0.0"
+    }
+  ],
+  "testInfo": {
+    "tests": 2,
+    "passes": 2,
+    "linePercent": 92.86,
+    "passPercent": 100,
+    "testHtmlReporterPath": "https://test-upload-tahm.oss-cn-beijing.aliyuncs.com/test/example/index.html",
+    "coverageHtmlReporterPath": "https://test-upload-tahm.oss-cn-beijing.aliyuncs.com/test/example/index.html"
+  },
+  "extraInfo": {
+    "vue": "2.5.17",
+    "webpack": "4.16.5",
+    "macaca-wd": "2.0.0",
+    "testPassed": true
+  },
+  "environment": {
+    "os": {
+      "platform": "linux",
+      "nodeVersion": "v8.11.2"
+    },
+    "jenkins": {
+      "JOB_NAME": "promotion",
+      "BUILD_NUMBER": "1086099"
+    },
+    "platform": "web",
+    "gitlab_ci": {
+      "JOB_NAME": "promotion",
+      "BUILD_NUMBER": "1086099"
+    }
+  },
+  "gitCommitInfo": {
+    "body": "",
+    "hash": "5fccfade0d716b8b713cf72d7bc794ccac6e806b",
+    "author": {
+      "date": "13888888888",
+      "name": "测试",
+      "email": "test@test.com",
+      "relativeDate": "2 minutes ago"
+    },
+    "gitTag": "",
+    "gitUrl": "https://github.com/gaius-qi/tahm",
+    "subject": "feat: baseline",
+    "committer": {
+      "date": "13888888888",
+      "name": "测试",
+      "email": "test@test.com",
+      "relativeDate": "2 minutes ago"
+    },
+    "gitBranch": "master",
+    "gitRemote": "git@github.com:gaius-qi/tahm.git",
+    "shortHash": "5fccfad",
+    "sanitizedSubject": "feat-baseline"
+  }
+}

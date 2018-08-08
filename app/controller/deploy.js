@@ -7,7 +7,25 @@ const marmotRelease = require('marmot-release');
 const OSS = require('ali-oss');
 
 class DeployController extends Controller {
-  async release() {
+  async show() {
+    const ctx = this.ctx;
+    ctx.validate({ buildNumber: 'string' }, ctx.params);
+
+    const buildNumber = ctx.params.buildNumber;
+    const build = await ctx.model.Build.findOne({ where: { buildNumber } });
+    const deploy = await ctx.model.Deploy.findOne({ where: { buildId: build.get('id') } });
+
+    ctx.body = {
+      success: true,
+      message: '',
+      data: {
+        html: deploy.getHtmlList(),
+        other: deploy.getOtherList(),
+      },
+    };
+  }
+
+  async create() {
     const ctx = this.ctx;
 
     ctx.validate({
@@ -15,23 +33,22 @@ class DeployController extends Controller {
       accessKeyId: { type: 'string' },
       accessKeySecret: { type: 'string' },
       bucket: { type: 'string' },
-      timeout: { type: 'string', required: false, allowEmpty: true },
+      buildNumber: { type: 'string' },
       acl: { type: 'string' },
+      timeout: { type: 'string', required: false, allowEmpty: true },
       prefix: { type: 'string', allowEmpty: true },
-      source: { type: 'string', required: false, allowEmpty: true, format: /\.(tgz)$/ },
-      sourceUrl: { type: 'string', required: false, allowEmpty: true },
     });
 
     const data = ctx.request.body;
     const acl = data.acl || 'default';
     const prefix = data.prefix || '';
-    const source = data.source || '';
-    const sourceUrl = data.sourceUrl || '';
     const region = data.region || '';
     const accessKeyId = data.accessKeyId;
     const accessKeySecret = data.accessKeySecret;
     const bucket = data.bucket || '';
     const timeout = Number(data.timeout) || 120 * 1000;
+    const build = await ctx.model.Build.findOne({ where: { buildNumber: data.buildNumber } });
+    const source = await build.getReleasePath();
 
     ctx.logger.info('deploy start');
 
@@ -46,13 +63,32 @@ class DeployController extends Controller {
 
     const [ html, other ] = await marmotRelease.uploadPackage({
       source,
-      sourceUrl,
       prefix,
       acl,
       ossClient,
     });
 
     ctx.logger.info('deploy end');
+
+    let transaction;
+
+    try {
+      transaction = await ctx.model.transaction();
+      const deploy = await ctx.model.Deploy.create({
+        source,
+        region,
+        bucket,
+        prefix,
+        acl,
+        active: true,
+        data: { html, other },
+      }, { transaction });
+      await build.addDeploy(deploy, { transaction });
+      await build.update({ currentDeploy: deploy.id }, { transaction });
+      await transaction.commit();
+    } catch (err) {
+      await transaction.rollback();
+    }
 
     ctx.body = {
       success: true,

@@ -24,6 +24,9 @@ module.exports = app => {
     gitBranch: {
       type: STRING,
     },
+    currentDeploy: {
+      type: INTEGER,
+    },
     data: JSON,
     uniqId: {
       type: UUID,
@@ -45,6 +48,15 @@ module.exports = app => {
       },
     ],
   });
+
+  Build.associate = () => {
+    app.model.Build.belongsTo(app.model.JobName, { as: 'job', foreignKey: 'jobName', sourceKey: 'jobName' });
+    app.model.Build.hasMany(app.model.Deploy, { foreignKey: 'buildId', sourceKey: 'id' });
+  };
+
+  Build.prototype.getReleasePath = function() {
+    return this.get('data').packages[0].path;
+  };
 
   return Build;
 };

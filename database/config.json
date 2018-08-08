@@ -1,0 +1,16 @@
+{
+  "development": {
+    "username": "root",
+    "password": "marmot",
+    "database": "marmot_development",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "marmot",
+    "database": "marmot_unittest",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}

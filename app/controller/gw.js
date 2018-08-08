@@ -3,6 +3,7 @@
 const {
   Controller,
 } = require('egg');
+const debug = require('debug')('marmot:controller:gw');
 
 class GwController extends Controller {
   async index() {
@@ -19,6 +20,7 @@ class GwController extends Controller {
       };
       return;
     }
+    debug('jobName %s, buildNumber %s', jobName, buildNumber);
     await this.ctx.model.JobName.findOrCreate({
       where: {
         jobName,

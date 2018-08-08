@@ -18,12 +18,16 @@
   "devDependencies": {
     "autod": "^3.0.1",
     "autod-egg": "^1.0.0",
+    "cross-env": "^5.2.0",
+    "debug": "^3.1.0",
     "egg-bin": "^4.3.5",
     "egg-mock": "^3.14.0",
     "eslint": "^4.11.0",
     "eslint-config-egg": "^6.0.0",
     "git-contributor": "^1.0.8",
+    "sequelize-cli": "^4.0.0",
     "sinon": "^6.1.4",
+    "uuid": "^3.3.2",
     "webstorm-disable-index": "^1.2.0"
   },
   "engines": {
@@ -32,7 +36,7 @@
   "scripts": {
     "start": "eggctl start --port=9900 --title=egg-server-marmot-web",
     "stop": "eggctl stop --title=egg-server-marmot-web",
-    "dev": "egg-bin dev -p 9900",
+    "dev": "cross-env DEBUG=marmot* egg-bin dev -p 9900",
     "debug": "egg-bin debug",
     "test": "npm run lint -- --fix && npm run test-local",
     "test-local": "egg-bin test",
@@ -40,7 +44,15 @@
     "lint": "eslint . --fix",
     "ci": "npm run lint && npm run cov",
     "autod": "autod",
-    "contributor": "git-contributor"
+    "migration:create:name": "sequelize migration:create --name",
+    "db:migrate:fix": "sequelize db:migrate --migrations-path database/migrations/fix",
+    "db:migrate:undo:fix": "sequelize db:migrate:undo:all --migrations-path database/migrations/fix",
+    "db:migrate:init": "sequelize db:migrate --migrations-path database/migrations/init",
+    "db:migrate:undo:init": "sequelize db:migrate:undo:all --migrations-path database/migrations/init",
+    "seed:create:name": "sequelize seed:create --name",
+    "db:seed": "sequelize db:seed",
+    "db:seed:all": "sequelize db:seed:all",
+    "db:seed:undo:all": "sequelize db:seed:undo:all"
   },
   "ci": {
     "version": "8"
@@ -49,6 +61,5 @@
     "type": "git",
     "url": "https://github.com/macacajs/marmot.git"
   },
-  "private": true,
   "license": "MIT"
 }

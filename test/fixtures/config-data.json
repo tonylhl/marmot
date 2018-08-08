@@ -1,0 +1,7 @@
+{
+  "type": "webhooks",
+  "webhooks": [
+    "https://github.com",
+    "https://github.com"
+  ]
+}
