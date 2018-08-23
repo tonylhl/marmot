@@ -7,69 +7,64 @@ const {
 
 const postData = require('../../fixtures/post-gw.json');
 
-function* insertData(customData = {}) {
-  return yield app.httpRequest()
+async function insertData(customData = {}) {
+  return await app.httpRequest()
     .post('/api/gw')
     .send(Object.assign({}, postData, customData));
 }
 
 describe('test/app/controller/admin.test.js', function() {
 
-  beforeEach(function* () {
-    yield app.model.sync({ force: true });
-  });
-
-  it('GET /api/admin/status return system info', function* () {
-    const { body } = yield app.httpRequest()
+  it('GET /api/admin/status return system info', async () => {
+    const { body } = await app.httpRequest()
       .get('/api/admin/status');
     assert(body.app);
   });
 
-  it('GET /api/admin/build/delete/:uniqId delete record', function* () {
-    const res = yield insertData();
+  it('GET /api/admin/build/delete/:uniqId delete record', async () => {
+    const res = await insertData();
     const {
       uniqId,
       buildNumber,
       jobName,
     } = res.body.data;
 
-    const { body: queryResult } = yield app.httpRequest()
+    const { body: queryResult } = await app.httpRequest()
       .get(`/api/build/${jobName}/${buildNumber}`);
     assert(queryResult.success === true);
-    assert(queryResult.data.result.jobName === 'web');
-    assert(queryResult.data.result.buildNumber === '40');
+    assert(queryResult.data.result.jobName === 'foo');
+    assert(queryResult.data.result.buildNumber === '1074395');
 
-    const { body: deleteCount } = yield app.httpRequest()
+    const { body: deleteCount } = await app.httpRequest()
       .get(`/api/admin/build/delete/${uniqId}`);
     assert(deleteCount === 1);
 
-    const { body: queryAgainResult } = yield app.httpRequest()
+    const { body: queryAgainResult } = await app.httpRequest()
       .get(`/api/build/${jobName}/${buildNumber}`);
     assert(queryAgainResult.success === false);
     assert(queryAgainResult.data.result === null);
   });
 
-  it('GET /api/admin/jobName/show query all jobNames', function* () {
-    yield insertData();
+  it('GET /api/admin/jobName/show query all jobNames', async () => {
+    await insertData();
 
-    const { body } = yield app.httpRequest()
+    const { body } = await app.httpRequest()
       .get('/api/admin/jobName/show');
     assert(body.length === 1);
-    assert(body[0].id);
-    assert(body[0].jobName === 'web');
+    assert(body[0].jobName === 'foo');
     assert(body[0].uniqId);
     assert(body[0].createdAt);
     assert(body[0].updatedAt);
   });
 
-  it('GET /api/admin/jobName/delete/:uniqId delete one jobName', function* () {
-    yield insertData();
+  it('GET /api/admin/jobName/delete/:uniqId delete one jobName', async () => {
+    await insertData();
 
-    const { body } = yield app.httpRequest()
+    const { body } = await app.httpRequest()
       .get('/api/admin/jobName/show');
     assert(body.length === 1);
 
-    const { body: deleteResult } = yield app.httpRequest()
+    const { body: deleteResult } = await app.httpRequest()
       .get(`/api/admin/jobName/delete/${body[0].uniqId}`);
     assert(deleteResult === 1);
   });

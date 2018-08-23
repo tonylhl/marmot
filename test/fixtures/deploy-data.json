@@ -1,35 +1,21 @@
 {
-  "success": true,
-  "message": "",
-  "data": {
-    "html": [
-      {
-        "success": true,
-        "ossPath": "/test/tahm/index.html",
-        "url": "https://test-upload-tahm.oss-cn-beijing.aliyuncs.com/test/tahm/index.html"
-      }
-    ],
-    "other": [
-      {
-        "success": true,
-        "ossPath": "/test/tahm/index.js",
-        "url": "https://test-upload-tahm.oss-cn-beijing.aliyuncs.com/test/tahm/index.js"
-      },
-      {
-        "success": true,
-        "ossPath": "/test/tahm/index.js",
-        "url": "https://test-upload-tahm.oss-cn-beijing.aliyuncs.com/test/tahm/index.js"
-      },
-      {
-        "success": true,
-        "ossPath": "/test/tahm/index.js",
-        "url": "https://test-upload-tahm.oss-cn-beijing.aliyuncs.com/test/tahm/index.js"
-      },
-      {
-        "success": true,
-        "ossPath": "/test/tahm/index.js",
-        "url": "https://test-upload-tahm.oss-cn-beijing.aliyuncs.com/test/tahm/index.js"
-      }
-    ]
-  }
+  "html": [
+    {
+      "success": true,
+      "ossPath": "/test/app/index.html",
+      "url": "https://local-oss/index.html"
+    }
+  ],
+  "other": [
+    {
+      "success": true,
+      "ossPath": "/test/app/index.js",
+      "url": "https://local-oss/index.js"
+    },
+    {
+      "success": true,
+      "ossPath": "/test/app/index.css",
+      "url": "https://local-oss/index.css"
+    }
+  ]
 }

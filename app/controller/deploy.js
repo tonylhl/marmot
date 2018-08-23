@@ -7,24 +7,60 @@ const marmotRelease = require('marmot-release');
 const OSS = require('ali-oss');
 
 class DeployController extends Controller {
-  async show() {
+  async showAll() {
     const ctx = this.ctx;
-    ctx.validate({ buildId: 'number' }, ctx.params);
+    ctx.validate({ buildUniqId: 'string' }, ctx.query);
 
-    const buildId = ctx.params.buildId;
-    const deploy = await ctx.model.Deploy.findOne({
+    const uniqId = ctx.query.buildUniqId;
+    const build = await ctx.model.Build.findOne({
+      include: [{
+        model: ctx.model.Deploy,
+        as: 'deploy',
+        order: [
+          [
+            'createdAt',
+            'DESC',
+          ],
+        ],
+        limit: 1,
+      }],
       where: {
-        buildId,
+        uniqId,
       },
+      attributes: [
+        'gitBranch',
+        'jobName',
+        'buildNumber',
+      ],
     });
 
     ctx.body = {
       success: true,
       message: '',
-      data: {
-        html: deploy.getHtmlList(),
-        other: deploy.getOtherList(),
+      build,
+    };
+  }
+
+  async show() {
+    const ctx = this.ctx;
+    ctx.validate({ buildId: 'string' }, ctx.params);
+
+    const buildId = ctx.params.buildId;
+    const deploy = await ctx.model.Deploy.findOne({
+      where: {
+        uniqId: buildId,
       },
+      attributes: [
+        'data',
+        'uniqId',
+        'createdAt',
+      ],
+    });
+
+    ctx.body = {
+      success: true,
+      message: '',
+      deploy,
     };
   }
 
@@ -36,7 +72,7 @@ class DeployController extends Controller {
       accessKeyId: { type: 'string' },
       accessKeySecret: { type: 'string' },
       bucket: { type: 'string' },
-      buildId: { type: 'number' },
+      buildId: { type: 'string' },
       acl: { type: 'string' },
       timeout: { type: 'string', required: false, allowEmpty: true },
       prefix: { type: 'string', allowEmpty: true },
@@ -50,10 +86,15 @@ class DeployController extends Controller {
     const accessKeySecret = data.accessKeySecret;
     const bucket = data.bucket || '';
     const timeout = Number(data.timeout) || 120 * 1000;
-    const build = await ctx.model.Build.findById(data.buildId);
+    const build = await ctx.model.Build.findOne({
+      where: {
+        uniqId: data.buildId,
+      },
+    });
+
     const source = await build.getReleasePath();
 
-    ctx.logger.info('deploy start');
+    ctx.logger.info(`[start deploy] ${source}`);
 
     const ossClient = new OSS({
       region,
@@ -71,7 +112,7 @@ class DeployController extends Controller {
       ossClient,
     });
 
-    ctx.logger.info('deploy end');
+    ctx.logger.info(`[end deploy] ${source}`);
 
     let transaction;
 
@@ -89,6 +130,7 @@ class DeployController extends Controller {
       await build.addDeploy(deploy, { transaction });
       await transaction.commit();
     } catch (err) {
+      ctx.logger.error(err);
       await transaction.rollback();
     }
 

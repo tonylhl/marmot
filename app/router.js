@@ -23,6 +23,7 @@ module.exports = app => {
   router.post('/api/config', controller.config.update);
 
   // deploy
+  router.get('/api/deploy', controller.deploy.showAll);
   router.post('/api/deploy', controller.deploy.create);
   router.get('/api/deploy/:buildId', controller.deploy.show);
 

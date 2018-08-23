@@ -15,7 +15,9 @@ module.exports = {
 
     const res = await queryInterface.showConstraint('jobNames');
     for (const item of res) {
-      await queryInterface.removeConstraint('jobNames', item.constraintName);
+      try {
+        await queryInterface.removeConstraint('jobNames', item.constraintName);
+      } catch (e) { /* */ }
     }
     await queryInterface.addConstraint('jobNames', [ 'uniqId' ], {
       type: 'primary key',
@@ -42,7 +44,9 @@ module.exports = {
 
     const res = await queryInterface.showConstraint('jobNames');
     for (const item of res) {
-      await queryInterface.removeConstraint('jobNames', item.constraintName);
+      try {
+        await queryInterface.removeConstraint('jobNames', item.constraintName);
+      } catch (e) { /**/ }
     }
     await queryInterface.addConstraint('jobNames', [ 'uniqId' ], {
       type: 'primary key',

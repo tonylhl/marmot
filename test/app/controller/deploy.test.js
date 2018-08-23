@@ -11,7 +11,7 @@ describe('test/app/controller/deploy.test.js', () => {
 
   let buildId;
 
-  before(async () => {
+  beforeEach(async () => {
     const res = await app.model.Build.create({
       jobName: 'jobName',
       buildNumber: 'buildNumber-deploy-test',
@@ -24,10 +24,10 @@ describe('test/app/controller/deploy.test.js', () => {
         ],
       },
     });
-    buildId = res.get('id');
+    buildId = res.get('uniqId');
   });
 
-  it.only('GET /api/deploy/:buildId success', async () => {
+  it('GET /api/deploy/:buildUniqId success', async () => {
     const stub = sinon.stub(marmotRelease, 'uploadPackage').callsFake(function() {
       stub.restore();
       return Promise.resolve([[], []]);
@@ -35,38 +35,38 @@ describe('test/app/controller/deploy.test.js', () => {
     await app.httpRequest()
       .post('/api/deploy')
       .send({
-        buildNumber: 'buildNumber-deploy-test',
         prefix: 'prefix',
         region: 'region',
         accessKeyId: 'accessKeyId',
         accessKeySecret: 'accessKeySecret',
         bucket: 'bucket',
+        buildId,
         acl: 'default',
       });
     const { header, body } = await app.httpRequest()
-      .get(`/api/deploy/${buildId}`);
+      .get(`/api/deploy?buildUniqId=${buildId}`);
     assert(header['content-type'] === 'application/json; charset=utf-8');
     assert(body.success);
     assert(body.message === '');
-    assert.deepStrictEqual(body.data.html, []);
-    assert.deepStrictEqual(body.data.other, []);
+    assert.deepStrictEqual(body.build.deploy[0].data.html, []);
+    assert.deepStrictEqual(body.build.deploy[0].data.other, []);
   });
 
-  it('POST /api/deploy success', function* () {
+  it('POST /api/deploy success', async () => {
     const stub = sinon.stub(marmotRelease, 'uploadPackage').callsFake(function() {
       stub.restore();
       return Promise.resolve([[], []]);
     });
-    const { header, body } = yield app.httpRequest()
+    const { header, body } = await app.httpRequest()
       .post('/api/deploy')
       .send({
-        buildNumber: 'buildNumber-deploy-test',
         prefix: 'prefix',
         region: 'region',
         accessKeyId: 'accessKeyId',
         accessKeySecret: 'accessKeySecret',
         bucket: 'bucket',
         acl: 'default',
+        buildId,
       });
     assert(header['content-type'] === 'application/json; charset=utf-8');
     assert(body.success);
@@ -75,17 +75,17 @@ describe('test/app/controller/deploy.test.js', () => {
     assert.deepStrictEqual(body.data.other, []);
   });
 
-  it('POST /api/deploy validate error', function* () {
-    const { header, body } = yield app.httpRequest()
+  it('POST /api/deploy validate error', async () => {
+    const { header, body } = await app.httpRequest()
       .post('/api/deploy')
       .send({
-        buildNumber: 'buildNumber-deploy-test',
         prefix: 'prefix',
         region: 'region',
         accessKeyId: null,
         accessKeySecret: null,
         bucket: 'bucket',
         acl: 'default',
+        buildId,
       });
     assert(header['content-type'] === 'application/json; charset=utf-8');
     assert(!body.succcess);

@@ -9,33 +9,32 @@ const postData = require('../../fixtures/post-gw.json');
 
 describe('test/app/controller/gw.test.js', () => {
 
-  beforeEach(function* () {
+  beforeEach(async () => {
     app.mockService('webhook', 'push', {});
-    yield app.model.Build.destroy({
+    await app.model.Build.destroy({
       where: {},
     });
-    yield app.model.JobName.destroy({
+    await app.model.JobName.destroy({
       where: {},
     });
   });
 
-  it('POST /api/gw success', function* () {
-    const { header, body } = yield app.httpRequest()
+  it('POST /api/gw success', async () => {
+    const { header, body } = await app.httpRequest()
       .post('/api/gw')
       .send(postData);
     assert(header['content-type'] === 'application/json; charset=utf-8');
     assert(body.success);
     assert(body.message === '');
     const data = body.data;
-    assert(data.id);
     assert(data.uniqId);
     assert.deepStrictEqual(data.data, postData);
-    assert(data.buildNumber === '40');
-    assert(data.jobName === 'web');
+    assert(data.buildNumber === '1074395');
+    assert(data.jobName === 'foo');
   });
 
-  it('POST /api/gw error', function* () {
-    const { header, body } = yield app.httpRequest()
+  it('POST /api/gw error', async () => {
+    const { header, body } = await app.httpRequest()
       .post('/api/gw')
       .send(Object.assign({}, postData, { environment: {} }));
     assert(header['content-type'] === 'application/json; charset=utf-8');

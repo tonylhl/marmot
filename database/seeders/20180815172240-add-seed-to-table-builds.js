@@ -1,6 +1,6 @@
 'use strict';
 
-const build = require('../../test/fixtures/build-data.json');
+const build = require('../../test/fixtures/post-gw.json');
 const data = JSON.stringify(build);
 
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
     for (let i = 0; i < 5; i++) {
       insertData.push({
         jobName: 'foo',
-        buildNumber: Math.random().toString().slice(-6),
+        buildNumber: '1074395',
         gitBranch: 'master',
         data,
         uniqId: uidPrefix + baseId,
@@ -21,7 +21,7 @@ module.exports = {
       baseId++;
       insertData.push({
         jobName: 'bar',
-        buildNumber: Math.random().toString().slice(-6),
+        buildNumber: '1074395',
         gitBranch: 'master',
         data,
         uniqId: uidPrefix + baseId,

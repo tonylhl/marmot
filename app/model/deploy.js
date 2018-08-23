@@ -44,13 +44,5 @@ module.exports = app => {
     });
   };
 
-  Deploy.prototype.getHtmlList = function() {
-    return this.get('data').data.html;
-  };
-
-  Deploy.prototype.getOtherList = function() {
-    return this.get('data').data.other;
-  };
-
   return Deploy;
 };
