@@ -1,46 +1,39 @@
 'use strict';
 
-const uuidv4 = require('uuid/v4');
 const build = require('../../test/fixtures/build-data.json');
 const data = JSON.stringify(build);
 
 module.exports = {
-  up: queryInterface => {
-    const foo = [];
-    const baz = [];
-    for (let i = 0; i < 15; i++) {
-      foo.push({
+  up: async queryInterface => {
+    let baseId = 1000;
+    const uidPrefix = '00000000-0000-0000-0000-00000000';
+    const insertData = [];
+    for (let i = 0; i < 5; i++) {
+      insertData.push({
         jobName: 'foo',
         buildNumber: Math.random().toString().slice(-6),
-        id: i + 1,
+        gitBranch: 'master',
+        data,
+        uniqId: uidPrefix + baseId,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       });
-      baz.push({
-        jobName: 'baz',
+      baseId++;
+      insertData.push({
+        jobName: 'bar',
         buildNumber: Math.random().toString().slice(-6),
-        id: i + 16,
+        gitBranch: 'master',
+        data,
+        uniqId: uidPrefix + baseId,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       });
+      baseId++;
     }
-    return queryInterface.bulkInsert('builds', [
-      ...foo,
-      ...baz,
-    ].map(
-      item => {
-        return {
-          id: item.id,
-          jobName: item.jobName,
-          buildNumber: item.buildNumber,
-          gitBranch: 'master',
-          data,
-          uniqId: uuidv4(),
-          created_at: new Date(),
-          updated_at: new Date(),
-          currentDeploy: item.id,
-        };
-      }
-    ), {});
+    await queryInterface.bulkInsert('builds', insertData);
   },
 
-  down: queryInterface => {
-    return queryInterface.bulkDelete('builds', null, {});
+  down: async queryInterface => {
+    await queryInterface.bulkDelete('builds');
   },
 };

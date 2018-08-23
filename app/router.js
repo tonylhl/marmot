@@ -24,7 +24,7 @@ module.exports = app => {
 
   // deploy
   router.post('/api/deploy', controller.deploy.create);
-  router.get('/api/deploy/:buildNumber', controller.deploy.show);
+  router.get('/api/deploy/:buildId', controller.deploy.show);
 
   // auth middleware
   router.get('/api/admin/status', controller.admin.status);

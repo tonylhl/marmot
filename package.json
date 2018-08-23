@@ -13,7 +13,8 @@
     "marmot-release": "^1.1.0",
     "marmot-view": "^1.0.0",
     "mysql2": "^1.5.3",
-    "p-map": "^1.2.0"
+    "p-map": "^1.2.0",
+    "sequelize-cli": "^4.1.1"
   },
   "devDependencies": {
     "autod": "^3.0.1",
@@ -25,7 +26,6 @@
     "eslint": "^4.11.0",
     "eslint-config-egg": "^6.0.0",
     "git-contributor": "^1.0.8",
-    "sequelize-cli": "^4.0.0",
     "sinon": "^6.1.4",
     "uuid": "^3.3.2",
     "webstorm-disable-index": "^1.2.0"
@@ -34,28 +34,26 @@
     "node": ">=8.9.0"
   },
   "scripts": {
-    "start": "eggctl start --port=9900 --title=egg-server-marmot-web",
+    "start": "cross-env NODE_ENV=production npm run db:migrate && eggctl start --port=9900 --title=egg-server-marmot-web",
     "stop": "eggctl stop --title=egg-server-marmot-web",
-    "dev": "cross-env DEBUG=marmot* egg-bin dev -p 9900",
+    "dev": "npm run db:migrate && cross-env DEBUG=marmot* egg-bin dev -p 9900",
+    "dev:local": "cross-env DEBUG=marmot* egg-bin dev -p 9900",
     "debug": "egg-bin debug",
-    "test": "npm run lint -- --fix && npm run test-local",
+    "test": "cross-env NODE_ENV=test npm run db:migrate && npm run lint && npm run test-local",
     "test-local": "egg-bin test",
-    "cov": "egg-bin cov",
+    "cov": "cross-env NODE_ENV=test npm run db:migrate && egg-bin cov",
     "lint": "eslint . --fix",
     "ci": "npm run lint && npm run cov",
     "autod": "autod",
-    "migration:create:name": "sequelize migration:create --name",
-    "db:migrate:fix": "sequelize db:migrate --migrations-path database/migrations/fix",
-    "db:migrate:undo:fix": "sequelize db:migrate:undo:all --migrations-path database/migrations/fix",
-    "db:migrate:init": "sequelize db:migrate --migrations-path database/migrations/init",
-    "db:migrate:undo:init": "sequelize db:migrate:undo:all --migrations-path database/migrations/init",
-    "seed:create:name": "sequelize seed:create --name",
+    "db:status": "sequelize db:migrate:status",
+    "db:migrate": "sequelize db:migrate",
+    "db:migrate:undo": "sequelize db:migrate:undo",
+    "db:migrate:undo:all": "sequelize db:migrate:undo:all",
     "db:seed": "sequelize db:seed",
     "db:seed:all": "sequelize db:seed:all",
-    "db:seed:undo:all": "sequelize db:seed:undo:all"
-  },
-  "ci": {
-    "version": "8"
+    "db:seed:undo:all": "sequelize db:seed:undo:all",
+    "migration:generate": "sequelize migration:generate --name",
+    "seed:generate": "sequelize seed:generate --name"
   },
   "repository": {
     "type": "git",

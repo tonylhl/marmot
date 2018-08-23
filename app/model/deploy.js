@@ -6,15 +6,9 @@ module.exports = app => {
     UUID,
     UUIDV4,
     JSON,
-    INTEGER,
   } = app.Sequelize;
 
   const Deploy = app.model.define('deploy', {
-    id: {
-      type: INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
     source: {
       type: STRING,
     },
@@ -31,25 +25,23 @@ module.exports = app => {
       type: STRING,
     },
     data: JSON,
-    buildId: {
-      type: INTEGER,
-      defaultValue: null,
-      references: {
-        model: 'builds',
-        key: 'id',
-      },
-      onUpdate: 'CASCADE',
-      onDelete: 'CASCADE',
-    },
     uniqId: {
       type: UUID,
       defaultValue: UUIDV4,
       primaryKey: true,
+      uniq: true,
     },
+  }, {
+    underscored: false,
   });
 
   Deploy.associate = () => {
-    app.model.Deploy.belongsTo(app.model.Build, { foreignKey: 'buildId', sourceKey: 'id' });
+    Deploy.belongsTo(app.model.Build, {
+      targetKey: 'uniqId',
+      foreignKey: 'buildUniqId',
+      onDelete: 'cascade',
+      onUpdate: 'cascade',
+    });
   };
 
   Deploy.prototype.getHtmlList = function() {

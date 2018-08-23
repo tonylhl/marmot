@@ -10,11 +10,6 @@ module.exports = app => {
   } = app.Sequelize;
 
   const Build = app.model.define('build', {
-    id: {
-      type: INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
     jobName: {
       type: STRING,
     },
@@ -34,24 +29,17 @@ module.exports = app => {
       primaryKey: true,
     },
   }, {
-    indexes: [
-      {
-        fields: [
-          'jobName',
-        ],
-      },
-      {
-        fields: [
-          'jobName',
-          'buildNumber',
-        ],
-      },
-    ],
+    underscored: false,
   });
 
   Build.associate = () => {
-    app.model.Build.belongsTo(app.model.JobName, { as: 'job', foreignKey: 'jobName', sourceKey: 'jobName' });
-    app.model.Build.hasMany(app.model.Deploy, { foreignKey: 'buildId', sourceKey: 'id' });
+    Build.hasMany(app.model.Deploy, {
+      as: 'deploy',
+      foreignKey: 'buildUniqId',
+      sourceKey: 'uniqId',
+      onDelete: 'cascade',
+      onUpdate: 'cascade',
+    });
   };
 
   Build.prototype.getReleasePath = function() {

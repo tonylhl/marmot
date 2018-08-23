@@ -4,29 +4,69 @@ const {
   app,
   assert,
 } = require('egg-mock/bootstrap');
-const path = require('path');
 const sinon = require('sinon');
 const marmotRelease = require('marmot-release');
 
 describe('test/app/controller/deploy.test.js', () => {
-  const source = path.join(__dirname, '..', '..', 'fixtures', 'download-deploy-source', 'deploy-sample.tgz');
 
-  it('POST /api/deploy/release success', function* () {
+  let buildId;
+
+  before(async () => {
+    const res = await app.model.Build.create({
+      jobName: 'jobName',
+      buildNumber: 'buildNumber-deploy-test',
+      gitBranch: 'master',
+      data: {
+        packages: [
+          {
+            path: 'http://a.tgz',
+          },
+        ],
+      },
+    });
+    buildId = res.get('id');
+  });
+
+  it.only('GET /api/deploy/:buildId success', async () => {
     const stub = sinon.stub(marmotRelease, 'uploadPackage').callsFake(function() {
       stub.restore();
       return Promise.resolve([[], []]);
     });
-    const { header, body } = yield app.httpRequest()
-      .post('/api/deploy/release')
+    await app.httpRequest()
+      .post('/api/deploy')
       .send({
-        source,
+        buildNumber: 'buildNumber-deploy-test',
         prefix: 'prefix',
         region: 'region',
         accessKeyId: 'accessKeyId',
         accessKeySecret: 'accessKeySecret',
         bucket: 'bucket',
         acl: 'default',
-        timeout: '30000',
+      });
+    const { header, body } = await app.httpRequest()
+      .get(`/api/deploy/${buildId}`);
+    assert(header['content-type'] === 'application/json; charset=utf-8');
+    assert(body.success);
+    assert(body.message === '');
+    assert.deepStrictEqual(body.data.html, []);
+    assert.deepStrictEqual(body.data.other, []);
+  });
+
+  it('POST /api/deploy success', function* () {
+    const stub = sinon.stub(marmotRelease, 'uploadPackage').callsFake(function() {
+      stub.restore();
+      return Promise.resolve([[], []]);
+    });
+    const { header, body } = yield app.httpRequest()
+      .post('/api/deploy')
+      .send({
+        buildNumber: 'buildNumber-deploy-test',
+        prefix: 'prefix',
+        region: 'region',
+        accessKeyId: 'accessKeyId',
+        accessKeySecret: 'accessKeySecret',
+        bucket: 'bucket',
+        acl: 'default',
       });
     assert(header['content-type'] === 'application/json; charset=utf-8');
     assert(body.success);
@@ -35,18 +75,17 @@ describe('test/app/controller/deploy.test.js', () => {
     assert.deepStrictEqual(body.data.other, []);
   });
 
-  it('POST /api/deploy/release validate error', function* () {
+  it('POST /api/deploy validate error', function* () {
     const { header, body } = yield app.httpRequest()
-      .post('/api/deploy/release')
+      .post('/api/deploy')
       .send({
-        source,
+        buildNumber: 'buildNumber-deploy-test',
         prefix: 'prefix',
         region: 'region',
         accessKeyId: null,
         accessKeySecret: null,
         bucket: 'bucket',
         acl: 'default',
-        timeout: '30000',
       });
     assert(header['content-type'] === 'application/json; charset=utf-8');
     assert(!body.succcess);

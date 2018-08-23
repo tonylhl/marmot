@@ -9,11 +9,14 @@ const OSS = require('ali-oss');
 class DeployController extends Controller {
   async show() {
     const ctx = this.ctx;
-    ctx.validate({ buildNumber: 'string' }, ctx.params);
+    ctx.validate({ buildId: 'number' }, ctx.params);
 
-    const buildNumber = ctx.params.buildNumber;
-    const build = await ctx.model.Build.findOne({ where: { buildNumber } });
-    const deploy = await ctx.model.Deploy.findOne({ where: { buildId: build.get('id') } });
+    const buildId = ctx.params.buildId;
+    const deploy = await ctx.model.Deploy.findOne({
+      where: {
+        buildId,
+      },
+    });
 
     ctx.body = {
       success: true,
@@ -33,7 +36,7 @@ class DeployController extends Controller {
       accessKeyId: { type: 'string' },
       accessKeySecret: { type: 'string' },
       bucket: { type: 'string' },
-      buildNumber: { type: 'string' },
+      buildId: { type: 'number' },
       acl: { type: 'string' },
       timeout: { type: 'string', required: false, allowEmpty: true },
       prefix: { type: 'string', allowEmpty: true },
@@ -47,7 +50,7 @@ class DeployController extends Controller {
     const accessKeySecret = data.accessKeySecret;
     const bucket = data.bucket || '';
     const timeout = Number(data.timeout) || 120 * 1000;
-    const build = await ctx.model.Build.findOne({ where: { buildNumber: data.buildNumber } });
+    const build = await ctx.model.Build.findById(data.buildId);
     const source = await build.getReleasePath();
 
     ctx.logger.info('deploy start');
@@ -84,7 +87,6 @@ class DeployController extends Controller {
         data: { html, other },
       }, { transaction });
       await build.addDeploy(deploy, { transaction });
-      await build.update({ currentDeploy: deploy.id }, { transaction });
       await transaction.commit();
     } catch (err) {
       await transaction.rollback();

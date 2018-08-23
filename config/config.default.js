@@ -1,5 +1,7 @@
 'use strict';
 
+const dbConfig = require('../database/config');
+
 module.exports = appInfo => {
   const config = exports = {};
 
@@ -50,15 +52,7 @@ module.exports = appInfo => {
     },
   };
 
-  config.sequelize = {
-    dialect: 'mysql',
-    database: 'marmot_development',
-    host: process.env.MYSQL_HOST || '127.0.0.1',
-    port: process.env.MYSQL_PORT || '3306',
-    username: 'root',
-    password: 'marmot',
-    operatorsAliases: false,
-  };
+  config.sequelize = dbConfig.development;
 
   return config;
 };

@@ -3,8 +3,8 @@
 const uuidv4 = require('uuid/v4');
 
 module.exports = {
-  up: queryInterface => {
-    return queryInterface.bulkInsert('jobNames', [
+  up: async queryInterface => {
+    await queryInterface.bulkInsert('jobNames', [
       'foo',
       'baz',
       'qux',
@@ -14,14 +14,14 @@ module.exports = {
         return {
           jobName: item,
           uniqId: uuidv4(),
-          created_at: new Date(),
-          updated_at: new Date(),
+          createdAt: new Date(),
+          updatedAt: new Date(),
         };
       }
-    ), {});
+    ));
   },
 
-  down: queryInterface => {
-    return queryInterface.bulkDelete('jobNames', null, {});
+  down: async queryInterface => {
+    await queryInterface.bulkDelete('jobNames');
   },
 };

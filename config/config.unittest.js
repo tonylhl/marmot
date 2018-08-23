@@ -1,5 +1,4 @@
 'use strict';
 
-exports.sequelize = {
-  database: 'marmot_unittest',
-};
+const dbConfig = require('../database/config');
+exports.sequelize = dbConfig.test;
