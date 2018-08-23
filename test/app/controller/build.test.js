@@ -60,12 +60,12 @@ describe('test/app/controller/build.test.js', function() {
     assert(body.data.result[0].buildNumber === '10');
     assert(body.data.result[0].data);
     assert(body.data.result[0].uniqId);
-    assert(body.data.result[0].created_at);
+    assert(body.data.result[0].createdAt);
     assert(body.data.result[1].jobName === 'ios');
     assert(body.data.result[1].buildNumber === '20');
     assert(body.data.result[1].data);
     assert(body.data.result[1].uniqId);
-    assert(body.data.result[1].created_at);
+    assert(body.data.result[1].createdAt);
   });
 
   it('GET /api/build/:jobName query by jobName', function* () {
@@ -108,7 +108,7 @@ describe('test/app/controller/build.test.js', function() {
     assert(body.data.result[0].buildNumber === '1');
     assert(body.data.result[0].data);
     assert(body.data.result[0].uniqId);
-    assert(body.data.result[0].created_at);
+    assert(body.data.result[0].createdAt);
   });
 
   it('GET /api/build/:jobName/:buildNumber query by jobName and buildNumber', function* () {
@@ -148,7 +148,7 @@ describe('test/app/controller/build.test.js', function() {
     assert(body.data.result.buildNumber === '1');
     assert(typeof body.data.result.data === 'object');
     assert(body.data.result.uniqId);
-    assert(body.data.result.created_at);
+    assert(body.data.result.createdAt);
   });
 
   it('GET /api/latestBuild/ query all latest build', function* () {

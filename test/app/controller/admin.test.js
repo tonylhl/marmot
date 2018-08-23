@@ -58,8 +58,8 @@ describe('test/app/controller/admin.test.js', function() {
     assert(body[0].id);
     assert(body[0].jobName === 'web');
     assert(body[0].uniqId);
-    assert(body[0].created_at);
-    assert(body[0].updated_at);
+    assert(body[0].createdAt);
+    assert(body[0].updatedAt);
   });
 
   it('GET /api/admin/jobName/delete/:uniqId delete one jobName', function* () {

@@ -19,13 +19,10 @@ class BuildController extends Controller {
       offset: (page - 1) * num,
       order: [
         [
-          'created_at',
+          'createdAt',
           'DESC',
         ],
       ],
-      attributes: {
-        exclude: this.ctx.app.config.modelQueryConfig.excludedAttributes,
-      },
     });
 
     this.ctx.body = {
@@ -54,15 +51,12 @@ class BuildController extends Controller {
       offset: (page - 1) * num,
       order: [
         [
-          'created_at',
+          'createdAt',
           'DESC',
         ],
       ],
       where: {
         jobName,
-      },
-      attributes: {
-        exclude: this.ctx.app.config.modelQueryConfig.excludedAttributes,
       },
     });
     this.ctx.body = {
@@ -84,9 +78,6 @@ class BuildController extends Controller {
       where: {
         jobName,
         buildNumber,
-      },
-      attributes: {
-        exclude: this.ctx.app.config.modelQueryConfig.excludedAttributes,
       },
     });
     this.ctx.body = {
@@ -115,13 +106,10 @@ class BuildController extends Controller {
         },
         order: [
           [
-            'created_at',
+            'createdAt',
             'DESC',
           ],
         ],
-        attributes: {
-          exclude: this.ctx.app.config.modelQueryConfig.excludedAttributes,
-        },
       });
       res && result.push(res);
     }
@@ -145,13 +133,10 @@ class BuildController extends Controller {
       },
       order: [
         [
-          'created_at',
+          'createdAt',
           'DESC',
         ],
       ],
-      attributes: {
-        exclude: this.ctx.app.config.modelQueryConfig.excludedAttributes,
-      },
     });
     this.ctx.body = {
       success: !!result,

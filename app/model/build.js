@@ -6,7 +6,6 @@ module.exports = app => {
     UUID,
     UUIDV4,
     JSON,
-    INTEGER,
   } = app.Sequelize;
 
   const Build = app.model.define('build', {
@@ -18,9 +17,6 @@ module.exports = app => {
     },
     gitBranch: {
       type: STRING,
-    },
-    currentDeploy: {
-      type: INTEGER,
     },
     data: JSON,
     uniqId: {

@@ -18,10 +18,6 @@ module.exports = appInfo => {
       // default num
       num: 10,
     },
-    excludedAttributes: [
-      'id',
-      'updated_at',
-    ],
   };
 
   config.errorHandler = {
