@@ -1,60 +1,63 @@
 {
-  "environment": {
-    "jenkins": {
-      "JOB_NAME": "web",
-      "BUILD_NUMBER": "40"
-    },
-    "platform": "web",
-    "os": {
-      "nodeVersion": "v1.1.2",
-      "platform": "linux"
-    }
-  },
-  "gitCommitInfo": {
-    "shortHash": "dsfsf",
-    "hash": "fsdfsdfsdfjskdfhjskhfjksdffsfsf",
-    "subject": "update",
-    "sanitizedSubject": "update",
-    "body": "",
-    "committer": {
-      "date": "1528384357",
-      "relativeDate": "33 minutes ago",
-      "name": "test",
-      "email": "test@gmail.com"
-    },
-    "author": {
-      "date": "1528384657",
-      "relativeDate": "33 minutes ago",
-      "name": "test",
-      "email": "test@gmail.com"
-    },
-    "gitUrl": "http://github.com/macacajs/marmot",
-    "gitBranch": "master"
-  },
   "files": [
-    "coverage/base.css",
-    "coverage/coverage-final.json",
-    "coverage/index.html"
+    "http://local-oss/dist.tgz"
   ],
   "packages": [
     {
-      "version": "0.0.1",
-      "type": "release",
-      "path": "***/.zip"
+      "path": "http://local-oss/dist.tgz",
+      "type": "dist.tgz",
+      "version": "1.0.4"
     }
   ],
   "testInfo": {
-    "tests": 2,
-    "passes": 1,
-    "passPercent": 50,
-    "linePercent": 57.14,
-    "testHtmlReporterPath": "reports/index.html",
-    "coverageHtmlReporterPath": "coverage/index.html"
+    "tests": 4,
+    "passes": 4,
+    "linePercent": 90.91,
+    "passPercent": 100,
+    "testHtmlReporterPath": "http://local-oss/index.html",
+    "coverageHtmlReporterPath": "http://local-oss/coverage/index.html"
   },
   "extraInfo": {
-    "macaca-wd": "4.1.4",
-    "macaca-datahub": "1.2.0",
-    "macaca-reporter": "1.3.0",
-    "config": "**************************************\n*******************************\n******"
+    "webpack": "4.16.5",
+    "macaca-wd": "1.1.6",
+    "testPassed": true
+  },
+  "environment": {
+    "os": {
+      "platform": "linux",
+      "nodeVersion": "v8.11.2"
+    },
+    "jenkins": {
+      "JOB_NAME": "foo",
+      "BUILD_NUMBER": "1074395"
+    },
+    "platform": "web",
+    "gitlab_ci": {
+      "JOB_NAME": "foo",
+      "BUILD_NUMBER": "1074395"
+    }
+  },
+  "gitCommitInfo": {
+    "body": "",
+    "hash": "099d228d1c5c868a9d1d3aafc69323f32e688c92",
+    "author": {
+      "date": "1533699682",
+      "name": "user",
+      "email": "user@github.com",
+      "relativeDate": "2 minutes ago"
+    },
+    "gitTag": "",
+    "gitUrl": "http://giturl",
+    "subject": "feat: fix title",
+    "committer": {
+      "date": "1533699682",
+      "name": "user",
+      "email": "user@github.com",
+      "relativeDate": "2 minutes ago"
+    },
+    "gitBranch": "feat/fix-top",
+    "gitRemote": "http://giturl.git",
+    "shortHash": "099d228",
+    "sanitizedSubject": "feat-fix-title"
   }
 }

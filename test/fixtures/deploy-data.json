@@ -1,0 +1,21 @@
+{
+  "html": [
+    {
+      "success": true,
+      "ossPath": "/test/app/index.html",
+      "url": "https://local-oss/index.html"
+    }
+  ],
+  "other": [
+    {
+      "success": true,
+      "ossPath": "/test/app/index.js",
+      "url": "https://local-oss/index.js"
+    },
+    {
+      "success": true,
+      "ossPath": "/test/app/index.css",
+      "url": "https://local-oss/index.css"
+    }
+  ]
+}

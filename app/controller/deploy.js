@@ -7,7 +7,64 @@ const marmotRelease = require('marmot-release');
 const OSS = require('ali-oss');
 
 class DeployController extends Controller {
-  async release() {
+  async index() {
+    const ctx = this.ctx;
+    // query by buildUniqId
+    if (ctx.query.buildUniqId) {
+      const buildUniqId = ctx.query.buildUniqId;
+      const build = await ctx.model.Build.findOne({
+        where: {
+          uniqId: buildUniqId,
+        },
+        attributes: [
+          'jobName',
+          'buildNumber',
+          'gitBranch',
+          'createdAt',
+          'uniqId',
+        ],
+      });
+      const deploy = await build.getDeploy({
+        limit: 1,
+        order: [
+          [
+            'createdAt',
+            'DESC',
+          ],
+        ],
+      });
+      ctx.success({
+        build,
+        deploy,
+      });
+      return;
+    }
+    ctx.success();
+  }
+
+  async show() {
+    const ctx = this.ctx;
+    ctx.validate({ uniqId: 'string' }, ctx.params);
+
+    const uniqId = ctx.params.uniqId;
+    console.log('show uniqId', {
+      uniqId,
+    });
+    const deploy = await ctx.model.Deploy.findOne({
+      where: {
+        uniqId,
+      },
+      attributes: [
+        'data',
+        'uniqId',
+        'createdAt',
+      ],
+    });
+
+    ctx.success({ deploy });
+  }
+
+  async create() {
     const ctx = this.ctx;
 
     ctx.validate({
@@ -15,25 +72,29 @@ class DeployController extends Controller {
       accessKeyId: { type: 'string' },
       accessKeySecret: { type: 'string' },
       bucket: { type: 'string' },
-      timeout: { type: 'string', required: false, allowEmpty: true },
+      buildUniqId: { type: 'string' },
       acl: { type: 'string' },
+      timeout: { type: 'string', required: false, allowEmpty: true },
       prefix: { type: 'string', allowEmpty: true },
-      source: { type: 'string', required: false, allowEmpty: true, format: /\.(tgz)$/ },
-      sourceUrl: { type: 'string', required: false, allowEmpty: true },
     });
 
     const data = ctx.request.body;
     const acl = data.acl || 'default';
     const prefix = data.prefix || '';
-    const source = data.source || '';
-    const sourceUrl = data.sourceUrl || '';
     const region = data.region || '';
     const accessKeyId = data.accessKeyId;
     const accessKeySecret = data.accessKeySecret;
     const bucket = data.bucket || '';
     const timeout = Number(data.timeout) || 120 * 1000;
+    const build = await ctx.model.Build.findOne({
+      where: {
+        uniqId: data.buildUniqId,
+      },
+    });
 
-    ctx.logger.info('deploy start');
+    const source = await build.getReleasePath();
+
+    ctx.logger.info(`[start deploy] ${source}`);
 
     const ossClient = new OSS({
       region,
@@ -46,22 +107,41 @@ class DeployController extends Controller {
 
     const [ html, other ] = await marmotRelease.uploadPackage({
       source,
-      sourceUrl,
       prefix,
       acl,
       ossClient,
     });
 
-    ctx.logger.info('deploy end');
+    ctx.logger.info(`[end deploy] ${source}`);
 
-    ctx.body = {
-      success: true,
-      message: '',
-      data: {
+    let transaction;
+
+    try {
+      transaction = await ctx.model.transaction();
+      const deploy = await ctx.model.Deploy.create({
+        source,
+        region,
+        bucket,
+        prefix,
+        acl,
+        active: true,
+        data: { html, other },
+      }, { transaction });
+      await build.addDeploy(deploy, { transaction });
+      await transaction.commit();
+      ctx.success({
+        deployUniqId: deploy.uniqId,
         html,
         other,
-      },
-    };
+      });
+    } catch (err) {
+      /* istanbul ignore next */
+      ctx.logger.error(err);
+      /* istanbul ignore next */
+      await transaction.rollback();
+      /* istanbul ignore next */
+      ctx.fail(err.message);
+    }
   }
 }
 

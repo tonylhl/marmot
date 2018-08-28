@@ -1,0 +1,7 @@
+{
+  "type": "webhooks",
+  "webhooks": [
+    "http://localhost",
+    "http://localhost"
+  ]
+}

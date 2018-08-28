@@ -8,14 +8,20 @@ module.exports = app => {
     JSON,
   } = app.Sequelize;
 
-  const Build = app.model.define('build', {
-    jobName: {
+  const Deploy = app.model.define('deploy', {
+    source: {
       type: STRING,
     },
-    buildNumber: {
+    region: {
       type: STRING,
     },
-    gitBranch: {
+    bucket: {
+      type: STRING,
+    },
+    prefix: {
+      type: STRING,
+    },
+    acl: {
       type: STRING,
     },
     data: JSON,
@@ -23,24 +29,20 @@ module.exports = app => {
       type: UUID,
       defaultValue: UUIDV4,
       primaryKey: true,
+      uniq: true,
     },
   }, {
     underscored: false,
   });
 
-  Build.associate = () => {
-    Build.hasMany(app.model.Deploy, {
-      as: 'deploy',
+  Deploy.associate = () => {
+    Deploy.belongsTo(app.model.Build, {
+      targetKey: 'uniqId',
       foreignKey: 'buildUniqId',
-      sourceKey: 'uniqId',
       onDelete: 'cascade',
       onUpdate: 'cascade',
     });
   };
 
-  Build.prototype.getReleasePath = function() {
-    return this.get('data').packages[0].path;
-  };
-
-  return Build;
+  return Deploy;
 };

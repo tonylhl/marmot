@@ -13,42 +13,51 @@
     "marmot-release": "^1.1.0",
     "marmot-view": "^1.0.0",
     "mysql2": "^1.5.3",
-    "p-map": "^1.2.0"
+    "p-map": "^1.2.0",
+    "sequelize-cli": "^4.1.1"
   },
   "devDependencies": {
     "autod": "^3.0.1",
     "autod-egg": "^1.0.0",
+    "cross-env": "^5.2.0",
+    "debug": "^3.1.0",
     "egg-bin": "^4.3.5",
     "egg-mock": "^3.14.0",
     "eslint": "^4.11.0",
     "eslint-config-egg": "^6.0.0",
     "git-contributor": "^1.0.8",
     "sinon": "^6.1.4",
-    "webstorm-disable-index": "^1.2.0"
+    "uuid": "^3.3.2"
   },
   "engines": {
     "node": ">=8.9.0"
   },
   "scripts": {
-    "start": "eggctl start --port=9900 --title=egg-server-marmot-web",
+    "start": "cross-env NODE_ENV=production npm run db:migrate && eggctl start --port=9900 --title=egg-server-marmot-web",
     "stop": "eggctl stop --title=egg-server-marmot-web",
-    "dev": "egg-bin dev -p 9900",
+    "dev": "npm run db:migrate && cross-env DEBUG=marmot* egg-bin dev -p 9900",
+    "dev:local": "cross-env DEBUG=marmot* egg-bin dev -p 9900",
     "debug": "egg-bin debug",
-    "test": "npm run lint -- --fix && npm run test-local",
+    "test": "npm run db:prepare:test && npm run lint && npm run test-local",
     "test-local": "egg-bin test",
-    "cov": "egg-bin cov",
+    "cov": "npm run db:prepare:test && egg-bin cov",
     "lint": "eslint . --fix",
     "ci": "npm run lint && npm run cov",
     "autod": "autod",
-    "contributor": "git-contributor"
-  },
-  "ci": {
-    "version": "8"
+    "db:prepare:test": "cross-env NODE_ENV=test npm run db:migrate:undo:all && cross-env NODE_ENV=test npm run db:migrate",
+    "db:status": "sequelize db:migrate:status",
+    "db:migrate": "sequelize db:migrate",
+    "db:migrate:undo": "sequelize db:migrate:undo",
+    "db:migrate:undo:all": "sequelize db:migrate:undo:all",
+    "db:seed": "sequelize db:seed",
+    "db:seed:all": "sequelize db:seed:all",
+    "db:seed:undo:all": "sequelize db:seed:undo:all",
+    "migration:generate": "sequelize migration:generate --name",
+    "seed:generate": "sequelize seed:generate --name"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/macacajs/marmot.git"
   },
-  "private": true,
   "license": "MIT"
 }

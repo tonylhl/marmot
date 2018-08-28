@@ -7,24 +7,24 @@ const {
 
 describe('test/app/controller/config.test.js', () => {
 
-  beforeEach(function* () {
+  beforeEach(() => {
     app.mockService('webhook', 'push', {});
-    yield app.model.sync({ force: true });
   });
 
-  function* assertConfig(app, data) {
-    const res = yield app.httpRequest()
+  async function assertConfig(app, data) {
+    const res = await app.httpRequest()
       .get('/api/config');
     assert.deepStrictEqual(res.body, data);
   }
 
-  it('POST /api/config create and update', function* () {
-    yield assertConfig(app, {
+  it('POST /api/config create and update', async () => {
+    await assertConfig(app, {
       success: true,
+      message: '',
       data: {},
     });
 
-    let res = yield app.httpRequest()
+    let res = await app.httpRequest()
       .post('/api/config')
       .send({
         type: 'webhooks',
@@ -32,16 +32,19 @@ describe('test/app/controller/config.test.js', () => {
       });
     assert.deepStrictEqual(res.body, {
       success: true,
+      message: '',
+      data: {},
     });
-    yield assertConfig(app, {
+    await assertConfig(app, {
       success: true,
+      message: '',
       data: {
         type: 'webhooks',
         webhooks: [ 'url-1', 'url-2' ],
       },
     });
 
-    res = yield app.httpRequest()
+    res = await app.httpRequest()
       .post('/api/config')
       .send({
         type: 'webhooks',
@@ -49,9 +52,12 @@ describe('test/app/controller/config.test.js', () => {
       });
     assert.deepStrictEqual(res.body, {
       success: true,
+      message: '',
+      data: {},
     });
-    yield assertConfig(app, {
+    await assertConfig(app, {
       success: true,
+      message: '',
       data: {
         type: 'webhooks',
         webhooks: [ 'url-3', 'url-4' ],

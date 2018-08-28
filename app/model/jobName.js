@@ -5,24 +5,21 @@ module.exports = app => {
     STRING,
     UUID,
     UUIDV4,
-    INTEGER,
   } = app.Sequelize;
 
   const JobName = app.model.define('jobName', {
-    id: {
-      type: INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
     jobName: {
       type: STRING,
-      primaryKey: true,
+      allowNull: false,
+      unique: true,
     },
     uniqId: {
       type: UUID,
       defaultValue: UUIDV4,
       primaryKey: true,
     },
+  }, {
+    underscored: false,
   });
 
   return JobName;
