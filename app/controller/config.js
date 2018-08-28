@@ -7,10 +7,7 @@ const {
 class ConfigController extends Controller {
   async show() {
     const result = await this.ctx.model.Config.findOne();
-    this.ctx.body = {
-      success: true,
-      data: result ? result.data : {},
-    };
+    this.ctx.success(result ? result.data : {});
   }
 
   async update() {
@@ -30,9 +27,7 @@ class ConfigController extends Controller {
         },
       });
     }
-    this.ctx.body = {
-      success: true,
-    };
+    this.ctx.success();
   }
 }
 

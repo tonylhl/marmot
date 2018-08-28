@@ -2,7 +2,7 @@
 
 const { app } = require('egg-mock/bootstrap');
 
-before(async () => {
+const restore = async () => {
   await app.model.JobName.truncate();
   await app.model.Config.truncate();
   await app.model.Build.destroy({
@@ -10,14 +10,6 @@ before(async () => {
       cascade: true,
     }
   });
-})
-
-afterEach(async () => {
-  await app.model.JobName.truncate();
-  await app.model.Config.truncate();
-  await app.model.Build.destroy({
-    truncate: {
-      cascade: true,
-    }
-  });
-});
+}
+before(restore)
+afterEach(restore);

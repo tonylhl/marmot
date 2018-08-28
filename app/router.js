@@ -23,15 +23,9 @@ module.exports = app => {
   router.post('/api/config', controller.config.update);
 
   // deploy
-  router.get('/api/deploy', controller.deploy.showAll);
+  router.get('/api/deploy', controller.deploy.index);
   router.post('/api/deploy', controller.deploy.create);
-  router.get('/api/deploy/:buildId', controller.deploy.show);
-
-  // auth middleware
-  router.get('/api/admin/status', controller.admin.status);
-  router.get('/api/admin/build/delete/:uniqId', controller.admin.buildDelete);
-  router.get('/api/admin/jobName/show', controller.admin.jobNameShow);
-  router.get('/api/admin/jobName/delete/:uniqId', controller.admin.jobNameDalete);
+  router.get('/api/deploy/:uniqId', controller.deploy.show);
 
   router.get('*', controller.home.index);
 };

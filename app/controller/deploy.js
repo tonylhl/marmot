@@ -7,48 +7,52 @@ const marmotRelease = require('marmot-release');
 const OSS = require('ali-oss');
 
 class DeployController extends Controller {
-  async showAll() {
+  async index() {
     const ctx = this.ctx;
-    ctx.validate({ buildUniqId: 'string' }, ctx.query);
-
-    const uniqId = ctx.query.buildUniqId;
-    const build = await ctx.model.Build.findOne({
-      include: [{
-        model: ctx.model.Deploy,
-        as: 'deploy',
+    // query by buildUniqId
+    if (ctx.query.buildUniqId) {
+      const buildUniqId = ctx.query.buildUniqId;
+      const build = await ctx.model.Build.findOne({
+        where: {
+          uniqId: buildUniqId,
+        },
+        attributes: [
+          'jobName',
+          'buildNumber',
+          'gitBranch',
+          'createdAt',
+          'uniqId',
+        ],
+      });
+      const deploy = await build.getDeploy({
+        limit: 1,
         order: [
           [
             'createdAt',
             'DESC',
           ],
         ],
-        limit: 1,
-      }],
-      where: {
-        uniqId,
-      },
-      attributes: [
-        'gitBranch',
-        'jobName',
-        'buildNumber',
-      ],
-    });
-
-    ctx.body = {
-      success: true,
-      message: '',
-      build,
-    };
+      });
+      ctx.success({
+        build,
+        deploy,
+      });
+      return;
+    }
+    ctx.success();
   }
 
   async show() {
     const ctx = this.ctx;
-    ctx.validate({ buildId: 'string' }, ctx.params);
+    ctx.validate({ uniqId: 'string' }, ctx.params);
 
-    const buildId = ctx.params.buildId;
+    const uniqId = ctx.params.uniqId;
+    console.log('show uniqId', {
+      uniqId,
+    });
     const deploy = await ctx.model.Deploy.findOne({
       where: {
-        uniqId: buildId,
+        uniqId,
       },
       attributes: [
         'data',
@@ -57,11 +61,7 @@ class DeployController extends Controller {
       ],
     });
 
-    ctx.body = {
-      success: true,
-      message: '',
-      deploy,
-    };
+    ctx.success({ deploy });
   }
 
   async create() {
@@ -72,7 +72,7 @@ class DeployController extends Controller {
       accessKeyId: { type: 'string' },
       accessKeySecret: { type: 'string' },
       bucket: { type: 'string' },
-      buildId: { type: 'string' },
+      buildUniqId: { type: 'string' },
       acl: { type: 'string' },
       timeout: { type: 'string', required: false, allowEmpty: true },
       prefix: { type: 'string', allowEmpty: true },
@@ -88,7 +88,7 @@ class DeployController extends Controller {
     const timeout = Number(data.timeout) || 120 * 1000;
     const build = await ctx.model.Build.findOne({
       where: {
-        uniqId: data.buildId,
+        uniqId: data.buildUniqId,
       },
     });
 
@@ -129,19 +129,19 @@ class DeployController extends Controller {
       }, { transaction });
       await build.addDeploy(deploy, { transaction });
       await transaction.commit();
-    } catch (err) {
-      ctx.logger.error(err);
-      await transaction.rollback();
-    }
-
-    ctx.body = {
-      success: true,
-      message: '',
-      data: {
+      ctx.success({
+        deployUniqId: deploy.uniqId,
         html,
         other,
-      },
-    };
+      });
+    } catch (err) {
+      /* istanbul ignore next */
+      ctx.logger.error(err);
+      /* istanbul ignore next */
+      await transaction.rollback();
+      /* istanbul ignore next */
+      ctx.fail(err.message);
+    }
   }
 }
 

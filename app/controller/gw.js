@@ -37,11 +37,7 @@ class GwController extends Controller {
       data,
     });
     await this.ctx.service.webhook.push(data);
-    this.ctx.body = {
-      success: true,
-      message: '',
-      data: createResult,
-    };
+    this.ctx.success(createResult);
   }
 }
 

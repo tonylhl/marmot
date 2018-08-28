@@ -20,6 +20,7 @@ describe('test/app/controller/config.test.js', () => {
   it('POST /api/config create and update', async () => {
     await assertConfig(app, {
       success: true,
+      message: '',
       data: {},
     });
 
@@ -31,9 +32,12 @@ describe('test/app/controller/config.test.js', () => {
       });
     assert.deepStrictEqual(res.body, {
       success: true,
+      message: '',
+      data: {},
     });
     await assertConfig(app, {
       success: true,
+      message: '',
       data: {
         type: 'webhooks',
         webhooks: [ 'url-1', 'url-2' ],
@@ -48,9 +52,12 @@ describe('test/app/controller/config.test.js', () => {
       });
     assert.deepStrictEqual(res.body, {
       success: true,
+      message: '',
+      data: {},
     });
     await assertConfig(app, {
       success: true,
+      message: '',
       data: {
         type: 'webhooks',
         webhooks: [ 'url-3', 'url-4' ],

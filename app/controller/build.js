@@ -138,13 +138,9 @@ class BuildController extends Controller {
         ],
       ],
     });
-    this.ctx.body = {
-      success: !!result,
-      message: '',
-      data: {
-        result,
-      },
-    };
+    this.ctx.success({
+      result,
+    });
   }
 }
 

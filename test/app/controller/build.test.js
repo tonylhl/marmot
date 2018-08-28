@@ -16,7 +16,7 @@ async function insertData(customData = {}) {
 describe('test/app/controller/build.test.js', function() {
 
   let ctx;
-  beforeEach(function* () {
+  beforeEach(() => {
     ctx = app.mockContext();
     app.mockService('webhook', 'push', {});
   });
