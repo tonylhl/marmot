@@ -15,15 +15,15 @@
 ---
 
 [![build status][travis-image]][travis-url]
-[![Test coverage][coveralls-image]][coveralls-url]
+[![Test coverage][codecov-image]][codecov-url]
 [![node version][node-image]][node-url]
 [![docker pull][docker-pull-image]][docker-url]
 [![docker layers][docker-layers-image]][docker-url]
 
 [travis-image]: https://img.shields.io/travis/macacajs/marmot.svg?style=flat-square&logo=travis
 [travis-url]: https://travis-ci.org/macacajs/marmot
-[coveralls-image]: https://img.shields.io/codecov/c/github/macacajs/marmot.svg?style=flat-square
-[coveralls-url]: https://codecov.io/gh/macacajs/marmot
+[codecov-image]: https://img.shields.io/codecov/c/github/macacajs/marmot.svg?style=flat-square
+[codecov-url]: https://codecov.io/gh/macacajs/marmot
 [node-image]: https://img.shields.io/badge/node.js-%3E=_8-green.svg?style=flat-square
 [node-url]: http://nodejs.org/download/
 [docker-pull-image]: https://img.shields.io/docker/pulls/marmotjs/marmot-web.svg?style=flat-square&logo=dockbit
