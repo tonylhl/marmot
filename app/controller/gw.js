@@ -3,6 +3,7 @@
 const {
   Controller,
 } = require('egg');
+const safeGet = require('lodash.get');
 const debug = require('debug')('marmot:controller:gw');
 
 class GwController extends Controller {
@@ -29,10 +30,12 @@ class GwController extends Controller {
         jobName,
       },
     });
+    const appId = safeGet(data, 'extraInfo.appId') || '';
     const gitBranch = data.gitCommitInfo.gitBranch;
     const createResult = await this.ctx.model.Build.create({
       buildNumber,
       jobName,
+      appId,
       gitBranch,
       data,
     });

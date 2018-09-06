@@ -9,83 +9,41 @@ const DEPLOY_INIT = 'INIT';
 const DEPLOY_SUCCESS = 'SUCCESS';
 const DEPLOY_FAIL = 'FAIL';
 
-class DeployController extends Controller {
-  async index() {
+module.exports = class AppDeployController extends Controller {
+  // uniqId,
+  // bucketTag,
+  // type,
+  async create() {
     const ctx = this.ctx;
-    const findOptions = {};
-
-    [ 'buildUniqId', 'type' ].forEach(i => {
-      if (typeof ctx.query[i] !== 'undefined') { findOptions[i] = ctx.query[i]; }
+    const {
+      bucketTag,
+      uniqId,
+      type,
+    } = ctx.request.body;
+    ctx.validate({
+      bucketTag: { type: 'string' },
+      type: { type: 'string' },
+      uniqId: { type: 'string' },
     });
-
-    const deploys = await ctx.model.Deploy.findAll({
-      where: findOptions,
-      order: [
-        [
-          'createdAt',
-          'DESC',
-        ],
-      ],
-      include: [{
-        model: ctx.model.Credential,
-        attributes: [ 'bucketTag', 'bucket' ],
-      }],
+    const credentialData = await ctx.model.Credential.findOne({
+      where: {
+        bucketTag,
+      },
     });
-
-    for (const deploy of deploys) {
-      const credential = deploy.getCredential();
-      deploy.credential = credential;
+    if (!credentialData) {
+      ctx.fail(`Bucket for ${bucketTag} not found.`);
+      return;
     }
-
-    ctx.success(deploys);
-    return;
-  }
-
-  async show() {
-    const ctx = this.ctx;
-    ctx.validate({ uniqId: 'string' }, ctx.params);
-
-    const uniqId = ctx.params.uniqId;
-    const deploy = await ctx.model.Deploy.findOne({
+    const credential = await ctx.service.credential.queryDecryptedCredentialByUniqId({
+      uniqId: credentialData.uniqId,
+    });
+    const build = await ctx.model.Build.findOne({
       where: {
         uniqId,
       },
-      attributes: [
-        'data',
-        'uniqId',
-        'createdAt',
-      ],
     });
-
-    ctx.success({ deploy });
-  }
-
-  async create() {
-    const ctx = this.ctx;
-    ctx.validate({
-      type: { type: 'string' },
-      buildUniqId: { type: 'string' },
-      credentialSecret: { type: 'string' },
-      credentialUniqId: { type: 'string' },
-    });
-    const {
-      type,
-      buildUniqId,
-      credentialSecret,
-      credentialUniqId,
-    } = ctx.request.body;
-    const acl = 'public-read';
-    const credential = await ctx.service.credential.queryDecryptedCredentialByUniqId({
-      uniqId: credentialUniqId,
-    });
-
-    if (!credential) {
-      ctx.fail('Bucket config not found.');
-      return;
-    }
-
-    if (credentialSecret !== credential.accessKeySecret.substr(0, 6)) {
-      ctx.fail('Secret error.');
+    if (!build) {
+      ctx.fail(`Build record for ${build} not found.`);
       return;
     }
 
@@ -97,21 +55,15 @@ class DeployController extends Controller {
     let prefix = ctx.request.body.prefix || '';
     prefix = path.normalize(path.join(prefix, namespace)).replace(/^[\.\/]+/, '');
 
-    const build = await ctx.model.Build.findOne({
-      where: {
-        uniqId: buildUniqId,
-      },
-    });
-
     const source = await build.getReleasePath(type);
 
     if (!source) {
-      ctx.fail('build resource not found!');
+      ctx.fail(`Release type '${type}' of build ${uniqId} not found.`);
       return;
     }
-
     let deploy;
     const transaction = await ctx.model.transaction();
+    const acl = 'public-read';
     try {
       deploy = await ctx.model.Deploy.create({
         source,
@@ -193,11 +145,14 @@ class DeployController extends Controller {
       data: uploadResult,
       state: DEPLOY_SUCCESS,
     });
+    const url = ctx.app.safeGet(uploadResult, 'other[0].url');
+    if (!url) {
+      ctx.fail('Deploy failed: can\'t deploy resource.');
+      return;
+    }
     ctx.success({
       deployUniqId: deploy.uniqId,
-      uploadResult,
+      deploy: { package: { url } },
     });
   }
-}
-
-module.exports = DeployController;
+};

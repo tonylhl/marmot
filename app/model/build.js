@@ -18,19 +18,19 @@ module.exports = app => {
     gitBranch: {
       type: STRING,
     },
+    appId: {
+      type: STRING,
+    },
     data: JSON,
     uniqId: {
       type: UUID,
       defaultValue: UUIDV4,
       primaryKey: true,
     },
-  }, {
-    underscored: false,
-  });
+  }, { });
 
   Build.associate = () => {
     Build.hasMany(app.model.Deploy, {
-      as: 'deploy',
       foreignKey: 'buildUniqId',
       sourceKey: 'uniqId',
       onDelete: 'cascade',
@@ -38,8 +38,12 @@ module.exports = app => {
     });
   };
 
-  Build.prototype.getReleasePath = function() {
-    return this.get('data').packages[0].path;
+  Build.prototype.getReleasePath = function(type) {
+    if (!type) return false;
+    const resource = this.get('data').packages.find(i =>
+      i.type === type
+    );
+    return resource && resource.path;
   };
 
   return Build;

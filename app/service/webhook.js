@@ -14,7 +14,9 @@ module.exports = class WebHookService extends Service {
     if (!globalConfig || !globalConfig.data || !globalConfig.data.webhooks) {
       return;
     }
-    const webhooks = globalConfig.data.webhooks;
+    const {
+      webhooks,
+    } = globalConfig.data;
 
     // trigger webhooks
     // TODO add type to the webhook

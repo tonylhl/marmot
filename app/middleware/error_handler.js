@@ -8,9 +8,13 @@ module.exports = () => {
 
       ctx.logger.error(e);
 
-      const message = e.status === 500 && ctx.app.config.env === 'prod'
+      let message = e.status === 500 && ctx.app.config.env === 'prod'
         ? 'Internal Server Error'
         : e.message;
+
+      if (e.code === 'invalid_param') {
+        message += `, ${e.errors.map(e => `${e.field}: ${e.message}`).join(', ')}`;
+      }
 
       ctx.body = {
         success: false,

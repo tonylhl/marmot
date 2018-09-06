@@ -1,20 +1,19 @@
 'use strict';
 
 module.exports = {
-  success(data = {}) {
+  success(data = {}, message = '') {
     this.body = {
       success: true,
-      message: '',
+      message,
       data,
     };
   },
 
   /* istanbul ignore next */
-  fail(message = '', data = {}) {
+  fail(message = '') {
     this.body = {
       success: false,
       message,
-      data,
     };
   },
 };

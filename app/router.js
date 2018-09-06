@@ -27,5 +27,19 @@ module.exports = app => {
   router.post('/api/deploy', controller.deploy.create);
   router.get('/api/deploy/:uniqId', controller.deploy.show);
 
+  // apps
+  router.get('/api/app/:appId', controller.app.show);
+  router.post('/api/appDeploy', controller.appDeploy.create);
+
+  // credential
+  router.get('/api/credential', controller.credential.index);
+  router.post('/api/credential', controller.credential.create);
+  router.get('/api/credential/:uniqId', controller.credential.show);
+  router.put('/api/credential/:uniqId', controller.credential.update);
+  router.delete('/api/credential/:uniqId', controller.credential.delete);
+
+  // delegate
+  router.post('/api/delegate/message', controller.delegate.message);
+
   router.get('*', controller.home.index);
 };

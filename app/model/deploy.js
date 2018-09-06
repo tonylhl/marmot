@@ -6,16 +6,11 @@ module.exports = app => {
     UUID,
     UUIDV4,
     JSON,
+    ENUM,
   } = app.Sequelize;
 
   const Deploy = app.model.define('deploy', {
     source: {
-      type: STRING,
-    },
-    region: {
-      type: STRING,
-    },
-    bucket: {
       type: STRING,
     },
     prefix: {
@@ -24,6 +19,13 @@ module.exports = app => {
     acl: {
       type: STRING,
     },
+    type: {
+      type: STRING,
+    },
+    state: {
+      type: ENUM,
+      values: [ 'INIT', 'SUCCESS', 'FAIL' ],
+    },
     data: JSON,
     uniqId: {
       type: UUID,
@@ -31,14 +33,18 @@ module.exports = app => {
       primaryKey: true,
       uniq: true,
     },
-  }, {
-    underscored: false,
-  });
+  }, { });
 
   Deploy.associate = () => {
     Deploy.belongsTo(app.model.Build, {
       targetKey: 'uniqId',
       foreignKey: 'buildUniqId',
+      onDelete: 'cascade',
+      onUpdate: 'cascade',
+    });
+    Deploy.belongsTo(app.model.Credential, {
+      targetKey: 'uniqId',
+      foreignKey: 'credentialUniqId',
       onDelete: 'cascade',
       onUpdate: 'cascade',
     });

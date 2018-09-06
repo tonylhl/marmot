@@ -8,6 +8,9 @@ const defaultConfig = {
   port: process.env.MYSQL_PORT || '3306',
   operatorsAliases: false,
   dialect: 'mysql',
+  define: {
+    underscored: false,
+  },
 };
 
 module.exports = {

@@ -16,7 +16,7 @@
 should launch `marmot-mysql` service first.
 
 ```bash
-$ docker run --name marmot-web \
+$ docker run --rm --name marmot-web \
   -p 9900:9900 \
   -e MARMOT_HOST=127.0.0.1 \
   --link marmot-mysql:mysql-host \
@@ -45,7 +45,7 @@ Just for developer
 
 ```bash
 $ cd ${PROJECT_ROOT_PATH}
-$ docker build --pull -t marmotjs/marmot-web .
+$ docker build --no-cache --pull -t marmotjs/marmot-web .
 $ docker push marmotjs/marmot-web
 ```
 

@@ -8,15 +8,10 @@ module.exports = {
       UUIDV4,
       JSON,
       DATE,
+      ENUM,
     } = Sequelize;
     await queryInterface.createTable('deploys', {
       source: {
-        type: STRING,
-      },
-      region: {
-        type: STRING,
-      },
-      bucket: {
         type: STRING,
       },
       prefix: {
@@ -25,9 +20,15 @@ module.exports = {
       acl: {
         type: STRING,
       },
+      type: {
+        type: STRING,
+      },
+      state: {
+        type: ENUM,
+        values: [ 'INIT', 'SUCCESS', 'FAIL' ],
+      },
       buildUniqId: {
         type: UUID,
-        defaultValue: UUIDV4,
       },
       data: JSON,
       uniqId: {

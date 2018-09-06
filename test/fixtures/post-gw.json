@@ -1,63 +1,73 @@
 {
   "files": [
-    "http://local-oss/dist.tgz"
+    "http://local-oss/readmd.md"
   ],
   "packages": [
     {
-      "path": "http://local-oss/dist.tgz",
-      "type": "dist.tgz",
-      "version": "1.0.4"
+      "path": "http://host/1.zip",
+      "type": "type1",
+      "version": "1.0.0"
+    },
+    {
+      "path": "http://host/2.zip",
+      "type": "type2",
+      "version": "1.0.0"
+    },
+    {
+      "path": "http://host/3.zip",
+      "type": "type3",
+      "version": "1.0.0"
     }
   ],
   "testInfo": {
-    "tests": 4,
-    "passes": 4,
-    "linePercent": 90.91,
+    "tests": 16,
+    "passes": 16,
+    "linePercent": 95.24,
     "passPercent": 100,
-    "testHtmlReporterPath": "http://local-oss/index.html",
-    "coverageHtmlReporterPath": "http://local-oss/coverage/index.html"
+    "testHtmlReporterPath": "http://host/index.html",
+    "coverageHtmlReporterPath": "http://host/index.html"
   },
   "extraInfo": {
-    "webpack": "4.16.5",
-    "macaca-wd": "1.1.6",
-    "testPassed": true
+    "vue": "2.5.8",
+    "appId": "appId",
+    "webpack": "4.17.2"
   },
   "environment": {
     "os": {
       "platform": "linux",
-      "nodeVersion": "v8.11.2"
+      "nodeVersion": "v8.11.4"
     },
     "jenkins": {
-      "JOB_NAME": "foo",
-      "BUILD_NUMBER": "1074395"
+      "JOB_NAME": "jobName",
+      "BUILD_NUMBER": "11"
     },
     "platform": "web",
     "gitlab_ci": {
-      "JOB_NAME": "foo",
-      "BUILD_NUMBER": "1074395"
+      "JOB_NAME": "jobName",
+      "BUILD_NUMBER": "22"
     }
   },
   "gitCommitInfo": {
     "body": "",
-    "hash": "099d228d1c5c868a9d1d3aafc69323f32e688c92",
+    "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     "author": {
-      "date": "1533699682",
+      "date": "1535946242",
       "name": "user",
-      "email": "user@github.com",
-      "relativeDate": "2 minutes ago"
+      "email": "user@domain",
+      "relativeDate": "32 hours ago"
     },
     "gitTag": "",
-    "gitUrl": "http://giturl",
-    "subject": "feat: fix title",
+    "gitUrl": "http://host/group/repo",
+    "subject": "git subject",
     "committer": {
-      "date": "1533699682",
+      "date": "1536061959",
       "name": "user",
-      "email": "user@github.com",
-      "relativeDate": "2 minutes ago"
+      "email": "user@domain",
+      "relativeDate": "5 minutes ago"
     },
-    "gitBranch": "feat/fix-top",
-    "gitRemote": "http://giturl.git",
-    "shortHash": "099d228",
-    "sanitizedSubject": "feat-fix-title"
+    "gitBranch": "feat/dev",
+    "gitRemote": "http://host/group/repo.git",
+    "shortHash": "ecb4bac",
+    "sanitizedSubject": "clean-up"
   }
 }

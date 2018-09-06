@@ -72,21 +72,40 @@ class BuildController extends Controller {
   }
 
   async queryByJobNameAndBuildNumber() {
-    const jobName = this.ctx.params.jobName;
-    const buildNumber = this.ctx.params.buildNumber;
-    const result = await this.ctx.model.Build.findOne({
+    const ctx = this.ctx;
+    const jobName = ctx.params.jobName;
+    const buildNumber = ctx.params.buildNumber;
+    const build = await ctx.model.Build.findOne({
       where: {
         jobName,
         buildNumber,
       },
     });
-    this.ctx.body = {
-      success: !!result,
-      message: '',
-      data: {
-        result,
-      },
-    };
+    if (!build) {
+      ctx.fail();
+      return;
+    }
+
+    const packages = ctx.app.safeGet(build, 'data.packages');
+    const result = build.get({ plain: true });
+    if (packages && packages.length) {
+      await Promise.all(packages.map(async (v, i) => {
+        const deploys = await build.getDeploys({
+          where: {
+            type: v.type,
+          },
+          order: [
+            [
+              'createdAt',
+              'DESC',
+            ],
+          ],
+        });
+        result.data.packages[i].deploys = deploys;
+      }));
+    }
+
+    ctx.success(result);
   }
 
   async queryAllLatest() {

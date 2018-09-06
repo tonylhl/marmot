@@ -18,9 +18,7 @@ module.exports = app => {
       defaultValue: UUIDV4,
       primaryKey: true,
     },
-  }, {
-    underscored: false,
-  });
+  }, { });
 
   return JobName;
 };
