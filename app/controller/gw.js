@@ -10,10 +10,15 @@ class GwController extends Controller {
   async index() {
     const ctx = this.ctx;
     const data = this.ctx.request.body;
-    const jobName = safeGet(data, 'environment.ci.JOB_NAME');
-    const buildNumber = safeGet(data, 'environment.ci.BUILD_NUMBER');
+    // TODO remove
+    const jobName = safeGet(data, 'environment.ci.JOB_NAME')
+      || safeGet(data, 'environment.jenkins.JOB_NAME')
+      || safeGet(data, 'environment.gitlab_ci.JOB_NAME');
+    const buildNumber = safeGet(data, 'environment.ci.BUILD_NUMBER')
+      || safeGet(data, 'environment.jenkins.BUILD_NUMBER')
+      || safeGet(data, 'environment.gitlab_ci.BUILD_NUMBER');
     if (!jobName || !buildNumber) {
-      ctx.fail('environment.{jenkins,gitlab_ci}.JOB_NAME and environment.{jenkins,gitlab_ci}.BUILD_NUMBER are required.');
+      ctx.fail('environment.ci.JOB_NAME and environment.ci.BUILD_NUMBER are required.');
       return;
     }
     const gitBranch = safeGet(data, 'gitCommitInfo.gitBranch');
