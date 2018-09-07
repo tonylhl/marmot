@@ -80,8 +80,8 @@ class AppController extends Controller {
         version: safeGet(data, 'data.packages[0].version'),
         size: safeGet(data, 'data.packages[0].size'),
         gitBranch: data.gitBranch,
-        extraInfo: safeGet(data, 'data.extraInfo'),
         gitCommitInfo: safeGet(data, 'data.gitCommitInfo'),
+        testInfo: safeGet(data, 'data.testInfo'),
         deploy: null,
         createdAt: data.createdAt,
       };
