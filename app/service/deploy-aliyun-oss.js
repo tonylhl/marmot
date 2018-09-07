@@ -48,7 +48,7 @@ module.exports = class deployAliyunOssService extends Service {
       try {
         const [ html, other ] = await marmotRelease.uploadPackage({
           source,
-          prefix: path.join(prefix, build.jobName),
+          prefix: '',
           acl,
           client: ossClient,
         });

@@ -55,7 +55,7 @@ module.exports = class deployAmazonS3 extends Service {
           clientType: 'AMAZON_S3',
           bucket,
           source,
-          prefix: path.join(prefix, build.jobName),
+          prefix: '',
           acl,
         });
         uploadResult = {
