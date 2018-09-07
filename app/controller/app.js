@@ -75,10 +75,16 @@ class AppController extends Controller {
 
     for (const build of buildList) {
       const data = build.get({ plain: true });
+      let size;
+      const packages = safeGet(data, 'data.packages') || [];
+      if (packages.length) {
+        const pkg = packages.find(i => i.type === type);
+        size = pkg && pkg.size;
+      }
       const appBuildData = {
         uniqId: data.uniqId,
         version: safeGet(data, 'data.packages[0].version'),
-        size: safeGet(data, 'data.packages[0].size'),
+        size,
         gitBranch: data.gitBranch,
         gitCommitInfo: safeGet(data, 'data.gitCommitInfo'),
         testInfo: safeGet(data, 'data.testInfo'),
