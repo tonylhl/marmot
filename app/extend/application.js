@@ -1,9 +1,14 @@
 'use strict';
 
 const get = require('lodash.get');
+const moment = require('moment');
 const crypto = require('crypto');
 
 module.exports = {
+  get moment() {
+    return moment;
+  },
+
   get safeGet() {
     return get;
   },

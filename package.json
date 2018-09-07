@@ -11,10 +11,11 @@
     "egg-scripts": "^2.5.0",
     "egg-sequelize": "^3.1.4",
     "egg-validate": "^1.0.0",
-    "marmot-dingtalk": "^1.0.9",
     "lodash.get": "^4.4.2",
+    "marmot-dingtalk": "^1.0.9",
     "marmot-release": "^1.1.0",
     "marmot-view": "^1.0.0",
+    "moment": "^2.22.2",
     "mysql2": "^1.5.3",
     "p-map": "^1.2.0",
     "sequelize-cli": "^4.1.1"

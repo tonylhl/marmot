@@ -2,7 +2,6 @@
 
 const path = require('path');
 const AWS = require('aws-sdk');
-const safeGet = require('lodash.get');
 const Service = require('egg').Service;
 const marmotRelease = require('marmot-release');
 
@@ -56,7 +55,7 @@ module.exports = class deployAmazonS3 extends Service {
           clientType: 'AMAZON_S3',
           bucket,
           source,
-          prefix,
+          prefix: path.join(prefix, build.jobName),
           acl,
         });
         uploadResult = {
@@ -69,8 +68,7 @@ module.exports = class deployAmazonS3 extends Service {
         success = false;
       }
     } else {
-      const appId = safeGet(build, 'data.extraInfo.appId');
-      const fileStorageKey = path.join(prefix, appId, `${path.basename(source)}`);
+      const fileStorageKey = path.join(prefix, build.jobName, `${path.basename(source)}`);
       const extname = path.extname(source);
 
       try {

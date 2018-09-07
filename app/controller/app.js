@@ -5,6 +5,8 @@ const {
 } = require('egg');
 const safeGet = require('lodash.get');
 
+const DEFAULT_BRANCH_QUERY_DAYS_RANGE = 30;
+
 class AppController extends Controller {
   async show() {
     const ctx = this.ctx;
@@ -27,9 +29,32 @@ class AppController extends Controller {
     }
     if (credential) queryOptions.credentialUniqId = credential.uniqId;
 
-    const buildList = await ctx.model.Build.findAll({
+    const Op = ctx.app.Sequelize.Op;
+    const branches = await ctx.model.Build.findAll({
       where: {
         appId,
+        createdAt: {
+          [Op.gte]: ctx.app.moment().subtract(DEFAULT_BRANCH_QUERY_DAYS_RANGE, 'days').toDate(),
+        },
+      },
+      attributes: [ 'gitBranch', 'uniqId', 'createdAt' ],
+      order: [[ 'createdAt', 'DESC' ]],
+    });
+    if (!branches.length) {
+      ctx.fail(`Branches for ${appId} not found.`);
+      return;
+    }
+    const uniqBranchMap = branches.reduce((map, branch) => {
+      if (!(map.has(branch.gitBranch))) map.set(branch.gitBranch, branch.uniqId);
+      return map;
+    }, new Map());
+    const buildUniqIds = Array.from(uniqBranchMap.values());
+
+    const buildList = await ctx.model.Build.findAll({
+      where: {
+        uniqId: {
+          [Op.in]: buildUniqIds,
+        },
       },
       order: [
         [
@@ -53,11 +78,12 @@ class AppController extends Controller {
       const appBuildData = {
         uniqId: data.uniqId,
         version: safeGet(data, 'data.packages[0].version'),
-        size: '',
+        size: safeGet(data, 'data.packages[0].size'),
         gitBranch: data.gitBranch,
         extraInfo: safeGet(data, 'data.extraInfo'),
         gitCommitInfo: safeGet(data, 'data.gitCommitInfo'),
         deploy: null,
+        createdAt: data.createdAt,
       };
       const deploys = await build.getDeploys({
         where: queryOptions,

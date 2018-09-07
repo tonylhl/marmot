@@ -8,17 +8,19 @@ const debug = require('debug')('marmot:controller:gw');
 
 class GwController extends Controller {
   async index() {
+    const ctx = this.ctx;
     const data = this.ctx.request.body;
-    let jobName;
-    let buildNumber;
-    try {
-      jobName = data.environment && data.environment.jenkins.JOB_NAME;
-      buildNumber = data.environment && data.environment.jenkins.BUILD_NUMBER;
-    } catch (_) {
-      this.ctx.body = {
-        success: false,
-        message: 'environment.jenkins.JOB_NAME and environment.jenkins.BUILD_NUMBER are required',
-      };
+    const jobName = safeGet(data, 'environment.jenkins.JOB_NAME')
+      || safeGet(data, 'environment.gitlab_ci.JOB_NAME');
+    const buildNumber = safeGet(data, 'environment.jenkins.BUILD_NUMBER')
+      || safeGet(data, 'environment.gitlab_ci.BUILD_NUMBER');
+    if (!jobName || !buildNumber) {
+      ctx.fail('environment.{jenkins,gitlab_ci}.JOB_NAME and environment.{jenkins,gitlab_ci}.BUILD_NUMBER are required.');
+      return;
+    }
+    const gitBranch = safeGet(data, 'gitCommitInfo.gitBranch');
+    if (!gitBranch) {
+      ctx.fail('gitCommitInfo.gitBranch is required.');
       return;
     }
     debug('jobName %s, buildNumber %s', jobName, buildNumber);
@@ -31,7 +33,6 @@ class GwController extends Controller {
       },
     });
     const appId = safeGet(data, 'extraInfo.appId') || '';
-    const gitBranch = data.gitCommitInfo.gitBranch;
     const createResult = await this.ctx.model.Build.create({
       buildNumber,
       jobName,
@@ -40,7 +41,7 @@ class GwController extends Controller {
       data,
     });
     await this.ctx.service.webhook.push(data);
-    this.ctx.success(createResult);
+    ctx.success(createResult);
   }
 }
 

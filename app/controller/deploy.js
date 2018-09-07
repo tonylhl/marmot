@@ -74,6 +74,7 @@ class DeployController extends Controller {
       credentialSecret,
       credentialUniqId,
     } = ctx.request.body;
+
     const acl = 'public-read';
     const credential = await ctx.service.credential.queryDecryptedCredentialByUniqId({
       uniqId: credentialUniqId,
@@ -89,13 +90,28 @@ class DeployController extends Controller {
       return;
     }
 
+    const lastDeployed = await ctx.model.Deploy.findOne({
+      where: {
+        type,
+        buildUniqId,
+        credentialUniqId,
+      },
+    });
+    if (lastDeployed && lastDeployed.state !== DEPLOY_FAIL) {
+      ctx.success({
+        deployUniqId: lastDeployed.uniqId,
+        uploadResult: lastDeployed.data,
+      });
+      return;
+    }
+
+
     const {
       provider,
       namespace,
     } = credential;
 
-    let prefix = ctx.request.body.prefix || '';
-    prefix = path.normalize(path.join(prefix, namespace)).replace(/^[\.\/]+/, '');
+    const prefix = path.normalize(namespace).replace(/^[\.\/]+/, '');
 
     const build = await ctx.model.Build.findOne({
       where: {

@@ -2,7 +2,6 @@
 
 const path = require('path');
 const OSS = require('ali-oss');
-const safeGet = require('lodash.get');
 const Service = require('egg').Service;
 const marmotRelease = require('marmot-release');
 
@@ -49,7 +48,7 @@ module.exports = class deployAliyunOssService extends Service {
       try {
         const [ html, other ] = await marmotRelease.uploadPackage({
           source,
-          prefix,
+          prefix: path.join(prefix, build.jobName),
           acl,
           client: ossClient,
         });
@@ -63,8 +62,7 @@ module.exports = class deployAliyunOssService extends Service {
         success = false;
       }
     } else {
-      const appId = safeGet(build, 'data.extraInfo.appId');
-      const fileStorageKey = path.join(prefix, appId, `${path.basename(source)}`);
+      const fileStorageKey = path.join(prefix, build.jobName, `${path.basename(source)}`);
       try {
         const res = await marmotRelease.uploadFile({
           client: ossClient,
