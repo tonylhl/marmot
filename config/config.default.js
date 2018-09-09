@@ -16,6 +16,12 @@ module.exports = appInfo => {
     'cors', 'errorHandler',
   ];
 
+  config.httpclient = {
+    request: {
+      timeout: 20 * 1000,
+    },
+  };
+
   config.modelQueryConfig = {
     pagination: {
       // default num
