@@ -20,7 +20,9 @@ module.exports = class WebHookService extends Service {
     } = globalConfig.data;
 
     try {
-      return await Promise.all(webhooks.map(webhook => DingTalk.call(this, webhook, data)));
+      return await Promise.all(webhooks
+        .filter(webhook => webhook.tag === 'build')
+        .map(webhook => DingTalk.call(this, webhook, data)));
     } catch (e) {
       ctx.logger.error(e);
     }
