@@ -15,11 +15,12 @@ class DelegateController extends Controller {
     const {
       webhook,
       text,
+      title,
     } = ctx.request.body;
 
     await sendMarkdown({
       webhook,
-      title: 'title',
+      title: title || 'title',
       text,
     });
 
