@@ -73,6 +73,7 @@ npm run dev
 ## test
 
 ```bash
-npm run test       # test migration then test web server
-npm run test-local # only test web server
+npm test  # test migration then test web server
+npm run test-local  # only test web server
+npm run cov  # test and output test coverage
 ```
