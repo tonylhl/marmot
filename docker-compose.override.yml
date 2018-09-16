@@ -15,7 +15,6 @@ services:
     environment:
       - MYSQL_HOST=mysql
       - MARMOT_HOST=127.0.0.1 # replace it with your hostname: MARMOT_HOST=example.com
-      - MARMOT_PORT=9900      # keep the same as ports' left number
   nginx:
     build: ./docker/marmot-nginx
     restart: always
@@ -27,7 +26,7 @@ services:
     image: macacajs/macaca-datahub
     restart: always
     volumes:
-      - $HOME/marmot_home/macaca-datahub:/root/.macaca-datahub
+      - $HOME/marmot_home/macaca-datahub/macaca-datahub.data:/root/.macaca-datahub/macaca-datahub.data
     ports:
       - "9930:9200"
       - "9300:9300"
