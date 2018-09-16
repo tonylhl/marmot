@@ -14,5 +14,6 @@ const restore = async () => {
     }
   });
 }
-before(restore)
-afterEach(restore);
+beforeEach(restore) // left last commit
+// before(restore)
+// afterEach(restore);

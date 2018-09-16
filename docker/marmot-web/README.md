@@ -51,6 +51,21 @@ $ docker push marmotjs/marmot-web
 
 ## development
 
+start mysql:
+
+```bash
+# start
+$ docker run --rm --name marmot-mysql \
+  -p 3306:3306 \
+  -v $HOME/marmot_home/mysql_data:/var/lib/mysql \
+  -d marmotjs/marmot-mysql
+
+# stop
+$ docker stop marmot-mysql
+```
+
+start server:
+
 ```bash
 npm run dev
 ```
@@ -58,5 +73,7 @@ npm run dev
 ## test
 
 ```bash
-env 'CI_ACCESSKEYID=[key]' 'CI_ACCESSKEYSECRET=[key]' npm run test-local
+npm test  # test migration then test web server
+npm run test-local  # only test web server
+npm run cov  # test and output test coverage
 ```
