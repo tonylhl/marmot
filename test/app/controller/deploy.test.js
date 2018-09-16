@@ -10,9 +10,10 @@ const marmotRelease = require('marmot-release');
 describe('test/app/controller/deploy.test.js', () => {
 
   let buildUniqId;
+  let credentialUniqId;
 
   beforeEach(async () => {
-    const res = await app.model.Build.create({
+    let res = await app.model.Build.create({
       jobName: 'jobName',
       buildNumber: 'buildNumber-deploy-test',
       gitBranch: 'master',
@@ -20,11 +21,27 @@ describe('test/app/controller/deploy.test.js', () => {
         packages: [
           {
             path: 'http://a.tgz',
+            size: '200',
+            type: 'dev',
           },
         ],
       },
     });
     buildUniqId = res.get('uniqId');
+
+    res = await app.model.Credential.create({
+      provider: 'ALIYUN_OSS',
+      bucketTag: 'dev',
+      region: 'region',
+      bucket: 'bucket',
+      namespace: 'namespace',
+      accessKeyId: 'accessKeyId',
+      accessKeySecret: 'accessKeySecret',
+    });
+    credentialUniqId = res.get('uniqId');
+    app.mockService('credential', 'decrypt', function() {
+      return 'thekey-therest';
+    });
   });
 
   it('GET /api/deploy query deploy success', async () => {
@@ -37,45 +54,44 @@ describe('test/app/controller/deploy.test.js', () => {
     assert.deepStrictEqual(emptyDeployResult, {
       message: '',
       success: true,
-      data: {},
+      data: [],
     });
 
     // deploy twice
     await app.httpRequest()
       .post('/api/deploy')
       .send({
-        prefix: 'prefix-1st',
-        region: 'region',
-        accessKeyId: 'accessKeyId',
-        accessKeySecret: 'accessKeySecret',
-        bucket: 'bucket',
+        type: 'dev',
         buildUniqId,
-        acl: 'default',
+        credentialSecret: 'thekey',
+        credentialUniqId,
       });
     await app.httpRequest()
       .post('/api/deploy')
       .send({
-        prefix: 'prefix-2nd',
-        region: 'region',
-        accessKeyId: 'accessKeyId',
-        accessKeySecret: 'accessKeySecret',
-        bucket: 'bucket',
+        type: 'dev',
         buildUniqId,
-        acl: 'default',
+        credentialSecret: 'thekey',
+        credentialUniqId,
       });
-    // return latest deploy result
+    // return one deploy result
     const { body } = await app.httpRequest()
       .get(`/api/deploy?buildUniqId=${buildUniqId}`);
     assert(body.success);
     assert(body.message === '');
-    assert(body.data.build.jobName === 'jobName');
-    assert(body.data.build.buildNumber === 'buildNumber-deploy-test');
-    assert(body.data.build.gitBranch === 'master');
-    assert(body.data.build.uniqId === buildUniqId);
-    assert(body.data.deploy.length === 1);
-    assert(body.data.deploy[0].source === 'http://a.tgz');
-    assert.deepStrictEqual(body.data.deploy[0].data, {
+    assert(body.data[0].source === 'http://a.tgz');
+    assert(body.data[0].prefix === 'namespace');
+    assert(body.data[0].acl === 'public-read');
+    assert(body.data[0].type === 'dev');
+    assert(body.data[0].state === 'SUCCESS');
+    assert.deepStrictEqual(body.data[0].data, {
       html: [], other: [],
+    });
+    assert(body.data[0].uniqId);
+    assert(body.data[0].buildUniqId === buildUniqId);
+    assert(body.data[0].credentialUniqId === credentialUniqId);
+    assert.deepStrictEqual(body.data[0].credential, {
+      bucketTag: 'dev', bucket: 'bucket',
     });
   });
 
@@ -87,25 +103,24 @@ describe('test/app/controller/deploy.test.js', () => {
     const { body: deployRes } = await app.httpRequest()
       .post('/api/deploy')
       .send({
-        prefix: 'prefix',
-        region: 'region',
-        accessKeyId: 'accessKeyId',
-        accessKeySecret: 'accessKeySecret',
-        bucket: 'bucket',
+        type: 'dev',
         buildUniqId,
-        acl: 'default',
+        credentialSecret: 'thekey',
+        credentialUniqId,
       });
     const { deployUniqId } = deployRes.data;
     assert(deployRes.success);
     assert(deployRes.message === '');
     assert(deployRes.data.deployUniqId);
-    assert.deepStrictEqual(deployRes.data.html, []);
-    assert.deepStrictEqual(deployRes.data.other, []);
+    assert.deepStrictEqual(deployRes.data.uploadResult.html, []);
+    assert.deepStrictEqual(deployRes.data.uploadResult.other, []);
 
     const { body } = await app.httpRequest()
       .get(`/api/deploy/${deployUniqId}`);
     assert(body.success);
     assert(body.message === '');
+    assert(body.data.deploy.uniqId);
+    assert(body.data.deploy.createdAt);
     assert.deepStrictEqual(body.data.deploy.data.html, []);
     assert.deepStrictEqual(body.data.deploy.data.other, []);
   });
@@ -118,36 +133,29 @@ describe('test/app/controller/deploy.test.js', () => {
     const { header, body } = await app.httpRequest()
       .post('/api/deploy')
       .send({
-        prefix: 'prefix',
-        region: 'region',
-        accessKeyId: 'accessKeyId',
-        accessKeySecret: 'accessKeySecret',
-        bucket: 'bucket',
-        acl: 'default',
+        type: 'dev',
         buildUniqId,
+        credentialSecret: 'thekey',
+        credentialUniqId,
       });
     assert(header['content-type'] === 'application/json; charset=utf-8');
     assert(body.success);
     assert(body.message === '');
-    assert.deepStrictEqual(body.data.html, []);
-    assert.deepStrictEqual(body.data.other, []);
+    assert.deepStrictEqual(body.data.uploadResult.html, []);
+    assert.deepStrictEqual(body.data.uploadResult.other, []);
   });
 
   it('POST /api/deploy validate error', async () => {
     const { header, body } = await app.httpRequest()
       .post('/api/deploy')
       .send({
-        prefix: 'prefix',
-        region: 'region',
-        accessKeyId: null,
-        accessKeySecret: null,
-        bucket: 'bucket',
-        acl: 'default',
+        type: 'dev',
         buildUniqId,
+        credentialUniqId,
       });
     assert(header['content-type'] === 'application/json; charset=utf-8');
     assert(!body.succcess);
-    assert(body.message === 'Validation Failed');
+    assert(body.message === 'Validation Failed, credentialSecret: required');
   });
 
 });

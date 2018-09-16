@@ -37,15 +37,12 @@
       "platform": "linux",
       "nodeVersion": "v8.11.4"
     },
-    "jenkins": {
+    "ci": {
+      "RUNNER_TYPE": "GITLAB_CI",
       "JOB_NAME": "jobName",
       "BUILD_NUMBER": "11"
     },
-    "platform": "web",
-    "gitlab_ci": {
-      "JOB_NAME": "jobName",
-      "BUILD_NUMBER": "22"
-    }
+    "platform": "web"
   },
   "gitCommitInfo": {
     "body": "",

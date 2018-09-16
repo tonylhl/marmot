@@ -58,7 +58,8 @@ describe('test/app/controller/build.test.js', function() {
   it('GET /api/build/:jobName query by jobName', async () => {
     await insertData({
       environment: {
-        jenkins: {
+        ci: {
+          RUNNER_TYPE: 'GITLAB_CI',
           JOB_NAME: 'android_app',
           BUILD_NUMBER: '1',
         },
@@ -72,7 +73,8 @@ describe('test/app/controller/build.test.js', function() {
 
     await insertData({
       environment: {
-        jenkins: {
+        ci: {
+          RUNNER_TYPE: 'GITLAB_CI',
           JOB_NAME: 'ios_app',
           BUILD_NUMBER: '1',
         },
@@ -101,7 +103,8 @@ describe('test/app/controller/build.test.js', function() {
   it('GET /api/build/:jobName/:buildNumber query by jobName and buildNumber', async () => {
     await insertData({
       environment: {
-        jenkins: {
+        ci: {
+          RUNNER_TYPE: 'GITLAB_CI',
           JOB_NAME: 'android_app',
           BUILD_NUMBER: '1',
         },
@@ -115,7 +118,8 @@ describe('test/app/controller/build.test.js', function() {
 
     await insertData({
       environment: {
-        jenkins: {
+        ci: {
+          RUNNER_TYPE: 'GITLAB_CI',
           JOB_NAME: 'ios_app',
           BUILD_NUMBER: '1',
         },
@@ -131,17 +135,18 @@ describe('test/app/controller/build.test.js', function() {
       .get('/api/build/ios_app/1');
     assert(body.success === true);
     assert(body.message === '');
-    assert(body.data.result.jobName === 'ios_app');
-    assert(body.data.result.buildNumber === '1');
-    assert(typeof body.data.result.data === 'object');
-    assert(body.data.result.uniqId);
-    assert(body.data.result.createdAt);
+    assert(body.data.jobName === 'ios_app');
+    assert(body.data.buildNumber === '1');
+    assert(typeof body.data.data === 'object');
+    assert(body.data.uniqId);
+    assert(body.data.createdAt);
   });
 
   it('GET /api/latestBuild/ query all latest build', async () => {
     await insertData({
       environment: {
-        jenkins: {
+        ci: {
+          RUNNER_TYPE: 'GITLAB_CI',
           JOB_NAME: 'android_app',
           BUILD_NUMBER: '1',
         },
@@ -155,7 +160,8 @@ describe('test/app/controller/build.test.js', function() {
 
     await insertData({
       environment: {
-        jenkins: {
+        ci: {
+          RUNNER_TYPE: 'GITLAB_CI',
           JOB_NAME: 'ios_app',
           BUILD_NUMBER: '1',
         },
@@ -208,7 +214,6 @@ describe('test/app/controller/build.test.js', function() {
       .get('/api/latestBuild/web_app/master');
     assert(body.success === true);
     assert(body.message === '');
-    console.log(body.data.result);
     assert(body.data.result[0].jobName === 'web_app');
     assert(body.data.result[0].buildNumber === '20');
   });
