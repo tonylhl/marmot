@@ -239,7 +239,7 @@ describe('test/app/controller/build.test.js', function() {
       },
     });
 
-    await app.delay(100);
+    await app.delay(1000);
 
     const { body: { data: { uniqId: buildUniqId } } } = await insertData({
       gitCommitInfo: {

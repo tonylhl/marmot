@@ -3,7 +3,7 @@
 const crypto = require('crypto');
 const { assert, app } = require('egg-mock/bootstrap');
 
-describe.only('test/app/service/credential.test.js', () => {
+describe('test/app/service/credential.test.js', () => {
   let ctx;
 
   beforeEach(async () => {
@@ -41,7 +41,7 @@ describe.only('test/app/service/credential.test.js', () => {
       accessKeyId: 'key',
       accessKeySecret: 'secret',
     });
-    await app.delay(100);
+    await app.delay(1000);
     await ctx.service.credential.createCredential({
       provider: 'AMAZON_S3',
       bucketTag: 'tag2',
