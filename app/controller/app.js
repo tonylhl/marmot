@@ -88,6 +88,7 @@ class AppController extends Controller {
         gitBranch: data.gitBranch,
         gitCommitInfo: safeGet(data, 'data.gitCommitInfo'),
         testInfo: safeGet(data, 'data.testInfo'),
+        extendInfo: data.extendInfo,
         deploy: null,
         createdAt: data.createdAt,
       };
@@ -107,7 +108,7 @@ class AppController extends Controller {
     }
 
     ctx.success({
-      appId: safeGet(latestBuild, 'data.extraInfo.appId'),
+      appId: latestBuild.appId,
       gitRepo: safeGet(latestBuild, 'data.gitCommitInfo.gitUrl'),
       builds,
     });

@@ -29,8 +29,8 @@ describe('test/app/controller/gw.test.js', () => {
     const data = body.data;
     assert(data.uniqId);
     assert.deepStrictEqual(data.data, postData);
-    assert(data.buildNumber === '1074395');
-    assert(data.jobName === 'foo');
+    assert(data.buildNumber === '11');
+    assert(data.jobName === 'jobName');
   });
 
   it('POST /api/gw error', async () => {
@@ -39,6 +39,6 @@ describe('test/app/controller/gw.test.js', () => {
       .send(Object.assign({}, postData, { environment: {} }));
     assert(header['content-type'] === 'application/json; charset=utf-8');
     assert(body.success === false);
-    assert(body.message === 'environment.jenkins.JOB_NAME and environment.jenkins.BUILD_NUMBER are required');
+    assert(body.message === 'environment.ci.JOB_NAME and environment.ci.BUILD_NUMBER are required.');
   });
 });

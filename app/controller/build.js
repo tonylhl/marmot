@@ -4,6 +4,10 @@ const {
   Controller,
 } = require('egg');
 
+const UPDATE_FIELDS = [
+  'extendInfo',
+];
+
 class BuildController extends Controller {
   async queryAll() {
     const page = Number(this.ctx.query.page) || 1;
@@ -160,6 +164,63 @@ class BuildController extends Controller {
     this.ctx.success({
       result,
     });
+  }
+
+  async update() {
+    const ctx = this.ctx;
+    const uniqId = ctx.params.uniqId;
+
+    const requestData = ctx.request.body;
+    const payload = {};
+    for (const key of UPDATE_FIELDS) {
+      if (!(key in requestData)) continue;
+      payload[key] = requestData[key];
+    }
+    const res = await ctx.service.build.updateBuild({
+      uniqId,
+      payload,
+    });
+    ctx.success(res);
+  }
+
+  async patch() {
+    const ctx = this.ctx;
+    const uniqId = ctx.params.uniqId;
+
+    const requestData = ctx.request.body;
+    const currentData = await ctx.service.build.queryBuildByUniqId({
+      uniqId,
+    });
+
+    const payload = {};
+    for (const key of UPDATE_FIELDS) {
+      if (!(key in requestData)) continue;
+      const currentValue = currentData[key];
+      if (!currentValue) {
+        payload[key] = requestData[key];
+        continue;
+      }
+      if (Array.isArray(currentValue)) {
+        payload[key] = [
+          ...currentValue,
+          ...requestData[key],
+        ];
+        continue;
+      }
+      if (typeof currentValue === 'object') {
+        payload[key] = Object.assign({},
+          currentValue,
+          requestData[key]
+        );
+        continue;
+      }
+      payload[key] = requestData[key];
+    }
+    const res = await ctx.service.build.updateBuild({
+      uniqId,
+      payload,
+    });
+    ctx.success(res);
   }
 }
 

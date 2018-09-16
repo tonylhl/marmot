@@ -18,6 +18,9 @@ module.exports = app => {
   router.get('/api/latestBuild', controller.build.queryAllLatest);
   router.get('/api/latestBuild/:jobName/:gitBranch+', controller.build.queryLatestByJobNameAndGitBranch);
 
+  router.put('/api/build/:uniqId', controller.build.update);
+  router.patch('/api/build/:uniqId', controller.build.patch);
+
   // config
   router.get('/api/config', controller.config.show);
   router.post('/api/config', controller.config.update);

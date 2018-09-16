@@ -8,7 +8,7 @@ const {
 const postData = require('../../fixtures/post-gw.json');
 
 async function insertData(customData = {}) {
-  await app.httpRequest()
+  return await app.httpRequest()
     .post('/api/gw')
     .send(Object.assign({}, postData, customData));
 }
@@ -58,7 +58,8 @@ describe('test/app/controller/build.test.js', function() {
   it('GET /api/build/:jobName query by jobName', async () => {
     await insertData({
       environment: {
-        jenkins: {
+        ci: {
+          RUNNER_TYPE: 'GITLAB_CI',
           JOB_NAME: 'android_app',
           BUILD_NUMBER: '1',
         },
@@ -72,7 +73,8 @@ describe('test/app/controller/build.test.js', function() {
 
     await insertData({
       environment: {
-        jenkins: {
+        ci: {
+          RUNNER_TYPE: 'GITLAB_CI',
           JOB_NAME: 'ios_app',
           BUILD_NUMBER: '1',
         },
@@ -101,7 +103,8 @@ describe('test/app/controller/build.test.js', function() {
   it('GET /api/build/:jobName/:buildNumber query by jobName and buildNumber', async () => {
     await insertData({
       environment: {
-        jenkins: {
+        ci: {
+          RUNNER_TYPE: 'GITLAB_CI',
           JOB_NAME: 'android_app',
           BUILD_NUMBER: '1',
         },
@@ -115,7 +118,8 @@ describe('test/app/controller/build.test.js', function() {
 
     await insertData({
       environment: {
-        jenkins: {
+        ci: {
+          RUNNER_TYPE: 'GITLAB_CI',
           JOB_NAME: 'ios_app',
           BUILD_NUMBER: '1',
         },
@@ -131,17 +135,18 @@ describe('test/app/controller/build.test.js', function() {
       .get('/api/build/ios_app/1');
     assert(body.success === true);
     assert(body.message === '');
-    assert(body.data.result.jobName === 'ios_app');
-    assert(body.data.result.buildNumber === '1');
-    assert(typeof body.data.result.data === 'object');
-    assert(body.data.result.uniqId);
-    assert(body.data.result.createdAt);
+    assert(body.data.jobName === 'ios_app');
+    assert(body.data.buildNumber === '1');
+    assert(typeof body.data.data === 'object');
+    assert(body.data.uniqId);
+    assert(body.data.createdAt);
   });
 
   it('GET /api/latestBuild/ query all latest build', async () => {
     await insertData({
       environment: {
-        jenkins: {
+        ci: {
+          RUNNER_TYPE: 'GITLAB_CI',
           JOB_NAME: 'android_app',
           BUILD_NUMBER: '1',
         },
@@ -155,7 +160,8 @@ describe('test/app/controller/build.test.js', function() {
 
     await insertData({
       environment: {
-        jenkins: {
+        ci: {
+          RUNNER_TYPE: 'GITLAB_CI',
           JOB_NAME: 'ios_app',
           BUILD_NUMBER: '1',
         },
@@ -208,8 +214,69 @@ describe('test/app/controller/build.test.js', function() {
       .get('/api/latestBuild/web_app/master');
     assert(body.success === true);
     assert(body.message === '');
-    console.log(body.data.result);
     assert(body.data.result[0].jobName === 'web_app');
     assert(body.data.result[0].buildNumber === '20');
+  });
+
+  it('POST /api/build/:uniqId update build extendInfo', async () => {
+    const appId = 'APP_ONE';
+    await app.model.Credential.create({
+      provider: 'ALIYUN_OSS',
+      bucketTag: 'dev',
+      region: 'region',
+      bucket: 'bucket',
+      namespace: 'namespace',
+      accessKeyId: 'accessKeyId',
+      accessKeySecret: 'accessKeySecret',
+    });
+    await insertData({
+      gitCommitInfo: {
+        gitBranch: 'feat/one',
+        gitUrl: 'http://domain/url/one',
+      },
+      extraInfo: {
+        appId,
+      },
+    });
+
+    await app.delay(500);
+
+    const { body: { data: { uniqId: buildUniqId } } } = await insertData({
+      gitCommitInfo: {
+        gitBranch: 'feat/two',
+        gitUrl: 'http://domain/url/two',
+      },
+      extraInfo: {
+        appId,
+      },
+    });
+    await ctx.model.JobName.bulkCreate([{
+      jobName: 'android',
+    }, {
+      jobName: 'ios',
+    }]);
+    const { body: updateRes } = await app.httpRequest()
+      .put(`/api/build/${buildUniqId}`)
+      .send({
+        extendInfo: {
+          key: 'value',
+        },
+      });
+    assert.deepStrictEqual(updateRes, {
+      success: true,
+      message: '',
+      data: [ 1 ],
+    });
+    const { body: queryResult } = await app.httpRequest()
+      .get(`/api/app/${appId}?bucketTag=dev&type=type1`);
+    assert(queryResult.success);
+    assert(queryResult.message === '');
+    assert(queryResult.data.appId === appId);
+    assert(queryResult.data.gitRepo === 'http://domain/url/two');
+    assert(queryResult.data.builds.length === 2);
+    assert.deepStrictEqual(queryResult.data.builds[0].extendInfo, {
+      key: 'value',
+    });
+    assert.deepStrictEqual(queryResult.data.builds[1].extendInfo, {});
   });
 });

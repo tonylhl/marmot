@@ -27,6 +27,10 @@ module.exports = app => {
       defaultValue: UUIDV4,
       primaryKey: true,
     },
+    extendInfo: {
+      type: JSON,
+      defaultValue: {},
+    },
   }, { });
 
   Build.associate = () => {
