@@ -176,6 +176,13 @@ class BuildController extends Controller {
       if (!(key in requestData)) continue;
       payload[key] = requestData[key];
     }
+    const queryRes = await ctx.service.build.queryBuildByUniqId({
+      uniqId,
+    });
+    if (!queryRes) {
+      ctx.fail('build record not found.');
+      return;
+    }
     const res = await ctx.service.build.updateBuild({
       uniqId,
       payload,
@@ -191,6 +198,10 @@ class BuildController extends Controller {
     const currentData = await ctx.service.build.queryBuildByUniqId({
       uniqId,
     });
+    if (!currentData) {
+      ctx.fail('build record not found.');
+      return;
+    }
 
     const payload = {};
     for (const key of UPDATE_FIELDS) {
