@@ -73,5 +73,6 @@ npm run dev
 ## test
 
 ```bash
-env 'CI_ACCESSKEYID=[key]' 'CI_ACCESSKEYSECRET=[key]' npm run test-local
+npm run test       // test migration then test web server
+npm run test-local // only test web server
 ```
