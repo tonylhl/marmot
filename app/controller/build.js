@@ -183,6 +183,10 @@ class BuildController extends Controller {
       ctx.fail('build record not found.');
       return;
     }
+    if (!Object.keys(payload).length) {
+      ctx.fail('invalid params.');
+      return;
+    }
     const res = await ctx.service.build.updateBuild({
       uniqId,
       payload,
@@ -226,6 +230,10 @@ class BuildController extends Controller {
         continue;
       }
       payload[key] = requestData[key];
+    }
+    if (!Object.keys(payload).length) {
+      ctx.fail('invalid params.');
+      return;
     }
     const res = await ctx.service.build.updateBuild({
       uniqId,
