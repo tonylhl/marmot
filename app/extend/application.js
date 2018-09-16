@@ -18,5 +18,9 @@ module.exports = {
       .update(string, 'utf8')
       .digest('hex');
   },
+
+  delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  },
 };
 

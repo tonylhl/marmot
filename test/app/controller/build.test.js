@@ -8,7 +8,7 @@ const {
 const postData = require('../../fixtures/post-gw.json');
 
 async function insertData(customData = {}) {
-  await app.httpRequest()
+  return await app.httpRequest()
     .post('/api/gw')
     .send(Object.assign({}, postData, customData));
 }
@@ -216,5 +216,67 @@ describe('test/app/controller/build.test.js', function() {
     assert(body.message === '');
     assert(body.data.result[0].jobName === 'web_app');
     assert(body.data.result[0].buildNumber === '20');
+  });
+
+  it('POST /api/build/:uniqId update build extendInfo', async () => {
+    const appId = 'APP_ONE';
+    await app.model.Credential.create({
+      provider: 'ALIYUN_OSS',
+      bucketTag: 'dev',
+      region: 'region',
+      bucket: 'bucket',
+      namespace: 'namespace',
+      accessKeyId: 'accessKeyId',
+      accessKeySecret: 'accessKeySecret',
+    });
+    await insertData({
+      gitCommitInfo: {
+        gitBranch: 'feat/one',
+        gitUrl: 'http://domain/url/one',
+      },
+      extraInfo: {
+        appId,
+      },
+    });
+
+    await app.delay(500);
+
+    const { body: { data: { uniqId: buildUniqId } } } = await insertData({
+      gitCommitInfo: {
+        gitBranch: 'feat/two',
+        gitUrl: 'http://domain/url/two',
+      },
+      extraInfo: {
+        appId,
+      },
+    });
+    await ctx.model.JobName.bulkCreate([{
+      jobName: 'android',
+    }, {
+      jobName: 'ios',
+    }]);
+    const { body: updateRes } = await app.httpRequest()
+      .put(`/api/build/${buildUniqId}`)
+      .send({
+        extendInfo: {
+          key: 'value',
+        },
+      });
+    assert.deepStrictEqual(updateRes, {
+      success: true,
+      message: '',
+      data: [ 1 ],
+    });
+    const { body: queryResult } = await app.httpRequest()
+      .get(`/api/app/${appId}?bucketTag=dev&type=type1`);
+    assert(queryResult.success);
+    assert(queryResult.message === '');
+    assert(queryResult.data.appId === appId);
+    assert(queryResult.data.gitRepo === 'http://domain/url/two');
+    assert(queryResult.data.builds.length === 2);
+    assert.deepStrictEqual(queryResult.data.builds[0].extendInfo, {
+      key: 'value',
+    });
+    assert.deepStrictEqual(queryResult.data.builds[1].extendInfo, {});
   });
 });

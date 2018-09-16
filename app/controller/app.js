@@ -108,7 +108,7 @@ class AppController extends Controller {
     }
 
     ctx.success({
-      appId: safeGet(latestBuild, 'data.extraInfo.appId'),
+      appId: latestBuild.appId,
       gitRepo: safeGet(latestBuild, 'data.gitCommitInfo.gitUrl'),
       builds,
     });
