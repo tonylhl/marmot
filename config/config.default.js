@@ -42,6 +42,7 @@ module.exports = appInfo => {
 
   config.marmotView = {
     serverUrl: '',
+    marmotHost,
     assetsUrl: `//${marmotViewHost}/marmot-view@${marmotViewVersion}`,
     jenkinsUrl: `//${jenkinsHost}:9910`,
     staticUrl: `//${staticHost}:9920`,
