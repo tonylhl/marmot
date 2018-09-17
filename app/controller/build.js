@@ -191,6 +191,20 @@ class BuildController extends Controller {
       uniqId,
       payload,
     });
+    const detailUrl = `http://${ctx.app.config.marmotView.marmotHost}/buildinfo?jobName=${queryRes.jobName}&buildNumber=${queryRes.buildNumber}`;
+    await ctx.service.webhook.sendMarkdown({
+      tag: 'build',
+      title: 'Build info has changed',
+      text: [
+        `# ${queryRes.appId} build info changed`,
+        `> Git branch: **${queryRes.gitBranch}**`,
+        '> Details:',
+        '```json',
+        `${JSON.stringify(payload, null, 2)}`,
+        '```',
+        `[check detail now](${detailUrl})`,
+      ],
+    });
     ctx.success(res);
   }
 

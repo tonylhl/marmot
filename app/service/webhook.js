@@ -7,6 +7,22 @@ const DingTalk = require('marmot-dingtalk');
 
 /* istanbul ignore next */
 module.exports = class WebHookService extends Service {
+  async sendMarkdown({ tag, title = 'title', text }) {
+    const globalConfig = await this.ctx.model.Config.findOne();
+    const {
+      webhooks = [],
+    } = globalConfig.data;
+    const targets = webhooks.filter(i => i.tag === tag);
+    await Promise.all(targets.map(async target => {
+      await DingTalk.sendMarkdown({
+        webhook: {
+          url: target.url,
+        },
+        title,
+        text,
+      });
+    }));
+  }
   async push(data = {}) {
     const ctx = this.ctx;
     // get all webhooks
