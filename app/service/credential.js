@@ -80,6 +80,34 @@ module.exports = class CredentialService extends Service {
     };
   }
 
+  async validateInputCredential({
+    uniqId,
+    inputAccessKeyId,
+    inputAccessKeySecret,
+  }) {
+    const credential = await this.queryDecryptedCredentialByUniqId({ uniqId });
+    if (!credential) {
+      return {
+        success: false,
+        message: 'Credential not found.',
+      };
+    }
+    const {
+      accessKeyId,
+      accessKeySecret,
+    } = credential;
+    if (inputAccessKeyId === accessKeyId &&
+      inputAccessKeySecret === accessKeySecret) {
+      return {
+        success: true,
+      };
+    }
+    return {
+      success: false,
+      message: 'AccessId or secretKey not matched',
+    };
+  }
+
   async createCredential({
     provider,
     bucketTag,

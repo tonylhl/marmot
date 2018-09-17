@@ -73,6 +73,29 @@ class CredentialController extends Controller {
   async delete() {
     const ctx = this.ctx;
     const uniqId = ctx.params.uniqId;
+    ctx.validate({
+      inputAccessKeyId: { type: 'string' },
+      inputAccessKeySecret: {
+        type: 'string',
+        required: false,
+        allowEmpty: true,
+      },
+    }, ctx.query);
+    const {
+      inputAccessKeyId,
+      inputAccessKeySecret,
+    } = ctx.query;
+    const validateResult = await ctx.service.credential.validateInputCredential({
+      uniqId,
+      inputAccessKeyId,
+      inputAccessKeySecret,
+    });
+    if (!validateResult.success) {
+      ctx.fail(validateResult.message
+        ? `Permission deny. ${validateResult.message}`
+        : 'Permission deny');
+      return;
+    }
     const res = await ctx.service.credential.deleteCredentialByUniqId({
       uniqId,
     });
