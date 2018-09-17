@@ -220,6 +220,9 @@ describe('test/app/controller/build.test.js', function() {
 
   it('POST /api/build/:uniqId update build extendInfo', async () => {
     const appId = 'APP_ONE';
+    await app.model.Config.create({
+      data: {},
+    });
     await app.model.Credential.create({
       provider: 'ALIYUN_OSS',
       bucketTag: 'dev',
