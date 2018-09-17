@@ -52,8 +52,6 @@ describe('test/app/service/credential.test.js', () => {
       accessKeySecret: 'secret2',
     });
     const res = await ctx.service.credential.queryAllCredentials();
-    assert(res[0] instanceof ctx.model.Credential);
-    assert(res[1] instanceof ctx.model.Credential);
     assert(res[0].provider === 'ALIYUN_OSS');
     assert(res[0].bucketTag === 'tag1');
     assert(res[0].region === 'region');
