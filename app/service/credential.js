@@ -13,7 +13,8 @@ module.exports = class CredentialService extends Service {
   }
 
   async queryAllCredentials(selector = {}) {
-    return await this.ctx.model.Credential.findAll({
+    const res = [];
+    const queryResult = await this.ctx.model.Credential.findAll({
       ...selector,
       order: [
         [
@@ -24,10 +25,16 @@ module.exports = class CredentialService extends Service {
       attributes: {
         exclude: [
           'accessKeyId',
-          'accessKeySecret',
         ],
       },
     });
+    for (const record of queryResult) {
+      const data = record.get({ plain: true });
+      data.authType = record.getAuthType();
+      res.push(data);
+      delete data.accessKeySecret;
+    }
+    return res;
   }
 
   async queryCredentialByUniqId({ uniqId }) {
@@ -89,7 +96,9 @@ module.exports = class CredentialService extends Service {
       bucket,
       namespace,
       accessKeyId: this.encrypt(accessKeyId),
-      accessKeySecret: this.encrypt(accessKeySecret),
+      accessKeySecret: accessKeySecret
+        ? this.encrypt(accessKeySecret)
+        : '',
     });
   }
 

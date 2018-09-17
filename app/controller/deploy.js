@@ -85,7 +85,9 @@ class DeployController extends Controller {
       return;
     }
 
-    if (credentialSecret !== credential.accessKeySecret.substr(0, 6)) {
+    // only if credentialSecret is saved
+    const accessKeySecretSaved = credential.accessKeySecret !== '';
+    if (accessKeySecretSaved && credentialSecret !== credential.accessKeySecret.substr(0, 6)) {
       ctx.fail('Secret error.');
       return;
     }
@@ -97,7 +99,7 @@ class DeployController extends Controller {
         credentialUniqId,
       },
     });
-    if (lastDeployed && lastDeployed.state !== DEPLOY_FAIL) {
+    if (lastDeployed && lastDeployed.state === DEPLOY_SUCCESS) {
       ctx.success({
         deployUniqId: lastDeployed.uniqId,
         uploadResult: lastDeployed.data,
@@ -165,6 +167,8 @@ class DeployController extends Controller {
           build,
           source,
           credential,
+          accessKeySecretSaved,
+          inputCredentialSecret: credentialSecret,
           prefix,
           acl,
         });
@@ -181,6 +185,8 @@ class DeployController extends Controller {
           build,
           source,
           credential,
+          accessKeySecretSaved,
+          inputCredentialSecret: credentialSecret,
           prefix,
           acl,
         });

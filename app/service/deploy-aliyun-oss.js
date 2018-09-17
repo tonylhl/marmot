@@ -11,6 +11,8 @@ module.exports = class deployAliyunOssService extends Service {
     build,
     source,
     credential,
+    accessKeySecretSaved,
+    inputCredentialSecret,
     prefix,
     acl,
   }) {
@@ -19,8 +21,13 @@ module.exports = class deployAliyunOssService extends Service {
       region,
       bucket,
       accessKeyId,
-      accessKeySecret,
     } = credential;
+
+    let accessKeySecret = credential.accessKeySecret;
+    if (!accessKeySecretSaved) {
+      accessKeySecret = inputCredentialSecret;
+    }
+
     const timeout = 120 * 1000;
 
     ctx.logger.info(`[deploy to oss start] ${source}`);

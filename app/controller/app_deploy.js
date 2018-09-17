@@ -37,6 +37,10 @@ module.exports = class AppDeployController extends Controller {
     const credential = await ctx.service.credential.queryDecryptedCredentialByUniqId({
       uniqId: credentialData.uniqId,
     });
+    if (credential.accessKeySecret) {
+      ctx.fail(`SecretKey for ${bucketTag} not set.`);
+      return;
+    }
     const build = await ctx.model.Build.findOne({
       where: {
         uniqId,
