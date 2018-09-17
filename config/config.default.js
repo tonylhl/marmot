@@ -35,13 +35,14 @@ module.exports = appInfo => {
 
   const marmotHost = process.env.MARMOT_HOST || '127.0.0.1';
   const marmotViewHost = process.env.MARMOT_VIEW_HOST || 'unpkg.com';
+  const marmotViewVersion = process.env.MARMOT_VIEW_VERSION || 2;
   const jenkinsHost = process.env.JENKINS_HOST || marmotHost;
   const staticHost = process.env.STATIC_HOST || marmotHost;
   const dataHubHost = process.env.DATAHUB_HOST || marmotHost;
 
   config.marmotView = {
     serverUrl: '',
-    assetsUrl: `//${marmotViewHost}/marmot-view@2`,
+    assetsUrl: `//${marmotViewHost}/marmot-view@${marmotViewVersion}`,
     jenkinsUrl: `//${jenkinsHost}:9910`,
     staticUrl: `//${staticHost}:9920`,
     datahubUrl: `//${dataHubHost}:9930`,

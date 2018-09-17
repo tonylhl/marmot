@@ -28,7 +28,7 @@ class CredentialController extends Controller {
       bucket: { type: 'string' },
       namespace: { type: 'string' },
       accessKeyId: { type: 'string' },
-      accessKeySecret: { type: 'string' },
+      accessKeySecret: { type: 'string', required: false },
     });
 
     const {

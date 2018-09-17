@@ -11,6 +11,8 @@ module.exports = class deployAmazonS3 extends Service {
     build,
     source,
     credential,
+    accessKeySecretSaved,
+    inputCredentialSecret,
     prefix,
     acl,
   }) {
@@ -19,8 +21,12 @@ module.exports = class deployAmazonS3 extends Service {
       region,
       bucket,
       accessKeyId,
-      accessKeySecret,
     } = credential;
+
+    let accessKeySecret = credential.accessKeySecret;
+    if (!accessKeySecretSaved) {
+      accessKeySecret = inputCredentialSecret;
+    }
 
     ctx.logger.info(`[deploy to s3 start] ${source}`);
 
@@ -34,6 +40,9 @@ module.exports = class deployAmazonS3 extends Service {
         accessKeyId,
         secretAccessKey: accessKeySecret, // aliyun to aws style
         region,
+        httpOptions: {
+          timeout: 20 * 1000,
+        },
       });
       s3Client = new AWS.S3({
         apiVersion: '2006-03-01',

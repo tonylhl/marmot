@@ -40,5 +40,10 @@ module.exports = app => {
     },
   }, { });
 
+  Credential.prototype.getAuthType = function() {
+    if (this.get('accessKeySecret')) return 'FIRST_SIX';
+    return 'FULL';
+  };
+
   return Credential;
 };
