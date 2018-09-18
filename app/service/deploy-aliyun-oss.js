@@ -11,7 +11,7 @@ module.exports = class deployAliyunOssService extends Service {
     build,
     source,
     credential,
-    accessKeySecretSaved,
+    accessKeySecretSaved = true,
     inputCredentialSecret,
     prefix,
     acl,
