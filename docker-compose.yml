@@ -26,7 +26,7 @@ services:
     image: macacajs/macaca-datahub
     restart: always
     volumes:
-      - $HOME/marmot_home/macaca-datahub/macaca-datahub.data:/root/.macaca-datahub/macaca-datahub.data
+      - $HOME/marmot_home/macaca-datahub:/root/.macaca-datahub
     ports:
       - "9930:9200"
       - "9300:9300"
