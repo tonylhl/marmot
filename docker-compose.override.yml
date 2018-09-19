@@ -11,7 +11,7 @@ services:
     depends_on:
       - mysql
     ports:
-      - "9900:9900"
+      - "80:9900"
     environment:
       - MYSQL_HOST=mysql
       - MARMOT_HOST=127.0.0.1 # replace it with your hostname: MARMOT_HOST=example.com
