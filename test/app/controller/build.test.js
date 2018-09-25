@@ -134,7 +134,6 @@ describe('test/app/controller/build.test.js', function() {
     const { body } = await app.httpRequest()
       .get('/api/build/ios_app/1');
     assert(body.success === true);
-    assert(body.message === '');
     assert(body.data.jobName === 'ios_app');
     assert(body.data.buildNumber === '1');
     assert(typeof body.data.data === 'object');
@@ -213,7 +212,6 @@ describe('test/app/controller/build.test.js', function() {
     const { body } = await app.httpRequest()
       .get('/api/latestBuild/web_app/master');
     assert(body.success === true);
-    assert(body.message === '');
     assert(body.data.result[0].jobName === 'web_app');
     assert(body.data.result[0].buildNumber === '20');
   });
@@ -267,13 +265,11 @@ describe('test/app/controller/build.test.js', function() {
       });
     assert.deepStrictEqual(updateRes, {
       success: true,
-      message: '',
       data: [ 1 ],
     });
     const { body: queryResult } = await app.httpRequest()
       .get(`/api/app/${appId}?bucketTag=dev&type=type1`);
     assert(queryResult.success);
-    assert(queryResult.message === '');
     assert(queryResult.data.appId === appId);
     assert(queryResult.data.gitRepo === 'http://domain/url/two');
     assert(queryResult.data.builds.length === 2);

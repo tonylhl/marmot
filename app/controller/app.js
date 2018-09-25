@@ -24,7 +24,7 @@ class AppController extends Controller {
       },
     });
     if (!credential) {
-      ctx.fail(`Deploy bucket for ${bucketTag} not found.`);
+      ctx.fail('ERR_MARMOT_BUCKET_TAG_NOT_FOUND', `Bucket for ${bucketTag} not found.`);
       return;
     }
     if (credential) queryOptions.credentialUniqId = credential.uniqId;
@@ -41,7 +41,7 @@ class AppController extends Controller {
       order: [[ 'createdAt', 'DESC' ]],
     });
     if (!branches.length) {
-      ctx.fail(`Branches for ${appId} not found.`);
+      ctx.fail('ERR_MARMOT_BRANCH_RECORD_NOT_FOUND', `Branches for ${appId} not found.`);
       return;
     }
     const uniqBranchMap = branches.reduce((map, branch) => {
@@ -65,7 +65,7 @@ class AppController extends Controller {
     });
 
     if (!buildList.length) {
-      ctx.fail(`Build records for ${appId} not found.`);
+      ctx.fail('ERR_MARMOT_BUILD_RECORD_NOT_FOUND', `Build records for ${appId} not found.`);
       return;
     }
 

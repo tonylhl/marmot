@@ -52,7 +52,6 @@ describe('test/app/controller/deploy.test.js', () => {
     const { body: emptyDeployResult } = await app.httpRequest()
       .get('/api/deploy');
     assert.deepStrictEqual(emptyDeployResult, {
-      message: '',
       success: true,
       data: [],
     });
@@ -78,7 +77,6 @@ describe('test/app/controller/deploy.test.js', () => {
     const { body } = await app.httpRequest()
       .get(`/api/deploy?buildUniqId=${buildUniqId}`);
     assert(body.success);
-    assert(body.message === '');
     assert(body.data[0].source === 'http://a.tgz');
     assert(body.data[0].prefix === 'namespace');
     assert(body.data[0].acl === 'public-read');
@@ -110,7 +108,6 @@ describe('test/app/controller/deploy.test.js', () => {
       });
     const { deployUniqId } = deployRes.data;
     assert(deployRes.success);
-    assert(deployRes.message === '');
     assert(deployRes.data.deployUniqId);
     assert.deepStrictEqual(deployRes.data.uploadResult.html, []);
     assert.deepStrictEqual(deployRes.data.uploadResult.other, []);
@@ -118,7 +115,6 @@ describe('test/app/controller/deploy.test.js', () => {
     const { body } = await app.httpRequest()
       .get(`/api/deploy/${deployUniqId}`);
     assert(body.success);
-    assert(body.message === '');
     assert(body.data.deploy.uniqId);
     assert(body.data.deploy.createdAt);
     assert.deepStrictEqual(body.data.deploy.data.html, []);
@@ -140,7 +136,6 @@ describe('test/app/controller/deploy.test.js', () => {
       });
     assert(header['content-type'] === 'application/json; charset=utf-8');
     assert(body.success);
-    assert(body.message === '');
     assert.deepStrictEqual(body.data.uploadResult.html, []);
     assert.deepStrictEqual(body.data.uploadResult.other, []);
   });
