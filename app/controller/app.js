@@ -4,6 +4,7 @@ const {
   Controller,
 } = require('egg');
 const safeGet = require('lodash.get');
+const querystring = require('querystring');
 
 const DEFAULT_BRANCH_QUERY_DAYS_RANGE = 30;
 
@@ -88,9 +89,12 @@ class AppController extends Controller {
         gitBranch: data.gitBranch,
         gitCommitInfo: safeGet(data, 'data.gitCommitInfo'),
         testInfo: safeGet(data, 'data.testInfo'),
-        extraInfo: data.extendInfo || {},
         extendInfo: data.extendInfo || {},
         deploy: null,
+        marmotDeployUrl: `http://${ctx.app.config.marmotView.marmotHost}/buildinfo?${querystring.stringify({
+          jobName: data.jobName,
+          buildNumber: data.buildNumber,
+        })}`,
         createdAt: data.createdAt,
       };
       const deploys = await build.getDeploys({
