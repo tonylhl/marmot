@@ -25,7 +25,6 @@ describe('test/app/controller/gw.test.js', () => {
       .send(postData);
     assert(header['content-type'] === 'application/json; charset=utf-8');
     assert(body.success);
-    assert(body.message === '');
     const data = body.data;
     assert(data.uniqId);
     assert.deepStrictEqual(data.data, postData);

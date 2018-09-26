@@ -81,14 +81,14 @@ class DeployController extends Controller {
     });
 
     if (!credential) {
-      ctx.fail('Bucket config not found.');
+      ctx.fail('ERR_MARMOT_BUCKET_BY_UNIQID_NOT_FOUND');
       return;
     }
 
     // only if credentialSecret is saved
     const accessKeySecretSaved = credential.accessKeySecret !== '';
     if (accessKeySecretSaved && credentialSecret !== credential.accessKeySecret.substr(0, 6)) {
-      ctx.fail('Secret error.');
+      ctx.fail('ERR_MARMOT_BUCKET_SECRET_INCORRECT');
       return;
     }
 
@@ -124,7 +124,7 @@ class DeployController extends Controller {
     const source = await build.getReleasePath(type);
 
     if (!source) {
-      ctx.fail('build resource not found!');
+      ctx.fail('ERR_MARMOT_DEPLOY_TYPE_NOT_FOUND');
       return;
     }
 
@@ -153,7 +153,7 @@ class DeployController extends Controller {
     } catch (err) {
       ctx.logger.error(err);
       await transaction.rollback();
-      ctx.fail(err.message);
+      ctx.fail('ERR_MARMOT_DEPLOY_FAILED', err.message);
       return;
     }
     await transaction.commit();
@@ -207,7 +207,7 @@ class DeployController extends Controller {
       deploy.update({
         state: DEPLOY_FAIL,
       });
-      ctx.fail(deployFailReason);
+      ctx.fail('ERR_MARMOT_DEPLOY_FAILED', deployFailReason);
       return;
     }
 

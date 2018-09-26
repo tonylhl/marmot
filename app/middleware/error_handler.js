@@ -14,12 +14,11 @@ module.exports = () => {
 
       if (e.code === 'invalid_param') {
         message += `, ${e.errors.map(e => `${e.field}: ${e.message}`).join(', ')}`;
+        ctx.fail('ERR_MARMOT_INVALID_PARAM_ERROR', message);
+        return;
       }
 
-      ctx.body = {
-        success: false,
-        message: `${message}`,
-      };
+      ctx.fail('ERR_MARMOT_INTERNAL_SERVER_ERROR', message);
     }
   };
 };

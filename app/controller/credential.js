@@ -91,9 +91,9 @@ class CredentialController extends Controller {
       inputAccessKeySecret,
     });
     if (!validateResult.success) {
-      ctx.fail(validateResult.message
-        ? `Permission deny. ${validateResult.message}`
-        : 'Permission deny');
+      ctx.fail('ERR_MARMOT_BUCKET_SECRET_INCORRECT', validateResult.message
+        ? `Permission denied, ${validateResult.message}`
+        : 'Permission denied.');
       return;
     }
     const res = await ctx.service.credential.deleteCredentialByUniqId({
@@ -103,7 +103,7 @@ class CredentialController extends Controller {
       ctx.success(res);
       return;
     }
-    ctx.fail();
+    ctx.fail('ERR_MARMOT_INTERNAL_SERVER_ERROR', 'Can not delete credential.');
   }
 }
 

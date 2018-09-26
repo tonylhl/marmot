@@ -86,7 +86,7 @@ class BuildController extends Controller {
       },
     });
     if (!build) {
-      ctx.fail();
+      ctx.fail('ERR_MARMOT_BUILD_RECORD_NOT_FOUND');
       return;
     }
 
@@ -180,11 +180,11 @@ class BuildController extends Controller {
       uniqId,
     });
     if (!queryRes) {
-      ctx.fail('build record not found.');
+      ctx.fail('ERR_MARMOT_BUILD_RECORD_NOT_FOUND');
       return;
     }
     if (!Object.keys(payload).length) {
-      ctx.fail('invalid params.');
+      ctx.fail('ERR_MARMOT_INVALID_PARAM_ERROR');
       return;
     }
     const res = await ctx.service.build.updateBuild({
@@ -217,7 +217,7 @@ class BuildController extends Controller {
       uniqId,
     });
     if (!currentData) {
-      ctx.fail('build record not found.');
+      ctx.fail('ERR_MARMOT_BUILD_RECORD_NOT_FOUND');
       return;
     }
 
@@ -246,7 +246,7 @@ class BuildController extends Controller {
       payload[key] = requestData[key];
     }
     if (!Object.keys(payload).length) {
-      ctx.fail('invalid params.');
+      ctx.fail('ERR_MARMOT_INVALID_PARAM_ERROR');
       return;
     }
     const res = await ctx.service.build.updateBuild({

@@ -1,10 +1,15 @@
 'use strict';
 
-const get = require('lodash.get');
 const moment = require('moment');
 const crypto = require('crypto');
+const get = require('lodash.get');
+const errors = require('../common/error');
 
 module.exports = {
+  get errors() {
+    return errors;
+  },
+
   get moment() {
     return moment;
   },

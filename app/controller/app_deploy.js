@@ -31,14 +31,14 @@ module.exports = class AppDeployController extends Controller {
       },
     });
     if (!credentialData) {
-      ctx.fail(`Bucket for ${bucketTag} not found.`);
+      ctx.fail('ERR_MARMOT_BUCKET_TAG_NOT_FOUND', `Bucket for ${bucketTag} not found.`);
       return;
     }
     const credential = await ctx.service.credential.queryDecryptedCredentialByUniqId({
       uniqId: credentialData.uniqId,
     });
     if (!credential.accessKeySecret) {
-      ctx.fail(`SecretKey for ${bucketTag} not set.`);
+      ctx.fail('ERR_MARMOT_BUCKET_SECRETKEY_NOT_SET', `SecretKey for ${bucketTag} not set.`);
       return;
     }
     const build = await ctx.model.Build.findOne({
@@ -47,7 +47,7 @@ module.exports = class AppDeployController extends Controller {
       },
     });
     if (!build) {
-      ctx.fail(`Build record for ${build} not found.`);
+      ctx.fail('ERR_MARMOT_BUILD_RECORD_NOT_FOUND', `Build record for ${build} not found.`);
       return;
     }
 
@@ -62,7 +62,7 @@ module.exports = class AppDeployController extends Controller {
     const source = await build.getReleasePath(type);
 
     if (!source) {
-      ctx.fail(`Release type '${type}' of build ${uniqId} not found.`);
+      ctx.fail('ERR_MARMOT_DEPLOY_TYPE_NOT_FOUND', `Release type '${type}' of build ${uniqId} not found.`);
       return;
     }
     let deploy;
@@ -91,7 +91,7 @@ module.exports = class AppDeployController extends Controller {
     } catch (err) {
       ctx.logger.error(err);
       await transaction.rollback();
-      ctx.fail(err.message);
+      ctx.fail('ERR_MARMOT_DEPLOY_FAILED', err.message);
       return;
     }
     await transaction.commit();
@@ -141,7 +141,7 @@ module.exports = class AppDeployController extends Controller {
       deploy.update({
         state: DEPLOY_FAIL,
       });
-      ctx.fail(deployFailReason);
+      ctx.fail('ERR_MARMOT_DEPLOY_FAILED', deployFailReason);
       return;
     }
 
@@ -151,7 +151,7 @@ module.exports = class AppDeployController extends Controller {
     });
     const url = ctx.app.safeGet(uploadResult, 'other[0].url');
     if (!url) {
-      ctx.fail('Deploy failed: can\'t deploy resource.');
+      ctx.fail('ERR_MARMOT_DEPLOY_FAILED', 'Deploy failed: can\'t deploy resource.');
       return;
     }
     ctx.success({

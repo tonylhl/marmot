@@ -18,12 +18,12 @@ class GwController extends Controller {
       || safeGet(data, 'environment.jenkins.BUILD_NUMBER')
       || safeGet(data, 'environment.gitlab_ci.BUILD_NUMBER');
     if (!jobName || !buildNumber) {
-      ctx.fail('environment.ci.JOB_NAME and environment.ci.BUILD_NUMBER are required.');
+      ctx.fail('ERR_MARMOT_INVALID_PARAM_ERROR', 'environment.ci.JOB_NAME and environment.ci.BUILD_NUMBER are required.');
       return;
     }
     const gitBranch = safeGet(data, 'gitCommitInfo.gitBranch');
     if (!gitBranch) {
-      ctx.fail('gitCommitInfo.gitBranch is required.');
+      ctx.fail('ERR_MARMOT_INVALID_PARAM_ERROR', 'gitCommitInfo.gitBranch is required.');
       return;
     }
     debug('jobName %s, buildNumber %s', jobName, buildNumber);

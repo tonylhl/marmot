@@ -4,6 +4,7 @@ const {
   Controller,
 } = require('egg');
 const safeGet = require('lodash.get');
+const querystring = require('querystring');
 
 const DEFAULT_BRANCH_QUERY_DAYS_RANGE = 30;
 
@@ -24,7 +25,7 @@ class AppController extends Controller {
       },
     });
     if (!credential) {
-      ctx.fail(`Deploy bucket for ${bucketTag} not found.`);
+      ctx.fail('ERR_MARMOT_BUCKET_TAG_NOT_FOUND', `Bucket for ${bucketTag} not found.`);
       return;
     }
     if (credential) queryOptions.credentialUniqId = credential.uniqId;
@@ -41,7 +42,7 @@ class AppController extends Controller {
       order: [[ 'createdAt', 'DESC' ]],
     });
     if (!branches.length) {
-      ctx.fail(`Branches for ${appId} not found.`);
+      ctx.fail('ERR_MARMOT_BRANCH_RECORD_NOT_FOUND', `Branches for ${appId} not found.`);
       return;
     }
     const uniqBranchMap = branches.reduce((map, branch) => {
@@ -65,7 +66,7 @@ class AppController extends Controller {
     });
 
     if (!buildList.length) {
-      ctx.fail(`Build records for ${appId} not found.`);
+      ctx.fail('ERR_MARMOT_BUILD_RECORD_NOT_FOUND', `Build records for ${appId} not found.`);
       return;
     }
 
@@ -91,6 +92,10 @@ class AppController extends Controller {
         extraInfo: data.extendInfo || {},
         extendInfo: data.extendInfo || {},
         deploy: null,
+        marmotDeployUrl: `http://${ctx.app.config.marmotView.marmotHost}/buildinfo?${querystring.stringify({
+          jobName: data.jobName,
+          buildNumber: data.buildNumber,
+        })}`,
         createdAt: data.createdAt,
       };
       const deploys = await build.getDeploys({
