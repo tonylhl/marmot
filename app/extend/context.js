@@ -12,7 +12,10 @@ module.exports = {
 
   fail(errorCode = defaultErrorCode, message = '') {
     const errors = this.app.errors;
-    const defaultMessage = errors.get(defaultErrorCode);
+    if (!errors.has(errorCode)) {
+      errorCode = defaultErrorCode;
+    }
+    const defaultMessage = errors.get(errorCode).message;
     this.body = {
       success: false,
       errorCode,

@@ -76,6 +76,7 @@ module.exports = class deployAliyunOssService extends Service {
           targetPath: fileStorageKey,
           source,
           acl,
+          retryTimes: ctx.app.config.deployConfig.deployRetryTimes,
         });
         uploadResult = {
           other: [ res ],

@@ -141,7 +141,7 @@ module.exports = class AppDeployController extends Controller {
       deploy.update({
         state: DEPLOY_FAIL,
       });
-      ctx.fail(deployFailReason);
+      ctx.fail('ERR_MARMOT_DEPLOY_FAILED', deployFailReason);
       return;
     }
 

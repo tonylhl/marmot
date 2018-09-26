@@ -89,6 +89,7 @@ module.exports = class deployAmazonS3 extends Service {
           targetPath: fileStorageKey,
           extname,
           acl,
+          retryTimes: ctx.app.config.deployConfig.deployRetryTimes,
         });
         uploadResult = {
           other: [ res ],
