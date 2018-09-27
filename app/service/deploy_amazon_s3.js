@@ -2,8 +2,10 @@
 
 const path = require('path');
 const AWS = require('aws-sdk');
+const proxy = require('proxy-agent');
 const Service = require('egg').Service;
 const marmotRelease = require('marmot-release');
+const debug = require('debug')('marmot:service:aws_s3');
 
 module.exports = class deployAmazonS3 extends Service {
 
@@ -36,14 +38,22 @@ module.exports = class deployAmazonS3 extends Service {
     let s3Client;
 
     try {
-      AWS.config.update({
+      const config = {
         accessKeyId,
         secretAccessKey: accessKeySecret, // aliyun to aws style
         region,
         httpOptions: {
           timeout: 20 * 1000,
         },
-      });
+      };
+      if (ctx.app.config.marmotRelease.AWS_S3.sslDisabled) {
+        config.sslEnabled = false;
+      }
+      if (ctx.app.config.marmotRelease.AWS_S3.proxyUri) {
+        config.httpOptions.agent = proxy(ctx.app.config.marmotRelease.AWS_S3.proxyUri);
+      }
+      debug('aws config %o', config);
+      AWS.config.update(config);
       s3Client = new AWS.S3({
         apiVersion: '2006-03-01',
       });

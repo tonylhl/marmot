@@ -9,6 +9,7 @@
 - [部署](./docs)
 - [命令行客户端](//github.com/macacajs/marmot-cli)
 - [View 模块](//github.com/macacajs/marmot-view)
+- [开发 marmot](./docker/marmot-web#development)
 
 ## 关于名字
 

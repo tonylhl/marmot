@@ -15,6 +15,8 @@
 
 should launch `marmot-mysql` service first.
 
+[available environment variable](./#environment-variable)
+
 ```bash
 $ docker run --rm --name marmot-web \
   -p 9900:9900 \
@@ -77,3 +79,13 @@ npm test  # test migration then test web server
 npm run test-local  # only test web server
 npm run cov  # test and output test coverage
 ```
+
+## environment-variable
+
+variable name   | description                                   | default value
+---             | ---                                           | ---
+MYSQL_HOST      | mysql server ip                               | 127.0.0.1
+MYSQL_PORT      | mysql port                                    | 3306
+MARMOT_HOST     | used for notification message template        | 127.0.0.1
+AWS_DISABLE_SSL | set sslEnabled:false for aws sdk              | false
+AWS_PROXY_URI   | use proxy-agent and set proxy uri for asw sdk | null

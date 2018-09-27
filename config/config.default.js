@@ -64,6 +64,14 @@ module.exports = appInfo => {
     },
   };
 
+  config.marmotRelease = {
+    AWS_S3: {
+      sslDisabled: process.env.AWS_DISABLE_SSL || false,
+      // proxyUri: 'http://ip:host';
+      proxyUri: process.env.AWS_PROXY_URI || null,
+    },
+  };
+
   config.sequelize = dbConfig.development;
 
   return config;
