@@ -15,7 +15,7 @@
 
 should launch `marmot-mysql` service first.
 
-[available environment variable](./#build-image)
+[available environment variable](./#environment-variable)
 
 ```bash
 $ docker run --rm --name marmot-web \
@@ -80,7 +80,7 @@ npm run test-local  # only test web server
 npm run cov  # test and output test coverage
 ```
 
-## environment variable
+## environment-variable
 
 variable name   | description                                   | default value
 ---             | ---                                           | ---
