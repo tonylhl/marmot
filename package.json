@@ -18,6 +18,7 @@
     "moment": "^2.22.2",
     "mysql2": "^1.5.3",
     "p-map": "^1.2.0",
+    "proxy-agent": "^3.0.3",
     "sequelize-cli": "^4.1.1"
   },
   "devDependencies": {
