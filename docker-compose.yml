@@ -19,7 +19,7 @@ services:
     image: marmotjs/marmot-nginx
     restart: always
     volumes:
-      - $HOME/marmot_home/static:/usr/share/nginx/html:ro
+      - $HOME/marmot_home/static:/usr/share/nginx/html
     ports:
       - "9920:80"
   datahub:
