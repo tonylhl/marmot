@@ -3,6 +3,7 @@
 const path = require('path');
 const OSS = require('ali-oss');
 const Service = require('egg').Service;
+const debug = require('debug')('marmot:service:deploy_aliyun_oss');
 const marmotRelease = require('marmot-release');
 
 module.exports = class deployAliyunOssService extends Service {
@@ -35,7 +36,22 @@ module.exports = class deployAliyunOssService extends Service {
     let message = '';
     let uploadResult = {};
     let ossClient;
+    const useDefaultAcl = ctx.app.config.marmotRelease.ALIYUN_OSS.useDefaultAcl;
     try {
+      debug('deploy %o', {
+        source,
+        accessKeySecretSaved,
+        inputCredentialSecret,
+        region,
+        accessKeyId,
+        accessKeySecret,
+        bucket,
+        timeout,
+        prefix,
+        acl,
+        useDefaultAcl,
+      });
+      if (useDefaultAcl) acl = 'default';
       ossClient = new OSS({
         region,
         accessKeyId,

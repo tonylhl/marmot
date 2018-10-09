@@ -65,10 +65,13 @@ module.exports = appInfo => {
   };
 
   config.marmotRelease = {
-    AWS_S3: {
+    AMAZON_S3: {
       sslDisabled: process.env.AWS_DISABLE_SSL || false,
       // proxyUri: 'http://ip:host';
       proxyUri: process.env.AWS_PROXY_URI || null,
+    },
+    ALIYUN_OSS: {
+      useDefaultAcl: process.env.ALIYUN_USE_DEFAULT_ACL || false,
     },
   };
 

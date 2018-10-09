@@ -5,7 +5,7 @@ const AWS = require('aws-sdk');
 const proxy = require('proxy-agent');
 const Service = require('egg').Service;
 const marmotRelease = require('marmot-release');
-const debug = require('debug')('marmot:service:aws_s3');
+const debug = require('debug')('marmot:service:amazon_s3');
 
 module.exports = class deployAmazonS3 extends Service {
 
@@ -46,11 +46,11 @@ module.exports = class deployAmazonS3 extends Service {
           timeout: 20 * 1000,
         },
       };
-      if (ctx.app.config.marmotRelease.AWS_S3.sslDisabled) {
+      if (ctx.app.config.marmotRelease.AMAZON_S3.sslDisabled) {
         config.sslEnabled = false;
       }
-      if (ctx.app.config.marmotRelease.AWS_S3.proxyUri) {
-        config.httpOptions.agent = proxy(ctx.app.config.marmotRelease.AWS_S3.proxyUri);
+      if (ctx.app.config.marmotRelease.AMAZON_S3.proxyUri) {
+        config.httpOptions.agent = proxy(ctx.app.config.marmotRelease.AMAZON_S3.proxyUri);
       }
       debug('aws config %o', config);
       AWS.config.update(config);
