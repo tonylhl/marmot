@@ -82,10 +82,14 @@ npm run cov  # test and output test coverage
 
 ## environment-variable
 
-variable name   | description                                   | default value
----             | ---                                           | ---
-MYSQL_HOST      | mysql server ip                               | 127.0.0.1
-MYSQL_PORT      | mysql port                                    | 3306
-MARMOT_HOST     | used for notification message template        | 127.0.0.1
-AWS_DISABLE_SSL | set sslEnabled:false for aws sdk              | false
-AWS_PROXY_URI   | use proxy-agent and set proxy uri for asw sdk | null
+variable name             | description                                   | default value
+---                       | ---                                           | ---
+MYSQL_HOST                | mysql server ip                               | 127.0.0.1
+MYSQL_PORT                | mysql port                                    | 3306
+MARMOT_HOST               | used for notification message template        | 127.0.0.1
+MARMOT_DEPLOY_RETRY_TIMES | deploy retry time                             | 3
+ALIYUN_USE_DEFAULT_ACL    | set acl:default for aliyun                    | false
+ALIYUN_PROXY_URI          | proxy uri for aliyun                          | null
+ALIYUN_TIMEOUT            | timeout aliyun                                | 60 * 1000 (ms)
+AWS_DISABLE_SSL           | set sslEnabled:false for aws sdk              | false
+AWS_PROXY_URI             | use proxy-agent and set proxy uri for asw sdk | null

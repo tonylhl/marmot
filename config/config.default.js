@@ -16,12 +16,6 @@ module.exports = appInfo => {
     'cors', 'errorHandler',
   ];
 
-  config.httpclient = {
-    request: {
-      timeout: 20 * 1000,
-    },
-  };
-
   let deployRetryTimes = isNaN(process.env.MARMOT_DEPLOY_RETRY_TIMES) ? 3 : Number(process.env.MARMOT_DEPLOY_RETRY_TIMES);
   if (deployRetryTimes > 10) deployRetryTimes = 10;
   config.deployConfig = {
@@ -72,6 +66,9 @@ module.exports = appInfo => {
     },
     ALIYUN_OSS: {
       useDefaultAcl: process.env.ALIYUN_USE_DEFAULT_ACL || false,
+      // proxyUri: 'http://ip:host';
+      proxyUri: process.env.ALIYUN_PROXY_URI || null,
+      timeout: process.env.ALIYUN_TIMEOUT || 60 * 1000,
     },
   };
 

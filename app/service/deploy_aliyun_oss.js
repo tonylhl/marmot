@@ -2,6 +2,7 @@
 
 const path = require('path');
 const OSS = require('ali-oss');
+const proxy = require('proxy-agent');
 const Service = require('egg').Service;
 const debug = require('debug')('marmot:service:deploy_aliyun_oss');
 const marmotRelease = require('marmot-release');
@@ -29,7 +30,7 @@ module.exports = class deployAliyunOssService extends Service {
       accessKeySecret = inputCredentialSecret;
     }
 
-    const timeout = 120 * 1000;
+    const timeout = ctx.app.config.marmotRelease.ALIYUN_OSS.timeout;
 
     ctx.logger.info(`[deploy to oss start] ${source}`);
     let success = true;
@@ -38,7 +39,7 @@ module.exports = class deployAliyunOssService extends Service {
     let ossClient;
     const useDefaultAcl = ctx.app.config.marmotRelease.ALIYUN_OSS.useDefaultAcl;
     try {
-      debug('deploy %o', {
+      debug({
         source,
         accessKeySecretSaved,
         inputCredentialSecret,
@@ -52,14 +53,17 @@ module.exports = class deployAliyunOssService extends Service {
         useDefaultAcl,
       });
       if (useDefaultAcl) acl = 'default';
-      ossClient = new OSS({
+      const opts = {
         region,
         accessKeyId,
         accessKeySecret,
         bucket,
         timeout,
-        urllib: this.app.httpclient,
-      });
+      };
+      if (ctx.app.config.marmotRelease.ALIYUN_OSS.proxyUri) {
+        opts.agent = proxy(ctx.app.config.marmotRelease.ALIYUN_OSS.proxyUri);
+      }
+      ossClient = new OSS(opts);
     } catch (e) {
       ctx.logger.error(`[deploy to oss fail] ${e}`);
       return {
