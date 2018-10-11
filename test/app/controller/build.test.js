@@ -267,15 +267,5 @@ describe('test/app/controller/build.test.js', function() {
       success: true,
       data: [ 1 ],
     });
-    const { body: queryResult } = await app.httpRequest()
-      .get(`/api/app/${appId}?bucketTag=dev&type=type1`);
-    assert(queryResult.success);
-    assert(queryResult.data.appId === appId);
-    assert(queryResult.data.gitRepo === 'http://domain/url/two');
-    assert(queryResult.data.builds.length === 2);
-    assert.deepStrictEqual(queryResult.data.builds[0].extendInfo, {
-      key: 'value',
-    });
-    assert.deepStrictEqual(queryResult.data.builds[1].extendInfo, {});
   });
 });

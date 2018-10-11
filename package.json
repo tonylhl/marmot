@@ -44,6 +44,7 @@
     "debug": "egg-bin debug",
     "test": "npm run db:prepare:test && npm run lint && npm run test-local",
     "test-local": "egg-bin test",
+    "test-debug": "cross-env DEBUG=marmot* egg-bin test",
     "cov": "npm run db:prepare:test && egg-bin cov",
     "lint": "eslint . --fix",
     "ci": "npm run lint && npm run cov",
