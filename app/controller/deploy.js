@@ -71,6 +71,7 @@ class DeployController extends Controller {
       credentialSecret,
       credentialUniqId,
     } = ctx.request.body;
+    debug(ctx.request.body);
 
     const acl = 'public-read';
     const credential = await ctx.service.credential.queryDecryptedCredentialByUniqId({
