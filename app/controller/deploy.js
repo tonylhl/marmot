@@ -5,6 +5,8 @@ const {
   Controller,
 } = require('egg');
 
+const debug = require('debug')('marmot:controller:deploy');
+
 const DEPLOY_INIT = 'INIT';
 const DEPLOY_SUCCESS = 'SUCCESS';
 const DEPLOY_FAIL = 'FAIL';
@@ -28,14 +30,9 @@ class DeployController extends Controller {
       ],
       include: [{
         model: ctx.model.Credential,
-        attributes: [ 'bucketTag', 'bucket' ],
+        attributes: [ 'bucketTag', 'bucket', 'customDomain', 'customDomainProtocal' ],
       }],
     });
-
-    for (const deploy of deploys) {
-      const credential = deploy.getCredential();
-      deploy.credential = credential;
-    }
 
     ctx.success(deploys);
     return;
@@ -74,6 +71,7 @@ class DeployController extends Controller {
       credentialSecret,
       credentialUniqId,
     } = ctx.request.body;
+    debug(ctx.request.body);
 
     const acl = 'public-read';
     const credential = await ctx.service.credential.queryDecryptedCredentialByUniqId({

@@ -72,6 +72,18 @@ start server:
 npm run dev
 ```
 
+insert seed data:
+
+```bash
+npm run db:seed:all
+```
+
+remove seed data:
+
+```bash
+npm run db:seed:undo:all
+```
+
 ## test
 
 ```bash

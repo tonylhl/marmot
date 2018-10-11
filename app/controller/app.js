@@ -3,8 +3,10 @@
 const {
   Controller,
 } = require('egg');
+const urlParser = require('url');
 const safeGet = require('lodash.get');
 const querystring = require('querystring');
+const debug = require('debug')('marmot:controller:app');
 
 const DEFAULT_BRANCH_QUERY_DAYS_RANGE = 30;
 
@@ -15,6 +17,7 @@ class AppController extends Controller {
       bucketTag: { type: 'string' },
       type: { type: 'string' },
     }, ctx.query);
+    debug(ctx.query);
 
     const appId = ctx.params.appId;
     const { bucketTag, type } = ctx.query;
@@ -28,7 +31,8 @@ class AppController extends Controller {
       ctx.fail('ERR_MARMOT_BUCKET_TAG_NOT_FOUND', `Bucket for ${bucketTag} not found.`);
       return;
     }
-    if (credential) queryOptions.credentialUniqId = credential.uniqId;
+    debug(credential.dataValues);
+    queryOptions.credentialUniqId = credential.uniqId;
 
     const Op = ctx.app.Sequelize.Op;
     const branches = await ctx.model.Build.findAll({
@@ -107,8 +111,17 @@ class AppController extends Controller {
         ],
         limit: 1,
       });
-      const url = ctx.app.safeGet(deploys, '[0].data.other[0].url');
-      if (url) appBuildData.deploy = { package: { url } };
+      const { customDomainProtocal, customDomain } = credential;
+      let url = ctx.app.safeGet(deploys, '[0].data.other[0].url');
+      if (url) {
+        if (customDomainProtocal && customDomain) {
+          url = this._formatDeployUrl({ url,
+            customDomainOrigin: `${customDomainProtocal}${customDomain}`,
+          });
+        }
+        appBuildData.deploy = { package: { url } };
+      }
+      debug(appBuildData);
       builds.push(appBuildData);
     }
 
@@ -117,6 +130,12 @@ class AppController extends Controller {
       gitRepo: safeGet(latestBuild, 'data.gitCommitInfo.gitUrl'),
       builds,
     });
+  }
+
+  _formatDeployUrl({ url, customDomainOrigin }) {
+    const _url = urlParser.parse(url);
+    const regexp = new RegExp(`^${_url.protocol}//${_url.host}`);
+    return url.replace(regexp, customDomainOrigin);
   }
 }
 

@@ -90,6 +90,7 @@ describe('test/app/controller/deploy.test.js', () => {
     assert(body.data[0].credentialUniqId === credentialUniqId);
     assert.deepStrictEqual(body.data[0].credential, {
       bucketTag: 'dev', bucket: 'bucket',
+      customDomain: null, customDomainProtocal: null,
     });
   });
 

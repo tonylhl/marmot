@@ -3,6 +3,7 @@
 const {
   Controller,
 } = require('egg');
+const debug = require('debug')('marmot:controller:credential');
 
 class CredentialController extends Controller {
   async index() {
@@ -21,6 +22,8 @@ class CredentialController extends Controller {
   async create() {
     const ctx = this.ctx;
 
+    debug(ctx.request.body);
+
     ctx.validate({
       provider: { type: 'string' },
       bucketTag: { type: 'string', required: false },
@@ -29,6 +32,8 @@ class CredentialController extends Controller {
       namespace: { type: 'string' },
       accessKeyId: { type: 'string' },
       accessKeySecret: { type: 'string', required: false },
+      customDomain: { type: 'string', required: false },
+      customDomainProtocal: { type: 'string', required: false },
     });
 
     const {
@@ -39,6 +44,8 @@ class CredentialController extends Controller {
       namespace,
       accessKeyId,
       accessKeySecret,
+      customDomain,
+      customDomainProtocal,
     } = ctx.request.body;
 
     const credential = await ctx.service.credential.createCredential({
@@ -49,6 +56,8 @@ class CredentialController extends Controller {
       namespace,
       accessKeyId,
       accessKeySecret,
+      customDomain,
+      customDomainProtocal,
     });
     ctx.success(credential);
   }

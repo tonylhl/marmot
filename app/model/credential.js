@@ -27,6 +27,13 @@ module.exports = app => {
       type: STRING,
       defaultValue: '',
     },
+    customDomain: {
+      type: STRING,
+    },
+    customDomainProtocal: {
+      type: ENUM,
+      values: [ 'http://', 'https://' ],
+    },
     accessKeyId: {
       type: TEXT,
     },

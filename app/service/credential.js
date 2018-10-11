@@ -2,6 +2,7 @@
 
 const crypto = require('crypto');
 const Service = require('egg').Service;
+const debug = require('debug')('marmot:service:credential');
 
 const defaultAlgorithm = 'aes-256-cbc';
 
@@ -116,8 +117,10 @@ module.exports = class CredentialService extends Service {
     namespace,
     accessKeyId,
     accessKeySecret,
+    customDomain,
+    customDomainProtocal,
   }) {
-    return await this.ctx.model.Credential.create({
+    const payload = {
       provider,
       bucketTag,
       region,
@@ -127,7 +130,13 @@ module.exports = class CredentialService extends Service {
       accessKeySecret: accessKeySecret
         ? this.encrypt(accessKeySecret)
         : '',
-    });
+    };
+    if (customDomain && customDomainProtocal) {
+      payload.customDomain = customDomain;
+      payload.customDomainProtocal = customDomainProtocal;
+    }
+    debug(payload);
+    return await this.ctx.model.Credential.create(payload);
   }
 
   async updateCredential({
