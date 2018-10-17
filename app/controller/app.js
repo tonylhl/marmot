@@ -3,10 +3,11 @@
 const {
   Controller,
 } = require('egg');
-const urlParser = require('url');
 const safeGet = require('lodash.get');
 const querystring = require('querystring');
 const debug = require('debug')('marmot:controller:app');
+
+const { formatDeployUrl } = require('../common/formatter/deploy');
 
 const DEFAULT_BRANCH_QUERY_DAYS_RANGE = 30;
 
@@ -115,7 +116,7 @@ class AppController extends Controller {
       let url = ctx.app.safeGet(deploys, '[0].data.other[0].url');
       if (url) {
         if (customDomainProtocal && customDomain) {
-          url = this._formatDeployUrl({ url,
+          url = formatDeployUrl({ url,
             customDomainOrigin: `${customDomainProtocal}${customDomain}`,
           });
         }
@@ -130,12 +131,6 @@ class AppController extends Controller {
       gitRepo: safeGet(latestBuild, 'data.gitCommitInfo.gitUrl'),
       builds,
     });
-  }
-
-  _formatDeployUrl({ url, customDomainOrigin }) {
-    const _url = urlParser.parse(url);
-    const regexp = new RegExp(`^${_url.protocol}//${_url.host}`);
-    return url.replace(regexp, customDomainOrigin);
   }
 }
 

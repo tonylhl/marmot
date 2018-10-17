@@ -1,9 +1,11 @@
 'use strict';
 
-const path = require('path');
 const {
   Controller,
 } = require('egg');
+const path = require('path');
+
+const { formatDeployUrl } = require('../common/formatter/deploy');
 
 const DEPLOY_INIT = 'INIT';
 const DEPLOY_SUCCESS = 'SUCCESS';
@@ -54,6 +56,8 @@ module.exports = class AppDeployController extends Controller {
     const {
       provider,
       namespace,
+      customDomain,
+      customDomainProtocal,
     } = credential;
 
     let prefix = ctx.request.body.prefix || '';
@@ -149,10 +153,15 @@ module.exports = class AppDeployController extends Controller {
       data: uploadResult,
       state: DEPLOY_SUCCESS,
     });
-    const url = ctx.app.safeGet(uploadResult, 'other[0].url');
+    let url = ctx.app.safeGet(uploadResult, 'other[0].url');
     if (!url) {
       ctx.fail('ERR_MARMOT_DEPLOY_FAILED', 'Deploy failed: can\'t deploy resource.');
       return;
+    }
+    if (customDomainProtocal && customDomain) {
+      url = formatDeployUrl({ url,
+        customDomainOrigin: `${customDomainProtocal}${customDomain}`,
+      });
     }
     ctx.success({
       deployUniqId: deploy.uniqId,
