@@ -1,7 +1,13 @@
 {
   "type": "webhooks",
   "webhooks": [
-    "http://localhost",
-    "http://localhost"
+    {
+      "tag": "build",
+      "url": "https://localhost"
+    },
+    {
+      "tag": "release",
+      "url": "https://localhost"
+    }
   ]
 }
