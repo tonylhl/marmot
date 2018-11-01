@@ -10,15 +10,16 @@ const UPDATE_FIELDS = [
 
 class BuildController extends Controller {
   async queryAll() {
-    const page = Number(this.ctx.query.page) || 1;
-    const num = Number(this.ctx.query.num) || this.ctx.app.config.modelQueryConfig.pagination.num;
-    const allJobName = await this.ctx.model.JobName.findAll({
+    const ctx = this.ctx;
+    const page = Number(ctx.query.page) || 1;
+    const num = Number(ctx.query.num) || ctx.app.config.modelQueryConfig.pagination.num;
+    const allJobName = await ctx.model.JobName.findAll({
       attributes: [
         'jobName',
       ],
     }).map(i => i.jobName);
 
-    const result = await this.ctx.model.Build.findAndCountAll({
+    const result = await ctx.model.Build.findAndCountAll({
       limit: num,
       offset: (page - 1) * num,
       order: [
@@ -27,9 +28,13 @@ class BuildController extends Controller {
           'DESC',
         ],
       ],
+      include: [{
+        model: ctx.model.Deploy,
+        attributes: [ 'state' ],
+      }],
     });
 
-    this.ctx.body = {
+    ctx.body = {
       success: true,
       message: '',
       allJobName,
@@ -42,15 +47,16 @@ class BuildController extends Controller {
   }
 
   async queryByJobName() {
-    const page = Number(this.ctx.query.page) || 1;
-    const num = Number(this.ctx.query.num) || this.ctx.app.config.modelQueryConfig.pagination.num;
-    const allJobName = await this.ctx.model.JobName.findAll({
+    const ctx = this.ctx;
+    const page = Number(ctx.query.page) || 1;
+    const num = Number(ctx.query.num) || ctx.app.config.modelQueryConfig.pagination.num;
+    const allJobName = await ctx.model.JobName.findAll({
       attributes: [
         'jobName',
       ],
     }).map(i => i.jobName);
-    const jobName = this.ctx.params.jobName;
-    const result = await this.ctx.model.Build.findAndCountAll({
+    const jobName = ctx.params.jobName;
+    const result = await ctx.model.Build.findAndCountAll({
       limit: num,
       offset: (page - 1) * num,
       order: [
@@ -62,8 +68,12 @@ class BuildController extends Controller {
       where: {
         jobName,
       },
+      include: [{
+        model: ctx.model.Deploy,
+        attributes: [ 'state' ],
+      }],
     });
-    this.ctx.body = {
+    ctx.body = {
       success: true,
       message: '',
       allJobName,

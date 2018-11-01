@@ -15,7 +15,7 @@ module.exports = {
           prefix: 'test/tahm',
           acl: 'public-read',
           state: [ 'INIT', 'SUCCESS', 'FAIL' ][i % 3],
-          type: 'type',
+          type: 'type1',
           data,
           uniqId: uuidv4(),
           buildUniqId,
