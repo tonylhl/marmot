@@ -5,6 +5,7 @@ node_modules/
 package-lock.json
 yarn.lock
 coverage/
+.nyc_output
 .idea/
 .vscode/
 test/fixtures/download-deploy-source/marmot-build/deploy-sample

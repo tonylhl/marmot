@@ -90,21 +90,22 @@ class DeployController extends Controller {
       return;
     }
 
-    const lastDeployed = await ctx.model.Deploy.findOne({
-      where: {
-        type,
-        buildUniqId,
-        credentialUniqId,
-      },
-    });
-    if (lastDeployed && lastDeployed.state === DEPLOY_SUCCESS) {
-      ctx.success({
-        deployUniqId: lastDeployed.uniqId,
-        uploadResult: lastDeployed.data,
-      });
-      return;
-    }
-
+    // Allow redeploy
+    // TODO: add force redeploy params
+    // const lastDeployed = await ctx.model.Deploy.findOne({
+    //   where: {
+    //     type,
+    //     buildUniqId,
+    //     credentialUniqId,
+    //   },
+    // });
+    // if (lastDeployed && lastDeployed.state === DEPLOY_SUCCESS) {
+    //   ctx.success({
+    //     deployUniqId: lastDeployed.uniqId,
+    //     uploadResult: lastDeployed.data,
+    //   });
+    //   return;
+    // }
 
     const {
       provider,
