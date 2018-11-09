@@ -9,117 +9,44 @@ const UPDATE_FIELDS = [
 ];
 
 class BuildController extends Controller {
-  async queryAll() {
+  async show() {
+    const ctx = this.ctx;
+    const uniqId = ctx.params.uniqId;
+    const res = await ctx.service.build.queryBuildByUniqId({
+      uniqId,
+    });
+    ctx.success(res);
+  }
+
+  async query() {
     const ctx = this.ctx;
     const page = Number(ctx.query.page) || 1;
     const num = Number(ctx.query.num) || ctx.app.config.modelQueryConfig.pagination.num;
-    const allJobName = await ctx.model.JobName.findAll({
-      attributes: [
-        'jobName',
-      ],
-    }).map(i => i.jobName);
 
-    const result = await ctx.model.Build.findAndCountAll({
-      limit: num,
-      offset: (page - 1) * num,
-      order: [
-        [
-          'createdAt',
-          'DESC',
-        ],
-      ],
-      include: [{
-        model: ctx.model.Deploy,
-        attributes: [ 'state' ],
-      }],
-    });
+    const { jobName, buildNumber } = ctx.query;
 
-    ctx.body = {
-      success: true,
-      message: '',
-      allJobName,
-      data: {
-        total: result.count,
-        page,
-        result: result.rows,
-      },
-    };
-  }
+    let res;
+    if (jobName) {
+      if (buildNumber) {
+        res = await ctx.service.build.queryByJobNameAndBuildNumber({
+          jobName,
+          buildNumber,
+        });
+      } else {
+        res = await ctx.service.build.queryByJobName({
+          jobName,
+          page, num,
+        });
+      }
+    } else {
+      res = await ctx.service.build.queryAllBuilds({ page, num });
+    }
 
-  async queryByJobName() {
-    const ctx = this.ctx;
-    const page = Number(ctx.query.page) || 1;
-    const num = Number(ctx.query.num) || ctx.app.config.modelQueryConfig.pagination.num;
-    const allJobName = await ctx.model.JobName.findAll({
-      attributes: [
-        'jobName',
-      ],
-    }).map(i => i.jobName);
-    const jobName = ctx.params.jobName;
-    const result = await ctx.model.Build.findAndCountAll({
-      limit: num,
-      offset: (page - 1) * num,
-      order: [
-        [
-          'createdAt',
-          'DESC',
-        ],
-      ],
-      where: {
-        jobName,
-      },
-      include: [{
-        model: ctx.model.Deploy,
-        attributes: [ 'state' ],
-      }],
-    });
-    ctx.body = {
-      success: true,
-      message: '',
-      allJobName,
-      data: {
-        total: result.count,
-        page,
-        result: result.rows,
-      },
-    };
-  }
-
-  async queryByJobNameAndBuildNumber() {
-    const ctx = this.ctx;
-    const jobName = ctx.params.jobName;
-    const buildNumber = ctx.params.buildNumber;
-    const build = await ctx.model.Build.findOne({
-      where: {
-        jobName,
-        buildNumber,
-      },
-    });
-    if (!build) {
-      ctx.fail('ERR_MARMOT_BUILD_RECORD_NOT_FOUND');
+    if (res.success === false) {
+      ctx.fail(res.code);
       return;
     }
-
-    const packages = ctx.app.safeGet(build, 'data.packages');
-    const result = build.get({ plain: true });
-    if (packages && packages.length) {
-      await Promise.all(packages.map(async (v, i) => {
-        const deploys = await build.getDeploys({
-          where: {
-            type: v.type,
-          },
-          order: [
-            [
-              'createdAt',
-              'DESC',
-            ],
-          ],
-        });
-        result.data.packages[i].deploys = deploys;
-      }));
-    }
-
-    ctx.success(result);
+    ctx.body = res;
   }
 
   async queryAllLatest() {
@@ -148,8 +75,8 @@ class BuildController extends Controller {
     }
     this.ctx.body = {
       success: true,
-      allJobName,
       data: {
+        allJobName,
         result,
       },
     };

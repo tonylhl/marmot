@@ -45,7 +45,7 @@ describe('test/app/controller/deploy.test.js', () => {
   });
 
   it('GET /api/deploy query deploy success', async () => {
-    const stub = sinon.stub(marmotRelease, 'uploadPackage').callsFake(function() {
+    let stub = sinon.stub(marmotRelease, 'uploadPackage').callsFake(function() {
       stub.restore();
       return Promise.resolve([[], []]);
     });
@@ -65,6 +65,10 @@ describe('test/app/controller/deploy.test.js', () => {
         credentialSecret: 'thekey',
         credentialUniqId,
       });
+    stub = sinon.stub(marmotRelease, 'uploadPackage').callsFake(function() {
+      stub.restore();
+      return Promise.resolve([[], []]);
+    });
     await app.httpRequest()
       .post('/api/deploy')
       .send({
@@ -73,25 +77,27 @@ describe('test/app/controller/deploy.test.js', () => {
         credentialSecret: 'thekey',
         credentialUniqId,
       });
-    // return one deploy result
+    // return double deploy result
     const { body } = await app.httpRequest()
       .get(`/api/deploy?buildUniqId=${buildUniqId}`);
     assert(body.success);
-    assert(body.data[0].source === 'http://a.tgz');
-    assert(body.data[0].prefix === 'namespace');
-    assert(body.data[0].acl === 'public-read');
-    assert(body.data[0].type === 'dev');
-    assert(body.data[0].state === 'SUCCESS');
-    assert.deepStrictEqual(body.data[0].data, {
-      html: [], other: [],
-    });
-    assert(body.data[0].uniqId);
-    assert(body.data[0].buildUniqId === buildUniqId);
-    assert(body.data[0].credentialUniqId === credentialUniqId);
-    assert.deepStrictEqual(body.data[0].credential, {
-      bucketTag: 'dev', bucket: 'bucket',
-      customDomain: null, customDomainProtocal: null,
-    });
+    for (const record of body.data) {
+      assert(record.source === 'http://a.tgz');
+      assert(record.prefix === 'namespace');
+      assert(record.acl === 'public-read');
+      assert(record.type === 'dev');
+      assert(record.state === 'SUCCESS');
+      assert.deepStrictEqual(record.data, {
+        html: [], other: [],
+      });
+      assert(record.uniqId);
+      assert(record.buildUniqId === buildUniqId);
+      assert(record.credentialUniqId === credentialUniqId);
+      assert.deepStrictEqual(record.credential, {
+        bucketTag: 'dev', bucket: 'bucket',
+        customDomain: null, customDomainProtocal: null,
+      });
+    }
   });
 
   it('GET /api/deploy/:uniqId success', async () => {

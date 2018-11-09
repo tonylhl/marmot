@@ -12,12 +12,11 @@ module.exports = app => {
   router.post('/api/gw', controller.gw.index);
 
   // build
-  router.get('/api/build', controller.build.queryAll);
-  router.get('/api/build/:jobName', controller.build.queryByJobName);
-  router.get('/api/build/:jobName/:buildNumber', controller.build.queryByJobNameAndBuildNumber);
+  router.get('/api/build', controller.build.query);
   router.get('/api/latestBuild', controller.build.queryAllLatest);
   router.get('/api/latestBuild/:jobName/:gitBranch+', controller.build.queryLatestByJobNameAndGitBranch);
 
+  router.get('/api/build/:uniqId', controller.build.show);
   router.put('/api/build/:uniqId', controller.build.update);
   router.patch('/api/build/:uniqId', controller.build.patch);
 
