@@ -39,7 +39,7 @@ describe('test/app/controller/build.test.js', function() {
     const { body } = await app.httpRequest()
       .get('/api/build');
     assert(body.success === true);
-    assert.deepStrictEqual(body.allJobName, [ 'android', 'ios' ]);
+    assert.deepStrictEqual(body.data.allJobName, [ 'android', 'ios' ]);
     assert(body.data.total);
     assert(body.data.page);
     assert(body.data.result.length === 2);
@@ -53,6 +53,31 @@ describe('test/app/controller/build.test.js', function() {
     assert(body.data.result[1].data);
     assert(body.data.result[1].uniqId);
     assert(body.data.result[1].createdAt);
+  });
+
+  it('GET /api/build/:uniqId query one build', async () => {
+    const [{ uniqId }] = await ctx.model.Build.bulkCreate([{
+      jobName: 'android',
+      buildNumber: '10',
+      data: {},
+    }, {
+      jobName: 'ios',
+      buildNumber: '20',
+      data: {},
+    }]);
+    await ctx.model.JobName.bulkCreate([{
+      jobName: 'android',
+    }, {
+      jobName: 'ios',
+    }]);
+    const { body } = await app.httpRequest()
+      .get(`/api/build/${uniqId}`);
+    assert(body.success === true);
+    assert(body.data.jobName === 'android');
+    assert(body.data.buildNumber === '10');
+    assert(body.data.data);
+    assert(body.data.uniqId === uniqId);
+    assert(body.data.createdAt);
   });
 
   it('GET /api/build/:jobName query by jobName', async () => {
@@ -87,9 +112,8 @@ describe('test/app/controller/build.test.js', function() {
     });
 
     const { body } = await app.httpRequest()
-      .get('/api/build/ios_app');
-    assert(body.success === true);
-    assert.deepStrictEqual(body.allJobName, [ 'android_app', 'ios_app' ]);
+      .get('/api/build?jobName=ios_app');
+    assert.deepStrictEqual(body.data.allJobName, [ 'android_app', 'ios_app' ]);
     assert(body.data.total);
     assert(body.data.page);
     assert(body.data.result.length === 1);
@@ -132,7 +156,7 @@ describe('test/app/controller/build.test.js', function() {
     });
 
     const { body } = await app.httpRequest()
-      .get('/api/build/ios_app/1');
+      .get('/api/build?jobName=ios_app&buildNumber=1');
     assert(body.success === true);
     assert(body.data.jobName === 'ios_app');
     assert(body.data.buildNumber === '1');
@@ -175,8 +199,8 @@ describe('test/app/controller/build.test.js', function() {
     const { body } = await app.httpRequest()
       .get('/api/latestBuild');
     assert(body.success === true);
-    assert(body.allJobName[0] === 'android_app');
-    assert(body.allJobName[1] === 'ios_app');
+    assert(body.data.allJobName[0] === 'android_app');
+    assert(body.data.allJobName[1] === 'ios_app');
     assert(body.data.result[0].jobName === 'android_app');
     assert(body.data.result[0].buildNumber === '1');
     assert(body.data.result[1].jobName === 'ios_app');
