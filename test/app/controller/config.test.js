@@ -8,7 +8,7 @@ const {
 describe('test/app/controller/config.test.js', () => {
 
   beforeEach(() => {
-    app.mockService('webhook', 'push', {});
+    app.mockService('webhook', 'pushBuildNotification', {});
   });
 
   async function assertConfig(app, data) {
