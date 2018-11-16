@@ -100,6 +100,7 @@ class AppController extends Controller {
           jobName: data.jobName,
           buildNumber: data.buildNumber,
         })}`,
+        state: data.state,
         createdAt: data.createdAt,
       };
       const deploys = await build.getDeploys({

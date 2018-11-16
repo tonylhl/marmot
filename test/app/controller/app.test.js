@@ -99,6 +99,7 @@ describe('test/app/controller/app.test.js', function() {
     assert(queryResult.data.builds[0].gitBranch === 'feat/two');
     assert(queryResult.data.builds[0].deploy === null);
     assert(queryResult.data.builds[0].marmotDeployUrl === 'http://127.0.0.1/buildinfo?jobName=jobName&buildNumber=12');
+    assert(queryResult.data.builds[0].state === 'SUCCESS');
     assert.deepStrictEqual(queryResult.data.builds[0].extendInfo, {
       key: 'value',
     });
@@ -163,6 +164,7 @@ describe('test/app/controller/app.test.js', function() {
     assert(queryResult.data.appId === appId);
     assert(queryResult.data.gitRepo === 'http://domain/url/two');
     assert(queryResult.data.builds.length === 1);
+    assert(queryResult.data.builds[0].state === 'SUCCESS');
     assert.deepStrictEqual(queryResult.data.builds[0].extendInfo, {});
     assert.deepStrictEqual(queryResult.data.builds[0].deploy, {
       package: {
