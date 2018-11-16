@@ -23,7 +23,8 @@ module.exports = class WebHookService extends Service {
       });
     }));
   }
-  async push(data = {}) {
+
+  async pushBuildNotification(data = {}) {
     const ctx = this.ctx;
     // get all webhooks
     const globalConfig = await this.ctx.model.Config.findOne();
@@ -36,9 +37,14 @@ module.exports = class WebHookService extends Service {
     } = globalConfig.data;
 
     try {
-      return await Promise.all(webhooks
+      await Promise.all(webhooks
         .filter(webhook => webhook.tag === 'build')
-        .map(webhook => DingTalk.call(this, webhook, data)));
+        .map(webhook => DingTalk({
+          webhook,
+          data,
+          staticServerUrl: `http:${this.config.marmotView.staticUrl}`,
+          marmotServerUrl: `http:${this.config.marmotView.marmotHost}`,
+        })));
     } catch (e) {
       ctx.logger.error(e);
     }

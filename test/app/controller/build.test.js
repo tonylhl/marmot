@@ -18,7 +18,7 @@ describe('test/app/controller/build.test.js', function() {
   let ctx;
   beforeEach(() => {
     ctx = app.mockContext();
-    app.mockService('webhook', 'push', {});
+    app.mockService('webhook', 'pushBuildNotification', {});
   });
 
   it('GET /api/build query all builds', async () => {
@@ -262,6 +262,14 @@ describe('test/app/controller/build.test.js', function() {
       extraInfo: {
         appId,
       },
+      environment: {
+        ci: {
+          RUNNER_TYPE: 'GITLAB_CI',
+          JOB_NAME: 'jobName',
+          BUILD_NUMBER: '11',
+        },
+        platform: 'web',
+      },
     });
 
     await app.delay(1000);
@@ -273,6 +281,14 @@ describe('test/app/controller/build.test.js', function() {
       },
       extraInfo: {
         appId,
+      },
+      environment: {
+        ci: {
+          RUNNER_TYPE: 'GITLAB_CI',
+          JOB_NAME: 'jobName',
+          BUILD_NUMBER: '12',
+        },
+        platform: 'web',
       },
     });
     await ctx.model.JobName.bulkCreate([{

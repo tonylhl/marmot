@@ -6,6 +6,7 @@ module.exports = app => {
     UUID,
     UUIDV4,
     JSON,
+    ENUM,
   } = app.Sequelize;
 
   const Build = app.model.define('build', {
@@ -30,6 +31,10 @@ module.exports = app => {
     extendInfo: {
       type: JSON,
       defaultValue: {},
+    },
+    state: {
+      type: ENUM,
+      values: [ 'INIT', 'SUCCESS', 'FAIL' ],
     },
   }, { });
 

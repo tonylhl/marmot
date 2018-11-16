@@ -6,10 +6,15 @@ const {
 const safeGet = require('lodash.get');
 const debug = require('debug')('marmot:controller:gw');
 
+const {
+  BUILD_STATE_INIT,
+  BUILD_STATE_SUCCESS,
+} = require('../constants/build');
+
 class GwController extends Controller {
   async index() {
     const ctx = this.ctx;
-    const data = this.ctx.request.body;
+    const { state = BUILD_STATE_SUCCESS, ...data } = ctx.request.body;
     // TODO remove
     const jobName = safeGet(data, 'environment.ci.JOB_NAME')
       || safeGet(data, 'environment.jenkins.JOB_NAME')
@@ -27,7 +32,7 @@ class GwController extends Controller {
       return;
     }
     debug('jobName %s, buildNumber %s', jobName, buildNumber);
-    await this.ctx.model.JobName.findOrCreate({
+    await ctx.model.JobName.findOrCreate({
       where: {
         jobName,
       },
@@ -36,15 +41,43 @@ class GwController extends Controller {
       },
     });
     const appId = safeGet(data, 'extraInfo.appId') || '';
-    const createResult = await this.ctx.model.Build.create({
-      buildNumber,
-      jobName,
-      appId,
-      gitBranch,
-      data,
+
+    let upsertResult = {};
+
+    const build = await ctx.model.Build.findOne({
+      where: {
+        buildNumber,
+        jobName,
+      },
     });
-    await this.ctx.service.webhook.push(data);
-    ctx.success(createResult);
+
+    if (!build || state === BUILD_STATE_INIT) {
+      debug('insert new build');
+      upsertResult = await ctx.model.Build.create({
+        buildNumber,
+        jobName,
+        appId,
+        gitBranch,
+        data,
+        state,
+      });
+    } else {
+      debug('update build', build.uniqId);
+      upsertResult = await ctx.service.build.updateBuild({
+        uniqId: build.uniqId,
+        payload: {
+          buildNumber,
+          jobName,
+          appId,
+          gitBranch,
+          data,
+          state,
+        },
+      });
+    }
+
+    await ctx.service.webhook.pushBuildNotification(data);
+    ctx.success(upsertResult);
   }
 }
 

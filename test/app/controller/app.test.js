@@ -18,7 +18,7 @@ describe('test/app/controller/app.test.js', function() {
   let ctx;
   beforeEach(() => {
     ctx = app.mockContext();
-    app.mockService('webhook', 'push', {});
+    app.mockService('webhook', 'pushBuildNotification', {});
   });
 
   it('GET /api/app/:appId with empty deploy result and change build extraInfo', async () => {
@@ -43,6 +43,14 @@ describe('test/app/controller/app.test.js', function() {
       extraInfo: {
         appId,
       },
+      environment: {
+        ci: {
+          RUNNER_TYPE: 'GITLAB_CI',
+          JOB_NAME: 'jobName',
+          BUILD_NUMBER: '11',
+        },
+        platform: 'web',
+      },
     });
 
     await app.delay(1000);
@@ -54,6 +62,14 @@ describe('test/app/controller/app.test.js', function() {
       },
       extraInfo: {
         appId,
+      },
+      environment: {
+        ci: {
+          RUNNER_TYPE: 'GITLAB_CI',
+          JOB_NAME: 'jobName',
+          BUILD_NUMBER: '12',
+        },
+        platform: 'web',
       },
     });
     await ctx.model.JobName.bulkCreate([{
@@ -82,7 +98,7 @@ describe('test/app/controller/app.test.js', function() {
     assert(queryResult.data.builds[0].version === '1.0.0');
     assert(queryResult.data.builds[0].gitBranch === 'feat/two');
     assert(queryResult.data.builds[0].deploy === null);
-    assert(queryResult.data.builds[0].marmotDeployUrl === 'http://127.0.0.1/buildinfo?jobName=jobName&buildNumber=11');
+    assert(queryResult.data.builds[0].marmotDeployUrl === 'http://127.0.0.1/buildinfo?jobName=jobName&buildNumber=12');
     assert.deepStrictEqual(queryResult.data.builds[0].extendInfo, {
       key: 'value',
     });
