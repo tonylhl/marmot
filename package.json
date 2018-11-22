@@ -12,7 +12,7 @@
     "egg-sequelize": "^4.2.0",
     "egg-validate": "^1.0.0",
     "lodash.get": "^4.4.2",
-    "marmot-dingtalk": "^1.0.9",
+    "marmot-dingtalk": "^2.0.0",
     "marmot-release": "^1.1.0",
     "marmot-view": "^2.2.8",
     "moment": "^2.22.2",
