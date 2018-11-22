@@ -76,7 +76,9 @@ class GwController extends Controller {
       });
     }
 
-    await ctx.service.webhook.pushBuildNotification(data);
+    if (state !== BUILD_STATE_INIT) {
+      await ctx.service.webhook.pushBuildNotification(data);
+    }
     ctx.success(upsertResult);
   }
 }
