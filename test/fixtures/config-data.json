@@ -9,5 +9,9 @@
       "tag": "release",
       "url": "https://localhost"
     }
-  ]
+  ],
+  "gitlab": {
+    "gitlab_api": "http://127.0.0.1:8082/api/v4",
+    "private_token": "a4kw3Fb-zksTkDPF39sq"
+  }
 }

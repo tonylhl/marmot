@@ -43,5 +43,17 @@ module.exports = app => {
   // delegate
   router.post('/api/delegate/message', controller.delegate.message);
 
+  // gitlab token
+  router.get('/api/gitlab/getGitlabToken', controller.publish.getGitlabToken);
+  router.get('/api/gitlab/getGroups', controller.publish.getGroups);
+  router.get('/api/gitlab/getProjectsByGroupId', controller.publish.getProjectsByGroupId);
+  router.get('/api/gitlab/getRepos', controller.publish.getRepos);
+  router.get('/api/gitlab/getBranches', controller.publish.getBranches);
+
+  router.post('/api/gitlab/createRepo', controller.publish.createRepo);
+  router.post('/api/gitlab/createBranch', controller.publish.createBranch);
+
+  router.delete('/api/gitlab/deleteRepo', controller.publish.deleteRepo);
+
   router.get('*', controller.home.index);
 };
