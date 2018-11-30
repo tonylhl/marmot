@@ -12,8 +12,7 @@ module.exports = app => {
   router.post('/api/gw', controller.gw.index);
 
   // build
-  router.get('/api/latestBuild', controller.build.queryAllLatest);
-  router.get('/api/latestBuild/:jobName/:gitBranch+', controller.build.queryLatestByJobNameAndGitBranch);
+  router.get('/api/insight/ci', controller.insight.ci);
 
   router.get('/api/build', controller.build.query);
   router.get('/api/build/:uniqId', controller.build.show);

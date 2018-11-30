@@ -6,7 +6,8 @@ module.exports = appInfo => {
   const config = exports = {};
 
   config.siteFile = {
-    '/favicon.ico': 'https://macacajs.github.io/marmot-logo/favicon.ico' };
+    '/favicon.ico': '/public/materials/boat.ico',
+  };
 
   // use for cookie sign key, should change to your own and keep security
   config.keys = process.env.MARMOT_SECRET_KEY || appInfo.name + '_1528180445670_8068';

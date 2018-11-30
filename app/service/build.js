@@ -148,5 +148,16 @@ module.exports = class BuildService extends Service {
       }
     );
   }
+
+  async finishBuild({ uniqId, payload }) {
+    return await this.ctx.model.Build.update(
+      payload,
+      {
+        where: {
+          uniqId,
+        },
+      }
+    );
+  }
 };
 
