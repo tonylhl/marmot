@@ -18,6 +18,7 @@ module.exports = {
         uniqId: uidPrefix + baseId,
         createdAt: new Date(),
         updatedAt: new Date(),
+        finishedAt: new Date(Date.now() + 60 * 1000),
       });
       baseId++;
       insertData.push({
@@ -29,6 +30,7 @@ module.exports = {
         uniqId: uidPrefix + baseId,
         createdAt: new Date(),
         updatedAt: new Date(),
+        finishedAt: new Date(Date.now() + 60 * 1000),
       });
       baseId++;
     }

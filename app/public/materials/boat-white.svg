@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="114px" height="110px" viewBox="0 0 114 110" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.4 (67378) - http://www.bohemiancoding.com/sketch -->
+    <title>boat-white</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#A3D5FC" offset="0%"></stop>
+            <stop stop-color="#6AAAF7" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#BFE6FF" offset="0%"></stop>
+            <stop stop-color="#8BC9FF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="boat-white" transform="translate(1.000000, 1.000000)" stroke="#979797">
+            <path d="M13.06375,93.25 L13.3295,93.25 C21.86025,93.25 29.32375,88.49475 34.65575,82.6265 C39.987,88.49475 47.45075,93.317 55.98175,93.317 C64.51275,93.317 71.9765,88.4835 77.308,82.6155 C82.63975,88.4835 90.103,93.25 98.63375,93.25 L98.89925,93.25 L111.7125,58.555 C112.244,57.22275 111.97825,55.64475 111.445,54.311 C110.911,52.97775 109.63575,52.18925 108.30325,51.65525 L98.75,48.53325 L98.75,23.99575 C98.75,18.1275 93.836,13.25 87.971,13.25 L71.97625,13.25 L67.978,0 L43.98575,0 L39.987,13.25 L23.99225,13.25 C18.12775,13.25 13.25,18.1275 13.25,23.9955 L13.25,48.533 L3.7315,51.66625 C2.399,52.20025 1.086,52.99975 0.552,54.333 C0.01825,55.66675 -0.2375,56.9555 0.29425,58.55475 L13.06375,93.25 Z M24,24 L88,24 L88,45.06525 L56,34.664 L24,45.06525 L24,24 Z" id="Shape" fill="url(#linearGradient-1)" fill-rule="nonzero"></path>
+            <path d="M77.30775,92.00175 C64.2445,101.0685 47.71875,101.06625 34.65575,91.9995 C34.65575,91.9995 20.24625,108 7.99775,108 L13.3295,108 C20.793,108 27.991,105.0685 34.65575,101.6015 C47.9845,108.535 63.979,108.5335 77.30775,101.59975 C83.9725,105.067 91.17025,108 98.63375,108 L103.96575,108 C92.053,108 77.30775,92.00175 77.30775,92.00175 Z" id="Path" fill="url(#linearGradient-2)"></path>
+        </g>
+    </g>
+</svg>

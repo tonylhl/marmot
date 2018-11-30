@@ -7,6 +7,7 @@ module.exports = app => {
     UUIDV4,
     JSON,
     ENUM,
+    DATE,
   } = app.Sequelize;
 
   const Build = app.model.define('build', {
@@ -35,6 +36,9 @@ module.exports = app => {
     state: {
       type: ENUM,
       values: [ 'INIT', 'SUCCESS', 'FAIL' ],
+    },
+    finishedAt: {
+      type: DATE,
     },
   }, { });
 

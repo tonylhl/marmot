@@ -51,19 +51,9 @@ class GwController extends Controller {
       },
     });
 
-    if (!build || state === BUILD_STATE_INIT) {
-      debug('insert new build');
-      upsertResult = await ctx.model.Build.create({
-        buildNumber,
-        jobName,
-        appId,
-        gitBranch,
-        data,
-        state,
-      });
-    } else {
-      debug('update build', build.uniqId);
-      upsertResult = await ctx.service.build.updateBuild({
+    if (build) {
+      debug('update build to finished', build.uniqId);
+      upsertResult = await ctx.service.build.finishBuild({
         uniqId: build.uniqId,
         payload: {
           buildNumber,
@@ -72,7 +62,18 @@ class GwController extends Controller {
           gitBranch,
           data,
           state,
+          finishedAt: Date.now(),
         },
+      });
+    } else {
+      debug('insert new build');
+      upsertResult = await ctx.model.Build.create({
+        buildNumber,
+        jobName,
+        appId,
+        gitBranch,
+        data,
+        state,
       });
     }
 
