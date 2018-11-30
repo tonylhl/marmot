@@ -81,7 +81,6 @@ class InsightController extends Controller {
         : durationCount;
 
       return {
-        res,
         jobName,
         linePercent,
         passPercent,
