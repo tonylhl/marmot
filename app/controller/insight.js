@@ -78,10 +78,10 @@ class InsightController extends Controller {
       }
       if (startDate && endDate) {
         findOptions.where.createdAt = {
-          [Op.gte]: ctx.app.moment(startDate).toDate(),
-        };
-        findOptions.where.finishedAt = {
-          [Op.lte]: ctx.app.moment(endDate).toDate(),
+          [Op.between]: [
+            ctx.app.moment(startDate).toDate(),
+            ctx.app.moment(endDate).toDate(),
+          ],
         };
       }
       const res = await ctx.model.Build.findAll(findOptions);
@@ -111,7 +111,7 @@ class InsightController extends Controller {
             linePercent: ctx.app.safeGet(i, 'data.testInfo.linePercent'),
             createdAt: ctx.app.moment(i.createdAt).fromNow(),
           });
-          return i.data.testInfo.linePercent + value;
+          return Number.parseFloat(i.data.testInfo.linePercent) + value;
         }
         return value;
       }, 0);
@@ -124,7 +124,7 @@ class InsightController extends Controller {
           passPercent: ctx.app.safeGet(i, 'data.testInfo.passPercent'),
           createdAt: ctx.app.moment(i.createdAt).fromNow(),
         });
-        if (i.data.testInfo.passPercent === 100) {
+        if (Number.parseFloat(i.data.testInfo.passPercent) === 100) {
           return 1 + value;
         }
         return value;
