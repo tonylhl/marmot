@@ -116,18 +116,21 @@ class InsightController extends Controller {
         return value;
       }, 0);
       const passTimesSum = res.reduce((value, i) => {
-        passTimeSumCount++;
-        passPercentList.push({
-          commitUrl: this._getCommitUrl(i),
-          shortHash: ctx.app.safeGet(i, 'data.gitCommitInfo.shortHash'),
-          reporterUrl: this._normalizeReporterUrl(i),
-          passPercent: ctx.app.safeGet(i, 'data.testInfo.passPercent'),
-          createdAt: ctx.app.moment(i.createdAt).fromNow(),
-        });
-        if (Number.parseFloat(i.data.testInfo.passPercent) === 100) {
-          return 1 + value;
+        if (i.data.testInfo.passPercent && !Number.isNaN(i.data.testInfo.passPercent)) {
+          passTimeSumCount++;
+          passPercentList.push({
+            commitUrl: this._getCommitUrl(i),
+            shortHash: ctx.app.safeGet(i, 'data.gitCommitInfo.shortHash'),
+            reporterUrl: this._normalizeReporterUrl(i),
+            passPercent: ctx.app.safeGet(i, 'data.testInfo.passPercent'),
+            createdAt: ctx.app.moment(i.createdAt).fromNow(),
+          });
+          if (Number.parseFloat(i.data.testInfo.passPercent) === 100) {
+            return 1 + value;
+          }
         }
         return value;
+
       }, 0);
       const durationSum = res.reduce((value, i) => {
         if (i.finishedAt - i.createdAt > 0) {
