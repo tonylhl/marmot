@@ -32,6 +32,7 @@ class InsightController extends Controller {
           'createdAt',
           'finishedAt',
         ],
+        limit: 100,
         order: [[ 'createdAt', 'DESC' ]],
       };
       if (allBranches === 'N') {
@@ -47,20 +48,32 @@ class InsightController extends Controller {
       }
       const res = await ctx.model.Build.findAll(findOptions);
       if (res.length === 0) return null;
-      const committer = res[0].data.gitCommitInfo.committer.name;
+
+      const lastCommit = {
+        committer: ctx.app.safeGet(res, '[0].data.gitCommitInfo.committer.name'),
+        shortHash: ctx.app.safeGet(res, '[0].data.gitCommitInfo.shortHash'),
+        gitUrl: ctx.app.safeGet(res, '[0].data.gitCommitInfo.gitUrl'),
+      };
 
       let linePercentCount = 0;
       let passTimeSumCount = 0;
       let durationCount = 0;
+
+      const linePercentList = [];
+      const passPercentList = [];
+      const durationList = [];
+
       const linePercentSum = res.reduce((value, i) => {
         if (i.data.testInfo.linePercent && !Number.isNaN(i.data.testInfo.linePercent)) {
           linePercentCount++;
+          linePercentList.push(i.data.testInfo.linePercent);
           return i.data.testInfo.linePercent + value;
         }
         return value;
       }, 0);
       const passTimesSum = res.reduce((value, i) => {
         passTimeSumCount++;
+        passPercentList.push(i.data.testInfo.passPercent);
         if (i.data.testInfo.passPercent === 100) {
           return 1 + value;
         }
@@ -69,6 +82,7 @@ class InsightController extends Controller {
       const durationSum = res.reduce((value, i) => {
         if (i.finishedAt - i.createdAt > 0) {
           durationCount++;
+          durationList.push(ctx.app.moment.duration(i.finishedAt - i.createdAt).humanize());
           return i.finishedAt - i.createdAt + value;
         }
         return value;
@@ -84,8 +98,11 @@ class InsightController extends Controller {
         jobName,
         linePercent,
         passPercent,
-        committer,
+        lastCommit,
         humanizeDuration,
+        linePercentList,
+        passPercentList,
+        durationList,
       };
     }));
 
