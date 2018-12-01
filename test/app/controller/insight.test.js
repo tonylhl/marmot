@@ -54,44 +54,45 @@ describe('test/app/controller/insight.test.js', function() {
       .get('/api/insight/ci');
     assert.deepStrictEqual(body, {
       success: true,
-      data: [
-        {
-          jobName: 'android_app',
+      data: [{
+        jobName: 'android_app',
+        linePercent: 95.24,
+        passPercent: 100,
+        lastCommit: { committer: 'user', shortHash: 'ecb4bac', commitUrl: 'http://host/group/repo/commit/ecb4bac' },
+        humanizeDuration: 0,
+        linePercentList: [{
+          commitUrl: 'http://host/group/repo/commit/ecb4bac',
+          shortHash: 'ecb4bac',
+          coverageUrl: 'http://host/index.html',
           linePercent: 95.24,
+          createdAt: 'a few seconds ago',
+        }],
+        passPercentList: [{
+          commitUrl: 'http://host/group/repo/commit/ecb4bac',
+          shortHash: 'ecb4bac',
+          reporterUrl: 'http://host/index.html',
           passPercent: 100,
-          lastCommit: {
-            committer: 'user',
-            shortHash: 'ecb4bac',
-            gitUrl: 'http://host/group/repo',
-          },
-          humanizeDuration: 0,
-          linePercentList: [
-            95.24,
-          ],
-          passPercentList: [
-            100,
-          ],
-          durationList: [],
+          createdAt: 'a few seconds ago',
+        }],
+        durationList: [],
+      }, {
+        jobName: 'ios_app',
+        linePercent: 95.24,
+        passPercent: 100,
+        lastCommit: {
+          committer: 'user',
+          shortHash: 'ecb4bac',
+          commitUrl: 'http://host/group/repo/commit/ecb4bac',
         },
-        {
-          jobName: 'ios_app',
-          linePercent: 95.24,
-          passPercent: 100,
-          lastCommit: {
-            committer: 'user',
-            shortHash: 'ecb4bac',
-            gitUrl: 'http://host/group/repo',
-          },
-          humanizeDuration: 0,
-          linePercentList: [
-            95.24,
-          ],
-          passPercentList: [
-            100,
-          ],
-          durationList: [],
-        },
-      ],
+        humanizeDuration: 0,
+        linePercentList: [{
+          commitUrl: 'http://host/group/repo/commit/ecb4bac', shortHash: 'ecb4bac', coverageUrl: 'http://host/index.html', linePercent: 95.24, createdAt: 'a few seconds ago' },
+        ],
+        passPercentList: [{
+          commitUrl: 'http://host/group/repo/commit/ecb4bac', shortHash: 'ecb4bac', reporterUrl: 'http://host/index.html', passPercent: 100, createdAt: 'a few seconds ago',
+        }],
+        durationList: [],
+      }],
     });
   });
 });
