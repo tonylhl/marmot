@@ -49,6 +49,27 @@ class BuildController extends Controller {
     ctx.body = res;
   }
 
+  async queryLatestByJobNameAndGitBranch() {
+    const jobName = this.ctx.params.jobName;
+    const gitBranch = this.ctx.params.gitBranch;
+    const result = await this.ctx.model.Build.findAll({
+      limit: 5,
+      where: {
+        jobName,
+        gitBranch,
+      },
+      order: [
+        [
+          'createdAt',
+          'DESC',
+        ],
+      ],
+    });
+    this.ctx.success({
+      result,
+    });
+  }
+
   async update() {
     const ctx = this.ctx;
     const uniqId = ctx.params.uniqId;

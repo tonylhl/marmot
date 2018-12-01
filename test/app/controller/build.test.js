@@ -165,6 +165,39 @@ describe('test/app/controller/build.test.js', function() {
     assert(body.data.createdAt);
   });
 
+  it('GET /api/latestBuild/:jobName/:gitBranch+ query latest build', async () => {
+    await ctx.model.Build.bulkCreate([{
+      jobName: 'ios_app',
+      gitBranch: 'master',
+      buildNumber: '10',
+      data: {
+        environment: {
+          os: {
+            nodeVersion: 'v1.1.2',
+            platform: 'linux',
+          },
+        },
+      },
+    }, {
+      jobName: 'web_app',
+      gitBranch: 'master',
+      buildNumber: '20',
+      data: {
+        environment: {
+          os: {
+            nodeVersion: 'v1.1.2',
+            platform: 'linux',
+          },
+        },
+      },
+    }]);
+    const { body } = await app.httpRequest()
+      .get('/api/latestBuild/web_app/master');
+    assert(body.success === true);
+    assert(body.data.result[0].jobName === 'web_app');
+    assert(body.data.result[0].buildNumber === '20');
+  });
+
   it('POST /api/build/:uniqId update build extendInfo', async () => {
     const appId = 'APP_ONE';
     await app.model.Config.create({
