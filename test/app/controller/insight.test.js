@@ -52,20 +52,46 @@ describe('test/app/controller/insight.test.js', function() {
 
     const { body } = await app.httpRequest()
       .get('/api/insight/ci');
+    console.log(JSON.stringify(body, null, 2));
     assert.deepStrictEqual(body, {
       success: true,
-      data: [{
-        jobName: 'android_app',
-        linePercent: 95.24,
-        passPercent: 100,
-        committer: 'user',
-        humanizeDuration: 0,
-      }, { jobName: 'ios_app',
-        linePercent: 95.24,
-        passPercent: 100,
-        committer: 'user',
-        humanizeDuration: 0,
-      },
+      data: [
+        {
+          jobName: 'android_app',
+          linePercent: 95.24,
+          passPercent: 100,
+          lastCommit: {
+            committer: 'user',
+            shortHash: 'ecb4bac',
+            gitUrl: 'http://host/group/repo',
+          },
+          humanizeDuration: 0,
+          linePercentList: [
+            95.24,
+          ],
+          passPercentList: [
+            100,
+          ],
+          durationList: [],
+        },
+        {
+          jobName: 'ios_app',
+          linePercent: 95.24,
+          passPercent: 100,
+          lastCommit: {
+            committer: 'user',
+            shortHash: 'ecb4bac',
+            gitUrl: 'http://host/group/repo',
+          },
+          humanizeDuration: 0,
+          linePercentList: [
+            95.24,
+          ],
+          passPercentList: [
+            100,
+          ],
+          durationList: [],
+        },
       ],
     });
   });
