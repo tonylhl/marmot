@@ -52,7 +52,6 @@ describe('test/app/controller/insight.test.js', function() {
 
     const { body } = await app.httpRequest()
       .get('/api/insight/ci');
-    console.log(JSON.stringify(body, null, 2));
     assert.deepStrictEqual(body, {
       success: true,
       data: [
