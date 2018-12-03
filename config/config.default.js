@@ -14,7 +14,7 @@ module.exports = appInfo => {
 
   // add your config here
   config.middleware = [
-    'cors', 'errorHandler',
+    'inject', 'cors', 'errorHandler',
   ];
 
   let deployRetryTimes = isNaN(process.env.MARMOT_DEPLOY_RETRY_TIMES) ? 3 : Number(process.env.MARMOT_DEPLOY_RETRY_TIMES);
