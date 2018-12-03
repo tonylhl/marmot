@@ -47,7 +47,7 @@ module.exports = class PublishController extends Controller {
     this.ctx.success(repos);
   }
 
-  async getProjectsByGroupId() {
+  async getProjects() {
     const groupId = this.ctx.query.groupId;
     const config = await this.ctx.model.Config.findOne();
     const gitlabApi = config.data.gitlab.gitlab_api;
@@ -156,12 +156,22 @@ module.exports = class PublishController extends Controller {
 
   async deleteRepo() {
 
-    const { groupName, repoName } = this.ctx.request.body;
+    const { groupName, repoName } = this.ctx.request.query;
     let transaction;
     try {
       transaction = await this.ctx.model.transaction();
-      await this.ctx.model.Repo.destroy({ groupName, repoName });
-      const result = await this.ctx.model.Branch.destroy({ groupName, repoName });
+      await this.ctx.model.Repo.destroy({
+        where: {
+          groupName,
+          repoName,
+        },
+      });
+      const result = await this.ctx.model.Branch.destroy({
+        where: {
+          groupName,
+          repoName,
+        },
+      });
 
       this.ctx.success(result);
 

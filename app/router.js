@@ -46,7 +46,7 @@ module.exports = app => {
   // gitlab token
   router.get('/api/gitlab/getGitlabToken', controller.publish.getGitlabToken);
   router.get('/api/gitlab/getGroups', controller.publish.getGroups);
-  router.get('/api/gitlab/getProjectsByGroupId', controller.publish.getProjectsByGroupId);
+  router.get('/api/gitlab/getProjects', controller.publish.getProjects);
   router.get('/api/gitlab/getRepos', controller.publish.getRepos);
   router.get('/api/gitlab/getBranches', controller.publish.getBranches);
 
